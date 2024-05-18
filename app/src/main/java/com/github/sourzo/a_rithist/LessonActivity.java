@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.github.sourzo.a_rithist.gaidhlig.BasicVocab;
-import com.github.sourzo.a_rithist.gaidhlig.Generatable;
 import com.github.sourzo.a_rithist.gaidhlig.LessonInfo;
 
 import java.util.Objects;

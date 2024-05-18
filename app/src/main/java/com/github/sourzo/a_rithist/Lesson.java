@@ -2,9 +2,6 @@ package com.github.sourzo.a_rithist;
 
 import android.content.Context;
 
-import com.github.sourzo.a_rithist.gaidhlig.BasicVocab;
-import com.github.sourzo.a_rithist.gaidhlig.Generatable;
-
 import java.util.function.Function;
 
 public class Lesson {

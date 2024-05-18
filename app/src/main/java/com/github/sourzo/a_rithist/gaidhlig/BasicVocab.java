@@ -1,9 +1,9 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.github.sourzo.a_rithist.Exercise;
+import com.github.sourzo.a_rithist.Generatable;
 import com.github.sourzo.a_rithist.LessonActivity;
 
 import java.util.HashMap;

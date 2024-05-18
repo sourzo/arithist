@@ -1,4 +1,4 @@
-package com.github.sourzo.a_rithist.gaidhlig;
+package com.github.sourzo.a_rithist;
 
 import com.github.sourzo.a_rithist.Exercise;
 import com.github.sourzo.a_rithist.LessonActivity;
