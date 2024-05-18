@@ -55,7 +55,7 @@ public class LessonActivity extends AppCompatActivity {
         userResponseView = findViewById(R.id.user_response);
         buttonView = findViewById(R.id.lesson_button);
         solutionView = findViewById(R.id.solution);
-        exGen = LessonInfo.lessonSet.get(lessonID).generator.apply(this);
+        exGen = Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).getGenerator.apply(this);
 
 
         getOptionsForLesson();

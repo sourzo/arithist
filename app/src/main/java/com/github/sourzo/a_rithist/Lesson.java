@@ -10,7 +10,7 @@ public class Lesson {
     String[] requiredColumns;
     topicTags[] topics;
     lessonOptions[] options;
-    Function<Context, Generatable> generator;
+    Function<Context, Generatable> getGenerator;
 
 
     //constructors----------------------------------------------------------------------------------
@@ -18,12 +18,12 @@ public class Lesson {
                   String[] requiredColumns,
                   topicTags[] topics,
                   lessonOptions[] options,
-                  Function<Context, Generatable> generator){
+                  Function<Context, Generatable> getGenerator){
         this.displayName = displayName;
         this.requiredColumns = requiredColumns;
         this.topics = topics;
         this.options = options;
-        this.generator = generator;
+        this.getGenerator = getGenerator;
     }
     //nested classes--------------------------------------------------------------------------------
     public enum topicTags{
