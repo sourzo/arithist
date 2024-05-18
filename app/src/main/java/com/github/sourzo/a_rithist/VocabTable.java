@@ -1,6 +1,7 @@
 package com.github.sourzo.a_rithist;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -39,8 +40,12 @@ public class VocabTable {
             while ((line = br.readLine()) != null) { //Subsequent lines = vocab
                 String[] values = line.split(",");
                 HashMap<String,String> newRow = new HashMap<>();
-                for (int i = 0; i<colNames.length; i++) {
-                    newRow.put(colNames[i],values[i]);
+                for (int i = 0; i < colNames.length; i++) {
+                    if (values.length <= i){
+                        newRow.put(colNames[i],"");
+                    } else {
+                        newRow.put(colNames[i],values[i]);
+                    }
                 }
                 data.add(newRow);
             }

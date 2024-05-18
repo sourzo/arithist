@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
 import com.github.sourzo.a_rithist.gaidhlig.LessonInfo;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -34,6 +35,7 @@ public class OptionsActivity extends AppCompatActivity {
     //Views: user input ----------------------------------------------------------------------------
     Spinner vocabSpinnerView;
     EditText vocabListSizeView;
+    EditText largestNumberView;
     com.google.android.material.switchmaterial.SwitchMaterial translationSwitchView;
     RadioGroup sentenceOptionsView;
     RadioButton sentenceFullView;
@@ -61,6 +63,7 @@ public class OptionsActivity extends AppCompatActivity {
     TextView translationDirectionTitle;
     TextView vocabTitle;
     TextView vocabListSizeTitle;
+    TextView largestNumberTitle;
     TextView sentenceTitle;
     TextView genderTitle;
     TextView compSupTitle;
@@ -71,6 +74,7 @@ public class OptionsActivity extends AppCompatActivity {
     //Views : Section Dividers ---------------------------------------------------------------------
     View translateDiv;
     View vocabDiv;
+    View largestNumberDiv;
     View sentenceDiv;
     View genderDiv;
     View compSupDiv;
@@ -84,6 +88,7 @@ public class OptionsActivity extends AppCompatActivity {
     VocabTable fullVocabList;
     String vocabListName;
     int vocabListSize;
+    int largestNumber;
     boolean translateFromGaelic;
     String sentenceType;
     String genderType;
@@ -137,7 +142,7 @@ public class OptionsActivity extends AppCompatActivity {
                     //Set the size of the vocabulary table
                     long maxWords = fullVocabList.size();
                     vocabListSizeView.setHint(String.valueOf(maxWords));
-                    String prompt = "Number of words (max " + maxWords + "): ";
+                    String prompt = getString(R.string.vocab_list_size_title, maxWords);
                     vocabListSizeTitle.setText(prompt);
                     //TODO: Toast error to user if max is exceeded
                     //TODO: if number is 1, then user can select the word?
@@ -149,10 +154,22 @@ public class OptionsActivity extends AppCompatActivity {
                     vocabListName = validVocabFileNames.get(0);
                     long maxWords = fullVocabList.size();
                     vocabListSizeView.setHint(String.valueOf(maxWords));
-                    String prompt = "Number of words (max " + maxWords + "): ";
+                    String prompt = getString(R.string.vocab_list_size_title, maxWords);
                     vocabListSizeTitle.setText(prompt);
                 }
             });
+        }
+
+        //translating numbers - max number field
+        if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.MAX_NUM)){
+            String prompt = getString(R.string.largest_number_title, GrammarGd.largestTranslatableNumber);
+            largestNumberTitle.setText(prompt);
+            largestNumberView.setHint(String.valueOf(GrammarGd.largestTranslatableNumber));
+
+        } else {
+            largestNumberDiv.setVisibility(View.GONE);
+            largestNumberTitle.setVisibility(View.GONE);
+            largestNumberView.setVisibility(View.GONE);
         }
 
         //translation direction: change text as switch is pressed
@@ -222,7 +239,7 @@ public class OptionsActivity extends AppCompatActivity {
 
         //Check accents
         setCheckAccentsSwitch(checkAccentsSwitchView.isChecked(), checkAccentsSwitchView);
-        translationSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> setCheckAccentsSwitch(isChecked, checkAccentsSwitchView));
+        checkAccentsSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> setCheckAccentsSwitch(isChecked, checkAccentsSwitchView));
     }
 
     //User interaction -----------------------------------------------------------------------------
@@ -233,11 +250,19 @@ public class OptionsActivity extends AppCompatActivity {
     public void submitOptions(View v){
 
         //Apply settings
-        if (vocabListSizeView.getVisibility()!=View.GONE){
+        if (vocabListSizeView.getVisibility() != View.GONE){
             if (vocabListSizeView.getText().toString().equals("")){
                 vocabListSize = fullVocabList.size();
             } else {
                 vocabListSize = Math.min(Integer.parseInt(vocabListSizeView.getText().toString()), fullVocabList.size());
+            }
+        }
+
+        if (largestNumberView.getVisibility() != View.GONE){
+            if (largestNumberView.getText().toString().equals("")){
+                largestNumber = GrammarGd.largestTranslatableNumber;
+            } else {
+                largestNumber = Math.min(Integer.parseInt(largestNumberView.getText().toString()), GrammarGd.largestTranslatableNumber);
             }
         }
 
@@ -377,6 +402,7 @@ public class OptionsActivity extends AppCompatActivity {
         //Views: user input ----------------------------------------------------------------------------
         vocabSpinnerView = findViewById(R.id.vocab_list_spinner);
         vocabListSizeView = findViewById(R.id.vocab_list_size);
+        largestNumberView = findViewById(R.id.largest_number);
         translationSwitchView = findViewById(R.id.translation_switch);
         sentenceOptionsView = findViewById(R.id.sentence_options);
         sentenceFullView = findViewById(R.id.full_sentence);
@@ -403,6 +429,7 @@ public class OptionsActivity extends AppCompatActivity {
         translationDirectionTitle = findViewById(R.id.translation_title);
         vocabTitle = findViewById(R.id.vocab_list_spinner_title);
         vocabListSizeTitle = findViewById(R.id.vocab_list_size_title);
+        largestNumberTitle = findViewById(R.id.largest_number_title);
         sentenceTitle = findViewById(R.id.sentence_title);
         genderTitle = findViewById(R.id.gender_mode_title);
         compSupTitle = findViewById(R.id.comp_sup_title);
@@ -413,6 +440,7 @@ public class OptionsActivity extends AppCompatActivity {
         //Views : Section Dividers ---------------------------------------------------------------------
         translateDiv = findViewById(R.id.translation_divider);
         vocabDiv = findViewById(R.id.vocab_divider);
+        largestNumberDiv = findViewById(R.id.largest_number_divider);
         sentenceDiv = findViewById(R.id.sentence_divider);
         genderDiv = findViewById(R.id.gender_divider);
         compSupDiv = findViewById(R.id.comp_sup_divider);
@@ -424,6 +452,9 @@ public class OptionsActivity extends AppCompatActivity {
     /**Adds all the options values as extended data for the intent.*/
     private void passOptionsToLesson(Intent i){
         i.putExtra("lessonID",lessonID);
+        i.putExtra("vocabListName", vocabListName);
+        i.putExtra("vocabListSize", vocabListSize);
+        i.putExtra("largestNumber",largestNumber);
         i.putExtra("translateFromGaelic", translateFromGaelic);
         i.putExtra("sentenceType", sentenceType);
         i.putExtra("genderType", genderType);
@@ -438,7 +469,25 @@ public class OptionsActivity extends AppCompatActivity {
         i.putExtra("negQuestions", negQuestions);
         i.putExtra("pronouns", pronouns);
         i.putExtra("nouns", nouns);
-        i.putExtra("vocabListName", vocabListName);
-        i.putExtra("vocabListSize", vocabListSize);
+
+        Log.i("Options", "lessonID = " + lessonID);
+        Log.i("Options", "translateFromGaelic = " + translateFromGaelic);
+        Log.i("Options", "vocabListName = " + vocabListName);
+        Log.i("Options", "vocabListSize = " + vocabListSize);
+        Log.i("Options", "largestNumber = " + largestNumber);
+        Log.i("Options", "sentenceType = " + sentenceType);
+        Log.i("Options", "genderType = " + genderType);
+        Log.i("Options", "comparatives = " + comparatives);
+        Log.i("Options", "superlatives = " + superlatives);
+        Log.i("Options", "past = " + past);
+        Log.i("Options", "present = " + present);
+        Log.i("Options", "future = " + future);
+        Log.i("Options", "posStatements = " + posStatements);
+        Log.i("Options", "negStatements = " + negStatements);
+        Log.i("Options", "posQuestions = " + posQuestions);
+        Log.i("Options", "negQuestions = " + negQuestions);
+        Log.i("Options", "pronouns = " + pronouns);
+        Log.i("Options", "nouns = " + nouns);
+        Log.i("Options","checkAccents = " + checkAccents);
     }
 }

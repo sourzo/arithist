@@ -87,6 +87,29 @@
                     android:inputType="number" />
             </LinearLayout>
 
+            <!-- Largest number to translate -->
+            <View
+                android:id="@+id/largest_number_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/largest_number_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                android:text="@string/largest_number_title"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/largest_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:hint="num"
+                android:inputType="number" />
+
             <!-- translation direction -->
             <View
                 android:id="@+id/translation_divider"

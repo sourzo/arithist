@@ -2,6 +2,7 @@ package com.github.sourzo.a_rithist.gaidhlig;
 
 import android.content.Context;
 
+import com.github.sourzo.a_rithist.LessonActivity;
 import com.github.sourzo.a_rithist.VocabTable;
 
 import java.util.Arrays;
@@ -13,25 +14,37 @@ import java.util.Set;
 public class GrammarGd {
 
     //Setup -------------------------------------------------------------------
-    Context c;
+    LessonActivity lessonActivity;
     /**Creates a new Gaelic Grammar instance. Requires context to load vocab tables.*/
-    public GrammarGd(Context c){
-        this.c = c;
+    public GrammarGd(LessonActivity lessonActivity){
+        this.lessonActivity = lessonActivity;
+        pp = new VocabTable(lessonActivity,"grammar_prepPronouns.csv");
+        names = new VocabTable(lessonActivity,"people_names.csv");
+        numbers = new VocabTable(lessonActivity,"grammar_numbers.csv");
+        professions = new VocabTable(lessonActivity,"people_professions.csv");
+        similes = new VocabTable(lessonActivity,"adjectives_comparisons.csv");
+        adjectives = new VocabTable(lessonActivity,"adjectives_misc.csv");
+        list_months = new VocabTable(lessonActivity,"datetime_months.csv");
+        list_seasons = new VocabTable(lessonActivity,"datetime_seasons.csv");
+        list_holidays = new VocabTable(lessonActivity,"datetime_holidays.csv");
     }
 
     //Vocabulary/grammar files ------------------------------------------------
-    VocabTable pp = new VocabTable(c,"grammar_prepPronouns.csv");
-    VocabTable names = new VocabTable(c,"people_names.csv");
-    VocabTable numbers = new VocabTable(c,"grammar_numbers.csv");
-    VocabTable professions = new VocabTable(c,"people_professions.csv");
-    VocabTable similes = new VocabTable(c,"adjectives_comparisons.csv");
-    VocabTable adjectives = new VocabTable(c,"adjectives_misc.csv");
-    VocabTable list_months = new VocabTable(c,"datetime_months.csv");
-    VocabTable list_seasons = new VocabTable(c,"datetime_seasons.csv");
-    VocabTable list_holidays = new VocabTable(c,"datetime_holidays.csv");
+    VocabTable pp;
+    VocabTable names;
+    VocabTable numbers;
+    VocabTable professions;
+    VocabTable similes;
+    VocabTable adjectives;
+    VocabTable list_months;
+    VocabTable list_seasons;
+    VocabTable list_holidays;
 
 
     //Definitions--------------------------------------------------------------
+    /**The largest number which the code is capable of translating!*/
+    public static int largestTranslatableNumber = 100;
+
     /**Enumerated type: BROAD (a, o, u) or SLENDER (e, i)*/
     private enum grammaticalWidth {
         BROAD,
@@ -249,9 +262,28 @@ public class GrammarGd {
 
     /**Returns the Gaelic for the given integer. Currently works for numbers up to 100,
      * and uses the decimal counting system (as I've not learned the other).*/
-    public static String digitsToGd(int number) {
-        String numUnits = String.valueOf(number%10);
-        //String numUnitsGd = ... and now we need to read a csv.
+    public String digitsToGd(int n) {
+        String numUnits = String.valueOf(n%10);
+        String numUnitsGd = numbers.filterMatches("number", String.valueOf(numUnits)).data.get(0).get("cardinal");
+        if (n < 10){
+            return numUnitsGd;
+        } else if (n == 10) {
+            return "deich";
+        } else if (n == 12) {
+            return "dà dheug";
+        } else if (n < 20) {
+            return numUnitsGd + " deug";
+        } else if (n < 100) {
+            String numTens = String.valueOf(Math.floorDiv(n,10)*10);
+            String numTensGd = numbers.filterMatches("number",numTens).data.get(0).get("cardinal");
+            if (numUnits.equals("0")){
+                return numTensGd;
+            } else if (numUnits.equals("1") || numUnits.equals("8")){
+                return numTensGd + " 's a h-" + numUnitsGd;
+            } else {
+                return numTensGd + " 's a " + numUnitsGd;
+            }
+        }
         return "";
     }
 

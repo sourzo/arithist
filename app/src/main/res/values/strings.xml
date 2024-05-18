@@ -4,6 +4,8 @@
     <string name="title_activity_lesson_options">LessonOptionsActivity</string>
     <string name="optionsMessage">Options</string>
     <string name="vocabTitle">Vocabulary list:</string>
+    <string name="vocab_list_size_title">Number of words (max %d):</string>
+    <string name="largest_number_title">Largest number to translate (max %d):</string>
     <string name="translationTitle">Translation direction:</string>
     <string name="gd_en">Gaelic to English</string>
     <string name="en_gd">English to Gaelic</string>

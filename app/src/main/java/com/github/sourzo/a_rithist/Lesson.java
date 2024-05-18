@@ -10,7 +10,7 @@ public class Lesson {
     String[] requiredColumns;
     topicTags[] topics;
     lessonOptions[] options;
-    Function<Context, Generatable> getGenerator;
+    Function<LessonActivity, Generatable> getGenerator;
 
 
     //constructors----------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ public class Lesson {
                   String[] requiredColumns,
                   topicTags[] topics,
                   lessonOptions[] options,
-                  Function<Context, Generatable> getGenerator){
+                  Function<LessonActivity, Generatable> getGenerator){
         this.displayName = displayName;
         this.requiredColumns = requiredColumns;
         this.topics = topics;

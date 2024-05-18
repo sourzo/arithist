@@ -7,41 +7,34 @@ import com.github.sourzo.a_rithist.LessonActivity;
 import java.util.HashMap;
 import java.util.Random;
 
-public class BasicVocab implements Generatable {
-    //Setup ----------------------------------------------------------------------------------------
+public class Plurals implements Generatable {
     LessonActivity lessonActivity;
     /**Creates a new exercise generator. Requires context to load vocab tables.*/
-    public BasicVocab(LessonActivity lessonActivity){
+    public Plurals(LessonActivity lessonActivity){
         this.lessonActivity = lessonActivity;
     }
 
-    //Generate questions----------------------------------------------------------------------------
-
-    /**Generates an Exercise: A question, prompt, and solution set*/
-    public Exercise generate(){
-        //setup
+    @Override
+    public Exercise generate() {
+        //setup ------------------------------------------------------------------------------------
         Exercise exercise = new Exercise();
         int vocabNum = new Random().nextInt(lessonActivity.sampleVocabList.size());
         HashMap<String,String> randomWord = lessonActivity.sampleVocabList.data.get(vocabNum);
-
-        //question
+        //Question ---------------------------------------------------------------------------------
         if (lessonActivity.translateFromGaelic){
             exercise.setQuestion(randomWord.get("nom_sing"));
         } else {
             exercise.setQuestion(randomWord.get("english"));
         }
-
-        //prompt
-        exercise.setPrompt("Translate:");
-
-        //solution
+        //Prompt -----------------------------------------------------------------------------------
         if (lessonActivity.translateFromGaelic){
-            exercise.addSolution(randomWord.get("english"));
+            exercise.setPrompt("Pluralise:");
         } else {
-            exercise.addSolution(randomWord.get("nom_sing"));
+            exercise.setPrompt("Pluralise the Gaelic for:");
         }
-
+        //Solutions --------------------------------------------------------------------------------
+        exercise.addSolution(randomWord.get("nom_pl"));
+        //Output -----------------------------------------------------------------------------------
         return exercise;
     }
-
 }

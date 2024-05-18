@@ -21,6 +21,7 @@ public class LessonActivity extends AppCompatActivity {
     public String vocabListName;
     public VocabTable sampleVocabList;
     public int vocabListSize;
+    public int largestNumber;
     public boolean translateFromGaelic;
     public String sentenceType;
     public String genderType;
@@ -55,17 +56,17 @@ public class LessonActivity extends AppCompatActivity {
         userResponseView = findViewById(R.id.user_response);
         buttonView = findViewById(R.id.lesson_button);
         solutionView = findViewById(R.id.solution);
-        exGen = Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).getGenerator.apply(this);
-
 
         getOptionsForLesson();
+        exGen = Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).getGenerator.apply(this);
 
         lessonTitleView.setText(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).displayName);
 
         //load vocab set
-        sampleVocabList = new VocabTable(getApplicationContext(), vocabListName);
-        sampleVocabList.getRandomRows(vocabListSize);
-
+        if (vocabListName != null){
+            sampleVocabList = new VocabTable(this, vocabListName);
+            sampleVocabList.getRandomRows(vocabListSize);
+        }
         newExercise();
     }
 
@@ -95,7 +96,7 @@ public class LessonActivity extends AppCompatActivity {
     /**Creates a new exercise, generating a new question, prompt and solution set, and resets the
      * activity with the new question and prompt, and a blank user response field, with keyboard showing*/
     private void newExercise(){
-        e = exGen.generate(this);
+        e = exGen.generate();
         questionView.setText(e.getQuestion());
         promptView.setText(e.getPrompt());
         solutionView.setText(" ");
@@ -110,6 +111,9 @@ public class LessonActivity extends AppCompatActivity {
     private void getOptionsForLesson(){
         Intent i = getIntent();
         lessonID = i.getStringExtra("lessonID");
+        vocabListName = i.getStringExtra("vocabListName");
+        vocabListSize = i.getIntExtra("vocabListSize", 0);
+        largestNumber = i.getIntExtra("largestNumber",1);
         translateFromGaelic = i.getBooleanExtra("translateFromGaelic", false);
         sentenceType = i.getStringExtra("sentenceType");
         genderType = i.getStringExtra("genderType");
@@ -124,12 +128,13 @@ public class LessonActivity extends AppCompatActivity {
         negQuestions = i.getBooleanExtra("negQuestions", false);
         pronouns = i.getBooleanExtra("pronouns", false);
         nouns = i.getBooleanExtra("nouns", false);
-        vocabListName = i.getStringExtra("vocabListName");
-        vocabListSize = i.getIntExtra("vocabListSize", 0);
         checkAccents = i.getBooleanExtra("checkAccents",true);
 
         Log.i("Options", "lessonID = " + lessonID);
         Log.i("Options", "translateFromGaelic = " + translateFromGaelic);
+        Log.i("Options", "vocabListName = " + vocabListName);
+        Log.i("Options", "vocabListSize = " + vocabListSize);
+        Log.i("Options", "largestNumber = " + largestNumber);
         Log.i("Options", "sentenceType = " + sentenceType);
         Log.i("Options", "genderType = " + genderType);
         Log.i("Options", "comparatives = " + comparatives);
@@ -143,8 +148,6 @@ public class LessonActivity extends AppCompatActivity {
         Log.i("Options", "negQuestions = " + negQuestions);
         Log.i("Options", "pronouns = " + pronouns);
         Log.i("Options", "nouns = " + nouns);
-        Log.i("Options", "vocabListName = " + vocabListName);
-        Log.i("Options", "vocabListSize = " + vocabListSize);
         Log.i("Options","checkAccents = " + checkAccents);
     }
 }

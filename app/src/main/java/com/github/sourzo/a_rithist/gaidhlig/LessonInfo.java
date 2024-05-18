@@ -35,16 +35,18 @@ public class LessonInfo {
 //                        new String[] {"english", "nom_sing", "gender"},
 //                        new Lesson.topicTags[] {Lesson.topicTags.VOCABULARY, Lesson.topicTags.ADJECTIVES, Lesson.topicTags.ARTICLES},
 //                        new Lesson.lessonOptions[] {Lesson.lessonOptions.GENDER_MODE, Lesson.lessonOptions.VOCABULARY}));
-//        lessonSet.put("a4_numbers",
-//                new Lesson("Numbers",
-//                        new String[] {},
-//                        new Lesson.topicTags[] {Lesson.topicTags.NUMBERS, Lesson.topicTags.VOCABULARY},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_NUMBERS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.MAX_NUM}));
-//        lessonSet.put("a2_plurals",
-//                new Lesson("Plurals",
-//                        new String[] {"english", "nom_sing", "nom_pl"},
-//                        new Lesson.topicTags[] {Lesson.topicTags.VOCABULARY},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_GENERIC, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY}));
+        lessonSet.put("a4_numbers",
+                new Lesson("Numbers",
+                        new String[] {},
+                        new Lesson.topicTags[] {Lesson.topicTags.NUMBERS, Lesson.topicTags.VOCABULARY},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_NUMBERS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.MAX_NUM},
+                        Numbers::new));
+        lessonSet.put("a2_plurals",
+                new Lesson("Plurals",
+                        new String[] {"english", "nom_sing", "nom_pl"},
+                        new Lesson.topicTags[] {Lesson.topicTags.VOCABULARY},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_GENERIC, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY},
+                        Plurals::new));
 //        lessonSet.put("preferences",
 //                new Lesson("Preferences (I would like/prefer etc) using the prepositional pronoun 'le'",
 //                        new String[] {"english", "nom_sing"},
