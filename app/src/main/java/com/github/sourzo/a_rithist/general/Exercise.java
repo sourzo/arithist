@@ -1,4 +1,4 @@
-package com.github.sourzo.a_rithist;
+package com.github.sourzo.a_rithist.general;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -55,7 +55,7 @@ public class Exercise {
     }
 
     /**Checks a user answer against the solution set
-     * @param the user answer
+     * @param userAnswer the user answer
      * @return whether the answer is in the solution set*/
     public boolean checkAnswer(String userAnswer, boolean checkAccents) {
         userAnswer = standardise(userAnswer, checkAccents);

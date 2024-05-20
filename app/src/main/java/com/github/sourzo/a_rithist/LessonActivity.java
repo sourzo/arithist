@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.sourzo.a_rithist.gaidhlig.LessonInfo;
+import com.github.sourzo.a_rithist.general.Exercise;
+import com.github.sourzo.a_rithist.general.Generatable;
+import com.github.sourzo.a_rithist.general.VocabTable;
 
 import java.util.Objects;
 
@@ -57,9 +60,11 @@ public class LessonActivity extends AppCompatActivity {
         buttonView = findViewById(R.id.lesson_button);
         solutionView = findViewById(R.id.solution);
 
+        //Import options from OptionsActivity
         getOptionsForLesson();
+        //Instantiate exercise generator
         exGen = Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).getGenerator.apply(this);
-
+        //Activity title
         lessonTitleView.setText(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).displayName);
 
         //load vocab set

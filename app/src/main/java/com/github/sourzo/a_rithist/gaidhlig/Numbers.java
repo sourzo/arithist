@@ -1,7 +1,7 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
-import com.github.sourzo.a_rithist.Exercise;
-import com.github.sourzo.a_rithist.Generatable;
+import com.github.sourzo.a_rithist.general.Exercise;
+import com.github.sourzo.a_rithist.general.Generatable;
 import com.github.sourzo.a_rithist.LessonActivity;
 
 import java.util.Random;

@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
 import com.github.sourzo.a_rithist.gaidhlig.LessonInfo;
+import com.github.sourzo.a_rithist.general.Lesson;
+import com.github.sourzo.a_rithist.general.VocabTable;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.io.BufferedReader;

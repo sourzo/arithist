@@ -1,9 +1,8 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
-import com.github.sourzo.a_rithist.Lesson;
+import com.github.sourzo.a_rithist.general.BasicVocab;
+import com.github.sourzo.a_rithist.general.Lesson;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.TreeMap;
 
 public class LessonInfo {

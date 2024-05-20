@@ -2,7 +2,7 @@ package com.github.sourzo.a_rithist.english;
 
 import android.content.Context;
 
-import com.github.sourzo.a_rithist.VocabTable;
+import com.github.sourzo.a_rithist.general.VocabTable;
 
 public class GrammarEn {
     //Setup ----------------------------------------------------------------------------------------

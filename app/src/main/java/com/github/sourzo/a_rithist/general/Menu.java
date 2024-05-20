@@ -1,4 +1,4 @@
-package com.github.sourzo.a_rithist;
+package com.github.sourzo.a_rithist.general;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,7 +44,7 @@ public class Menu {
             //Request user input - choose a menu item
             System.out.print("> ");
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            userInput = reader.readLine().strip().toUpperCase();
+            userInput = reader.readLine().trim().toUpperCase();
 
             if (selectionValues.contains(userInput) == false) {
                 System.out.println();
@@ -85,7 +85,7 @@ public class Menu {
             //Request user input - choose a menu item
             System.out.print("> ");
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            userInput = reader.readLine().strip();
+            userInput = reader.readLine().trim();
 
             if (!isInteger(userInput)) {
                 System.out.println();

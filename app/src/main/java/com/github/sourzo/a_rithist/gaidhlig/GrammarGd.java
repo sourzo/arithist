@@ -1,9 +1,7 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
-import android.content.Context;
-
 import com.github.sourzo.a_rithist.LessonActivity;
-import com.github.sourzo.a_rithist.VocabTable;
+import com.github.sourzo.a_rithist.general.VocabTable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -195,10 +193,10 @@ public class GrammarGd {
             }
         } else {
             String w1 = extractFirstWord(w)[0];
-            if (w1.endsWith("ag") || w1.endsWith("achd") + w1 == "cailleach") {
+            if (w1.endsWith("ag") || (w1.endsWith("achd") + w1).equals("cailleach")) {
                 return grammaticalGender.FEMININE;
             }
-            if (w1 == "caraid" || w1 == "nàmhaid") {
+            if (w1.equals("caraid") || w1.equals("nàmhaid")) {
                 return grammaticalGender.MASCULINE;
             }
             if (endWidth(w1) == grammaticalWidth.SLENDER){
@@ -214,7 +212,7 @@ public class GrammarGd {
      * @return A word which will be lenited or not, depending on what letter(s) it starts with*/
     public static String lenite(String word, Set<String> alsoDontLenite) {
         String wordLower = word.toLowerCase();
-        if (alsoDontLenite.stream().anyMatch(l -> wordLower.startsWith(l))) {
+        if (alsoDontLenite.stream().anyMatch(wordLower::startsWith)) {
             return word;
         }
         return lenite(word);
@@ -225,12 +223,12 @@ public class GrammarGd {
      * @return A word which will be lenited or not, depending on what letter(s) it starts with*/
     public static String lenite(String word) {
         String wordLower = word.toLowerCase();
-        if (neverLenite.stream().anyMatch(l -> wordLower.startsWith(l))) {
+        if (neverLenite.stream().anyMatch(wordLower::startsWith)) {
             return word;
         } else if (wordLower.startsWith("h")){
             return word;
         } else {
-            return word.substring(0,1) + "h" + word.substring(1);
+            return word.charAt(0) + "h" + word.substring(1);
         }
     }
 
@@ -239,9 +237,9 @@ public class GrammarGd {
     /**Add "an" or "am" to the start of a word, depending on whether the word starts with the labials (b,m,f,p)*/
     public static String anm(String word) {
         String wordLower = word.toLowerCase();
-        if (definiteArticles.stream().anyMatch(art -> wordLower.startsWith(art))) {
+        if (definiteArticles.stream().anyMatch(wordLower::startsWith)) {
             return word;
-        } else if (labials.stream().anyMatch(l -> wordLower.startsWith(l))){
+        } else if (labials.stream().anyMatch(wordLower::startsWith)){
             return "am " + word;
         } else {
             return "an " + word;
@@ -251,7 +249,7 @@ public class GrammarGd {
     /**Add "cha" or "chan" to the start of a word*/
     public static String cha(String word) {
         String wordLower = word.toLowerCase();
-        if (vowels.stream().anyMatch(v -> wordLower.startsWith(v))) {
+        if (vowels.stream().anyMatch(wordLower::startsWith)) {
             return "chan " + word;
         } else if (wordLower.charAt(0)=='f' && vowels.stream().anyMatch(v -> wordLower.substring(1).startsWith(v))) {
             return "chan fh" + word.substring(1);
@@ -264,7 +262,7 @@ public class GrammarGd {
      * and uses the decimal counting system (as I've not learned the other).*/
     public String digitsToGd(int n) {
         String numUnits = String.valueOf(n%10);
-        String numUnitsGd = numbers.filterMatches("number", String.valueOf(numUnits)).data.get(0).get("cardinal");
+        String numUnitsGd = numbers.filterMatches("number", numUnits).data.get(0).get("cardinal");
         if (n < 10){
             return numUnitsGd;
         } else if (n == 10) {

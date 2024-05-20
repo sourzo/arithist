@@ -1,7 +1,6 @@
-package com.github.sourzo.a_rithist;
+package com.github.sourzo.a_rithist.general;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -49,9 +48,6 @@ public class VocabTable {
                 }
                 data.add(newRow);
             }
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -97,7 +93,7 @@ public class VocabTable {
      * @param numberOfRows the number of rows to select at random
      * @return a new VocabTable with a subset of the original rows*/
     public VocabTable getRandomRows(int numberOfRows) {
-        Set<Integer> selectedRows = new HashSet<Integer>();
+        Set<Integer> selectedRows = new HashSet<>();
         Random rand = new Random();
         while (selectedRows.size() < numberOfRows) {
             selectedRows.add(rand.nextInt(data.size()));

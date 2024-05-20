@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.github.sourzo.a_rithist.gaidhlig.LessonInfo;
+import com.github.sourzo.a_rithist.general.Lesson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         simpleList = findViewById(R.id.simpleListView);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lessonDisplayTexts);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lessonDisplayTexts);
         simpleList.setAdapter(arrayAdapter);
 
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -38,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     //List of lessons
     ListView simpleList;
-    static List<String> lessonIDs = new ArrayList<String>();
-    static List<String> lessonDisplayTexts = new ArrayList<String>();
+    static List<String> lessonIDs = new ArrayList<>();
+    static List<String> lessonDisplayTexts = new ArrayList<>();
     static {
         for (Map.Entry<String, Lesson> lesson : LessonInfo.lessonSet.entrySet()){
             lessonIDs.add(lesson.getKey());
