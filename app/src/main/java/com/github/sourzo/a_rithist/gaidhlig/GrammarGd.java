@@ -12,19 +12,19 @@ import java.util.Set;
 public class GrammarGd {
 
     //Setup -------------------------------------------------------------------
-    LessonActivity lessonActivity;
+    LessonActivity la;
     /**Creates a new Gaelic Grammar instance. Requires context to load vocab tables.*/
-    public GrammarGd(LessonActivity lessonActivity){
-        this.lessonActivity = lessonActivity;
-        pp = new VocabTable(lessonActivity,"grammar_prepPronouns.csv");
-        names = new VocabTable(lessonActivity,"people_names.csv");
-        numbers = new VocabTable(lessonActivity,"grammar_numbers.csv");
-        professions = new VocabTable(lessonActivity,"people_professions.csv");
-        similes = new VocabTable(lessonActivity,"adjectives_comparisons.csv");
-        adjectives = new VocabTable(lessonActivity,"adjectives_misc.csv");
-        list_months = new VocabTable(lessonActivity,"datetime_months.csv");
-        list_seasons = new VocabTable(lessonActivity,"datetime_seasons.csv");
-        list_holidays = new VocabTable(lessonActivity,"datetime_holidays.csv");
+    public GrammarGd(LessonActivity la){
+        this.la = la;
+        pp = new VocabTable(la,"grammar_prepPronouns.csv");
+        names = new VocabTable(la,"people_names.csv");
+        numbers = new VocabTable(la,"grammar_numbers.csv");
+        professions = new VocabTable(la,"people_professions.csv");
+        similes = new VocabTable(la,"adjectives_comparisons.csv");
+        adjectives = new VocabTable(la,"adjectives_misc.csv");
+        list_months = new VocabTable(la,"datetime_months.csv");
+        list_seasons = new VocabTable(la,"datetime_seasons.csv");
+        list_holidays = new VocabTable(la,"datetime_holidays.csv");
     }
 
     //Vocabulary/grammar files ------------------------------------------------

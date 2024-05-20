@@ -1,6 +1,7 @@
 package com.github.sourzo.a_rithist.general;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -110,6 +111,38 @@ public class VocabTable {
             filteredList.add(hm);
         }
         return new VocabTable(colNames, filteredList);
+    }
+
+    /**Get an item of the VocabTable
+     * @param colname Column name
+     * @param rowNum Row number
+     * @return VocabTable entry as a string*/
+    public String get(String colname, int rowNum){
+        if (rowNum >= data.size()) {
+            Log.e("Error","rowNum exceeds size of table");
+            throw new RuntimeException(){};
+        } else if (!data.get(rowNum).containsKey(colname)){
+            Log.e("Error","column " + colname + " does not exist in table");
+            throw new RuntimeException(){};
+        } else {
+            return data.get(rowNum).get(colname);
+        }
+    }
+
+    /**Get an item of the VocabTable
+     * @param colname Column name
+     * @param rowNum Row number
+     * @return VocabTable entry as a string*/
+    public String get(int rowNum, String colname){
+        if (rowNum >= data.size()) {
+            Log.e("Error","rowNum exceeds size of table");
+            throw new RuntimeException(){};
+        } else if (!data.get(rowNum).containsKey(colname)){
+            Log.e("Error","column " + colname + " does not exist in table");
+            throw new RuntimeException(){};
+        } else {
+            return data.get(rowNum).get(colname);
+        }
     }
 
 }

@@ -1,6 +1,5 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
-import com.github.sourzo.a_rithist.general.BasicVocab;
 import com.github.sourzo.a_rithist.general.Lesson;
 
 import java.util.TreeMap;
@@ -24,11 +23,12 @@ public class LessonInfo {
 //                        new String[] {"english", "nom_sing"},
 //                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.VERBS},
 //                        new Lesson.lessonOptions[] {Lesson.lessonOptions.CHOSEN_TENSE, Lesson.lessonOptions.PREP_OBJECT, Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY}));
-//        lessonSet.put("possession_aig",
-//                new Lesson("Possession using the prepositional pronoun 'aig'",
-//                        new String[] {"english", "nom_sing"},
-//                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY}));
+        lessonSet.put("possession_aig",
+                new Lesson("Possession using the prepositional pronoun 'aig'",
+                        new String[] {"english", "nom_sing"},
+                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY},
+                        PossessionAig::new));
 //        lessonSet.put("gender",
 //                new Lesson("Gender of nouns (using adjectives/articles)",
 //                        new String[] {"english", "nom_sing", "gender"},
@@ -91,11 +91,12 @@ public class LessonInfo {
 //                        new String[] {"english", "nom_sing", "gender"},
 //                        new Lesson.topicTags[] {Lesson.topicTags.ADJECTIVES},
 //                        new Lesson.lessonOptions[] {Lesson.lessonOptions.VOCABULARY, Lesson.lessonOptions.COMP_SUP, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE}));
-//        lessonSet.put("a5_time",
-//                new Lesson("Time",
-//                        new String[] {},
-//                        new Lesson.topicTags[] {Lesson.topicTags.TIME},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_NUMBERS, Lesson.lessonOptions.TRANSLATE}));
+        lessonSet.put("a5_time",
+                new Lesson("Time",
+                        new String[] {},
+                        new Lesson.topicTags[] {Lesson.topicTags.TIME},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_NUMBERS, Lesson.lessonOptions.TRANSLATE},
+                        Time::new));
 //        lessonSet.put("a7_which_season",
 //                new Lesson("Which season? [Prepositions]",
 //                        new String[] {},

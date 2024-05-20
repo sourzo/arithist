@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 import com.github.sourzo.a_rithist.gaidhlig.LessonInfo;
 import com.github.sourzo.a_rithist.general.Exercise;
-import com.github.sourzo.a_rithist.general.Generatable;
+import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.VocabTable;
 
 import java.util.Objects;
 
 public class LessonActivity extends AppCompatActivity {
-    public Generatable exGen;
+    public ExerciseGenerator exGen;
     public String lessonID;
     public String vocabListName;
     public VocabTable sampleVocabList;
@@ -43,7 +43,7 @@ public class LessonActivity extends AppCompatActivity {
     public Exercise e;
     TextView lessonTitleView;
     TextView questionView;
-    TextView promptView;
+    TextView prePromptView;
     TextView solutionView;
     EditText userResponseView;
     Button buttonView;
@@ -55,7 +55,7 @@ public class LessonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lesson);
         lessonTitleView = findViewById(R.id.lesson_title);
         questionView = findViewById(R.id.question);
-        promptView = findViewById(R.id.prompt);
+        prePromptView = findViewById(R.id.prePrompt);
         userResponseView = findViewById(R.id.user_response);
         buttonView = findViewById(R.id.lesson_button);
         solutionView = findViewById(R.id.solution);
@@ -98,16 +98,17 @@ public class LessonActivity extends AppCompatActivity {
         userResponseView.setEnabled(false);
     }
 
-    /**Creates a new exercise, generating a new question, prompt and solution set, and resets the
+    /**Creates a new exercise, generating a new question, prompts and solution set, and resets the
      * activity with the new question and prompt, and a blank user response field, with keyboard showing*/
     private void newExercise(){
         e = exGen.generate();
         questionView.setText(e.getQuestion());
-        promptView.setText(e.getPrompt());
+        prePromptView.setText(e.getPrePrompt());
         solutionView.setText(" ");
-        userResponseView.setText("");
+        userResponseView.setText(e.getEditTextPrompt());
         userResponseView.setEnabled(true);
         userResponseView.requestFocus();
+        userResponseView.setSelection(e.getEditTextCursorPosition());
         InputMethodManager imm = getSystemService(InputMethodManager.class);
         imm.showSoftInput(userResponseView, InputMethodManager.SHOW_IMPLICIT);
 

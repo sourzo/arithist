@@ -1,7 +1,6 @@
 package com.github.sourzo.a_rithist.general;
 
 import com.github.sourzo.a_rithist.LessonActivity;
-import com.github.sourzo.a_rithist.general.Generatable;
 
 import java.util.function.Function;
 
@@ -11,7 +10,7 @@ public class Lesson {
     public String[] requiredColumns;
     public topicTags[] topics;
     public  lessonOptions[] options;
-    public Function<LessonActivity, Generatable> getGenerator;
+    public Function<LessonActivity, ExerciseGenerator> getGenerator;
 
 
     //constructors----------------------------------------------------------------------------------
@@ -19,7 +18,7 @@ public class Lesson {
                   String[] requiredColumns,
                   topicTags[] topics,
                   lessonOptions[] options,
-                  Function<LessonActivity, Generatable> getGenerator){
+                  Function<LessonActivity, ExerciseGenerator> getGenerator){
         this.displayName = displayName;
         this.requiredColumns = requiredColumns;
         this.topics = topics;

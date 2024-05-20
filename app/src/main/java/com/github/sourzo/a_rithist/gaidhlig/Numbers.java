@@ -1,49 +1,50 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
 import com.github.sourzo.a_rithist.general.Exercise;
-import com.github.sourzo.a_rithist.general.Generatable;
+import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.LessonActivity;
 
 import java.util.Random;
 
-public class Numbers implements Generatable {
-    LessonActivity lessonActivity;
-    GrammarGd grammarGd;
+public class Numbers extends ExerciseGenerator {
+    GrammarGd g;
 
     /**Creates a new exercise generator. Requires context to load vocab tables.*/
-    public Numbers(LessonActivity lessonActivity){
-        this.lessonActivity = lessonActivity;
-        grammarGd = new GrammarGd(lessonActivity);
+    public Numbers(LessonActivity la){
+        super(la);
+        g = new GrammarGd(la);
     }
 
     public Exercise generate() {
-        //setup ------------------------------------------------------------------------------------
-        Exercise exercise = new Exercise();
-        int num = new Random().nextInt(lessonActivity.largestNumber)+1;
-        String num_gd = grammarGd.digitsToGd(num);
+        //Setup ------------------------------------------------------------------------------------
+        Exercise e = new Exercise();
+        int num = new Random().nextInt(la.largestNumber)+1;
+        String num_gd = g.digitsToGd(num);
+
+        //PrePrompt --------------------------------------------------------------------------------
+        if (la.translateFromGaelic){
+            e.setPrePrompt("Number (in Gaelic):");
+        } else {
+            e.setPrePrompt("Number (in digits):");
+        }
 
         //Question ---------------------------------------------------------------------------------
-        if (lessonActivity.translateFromGaelic){
-            exercise.setQuestion(num_gd);
+        if (la.translateFromGaelic){
+            e.setQuestion(num_gd);
         } else {
-            exercise.setQuestion(String.valueOf(num));
+            e.setQuestion(String.valueOf(num));
         }
 
-        //Prompt -----------------------------------------------------------------------------------
-        if (lessonActivity.translateFromGaelic){
-            exercise.setPrompt("Number (in Gaelic):");
-        } else {
-            exercise.setPrompt("Number (in digits):");
-        }
+        //EditText Prompt --------------------------------------------------------------------------
 
         //Solutions --------------------------------------------------------------------------------
-        if (lessonActivity.translateFromGaelic){
-            exercise.addSolution(String.valueOf(num));
+        if (la.translateFromGaelic){
+            e.addSolution(String.valueOf(num));
         } else {
-            exercise.addSolution(num_gd);
+            e.addSolution(num_gd);
         }
 
         //Output -----------------------------------------------------------------------------------
-        return exercise;
+        return e;
     }
 }

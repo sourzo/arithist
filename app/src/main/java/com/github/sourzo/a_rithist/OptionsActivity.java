@@ -355,21 +355,29 @@ public class OptionsActivity extends AppCompatActivity {
     private void setTranslationDirection(boolean isChecked, SwitchMaterial switchView, String lessonID){
         translateFromGaelic = isChecked;
         if (isChecked){
+            Log.i("Info", "Translating from Gaelic");
             if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_WORDS)){
                 switchView.setText(R.string.gd_en);
+                translateFromGaelic = true;
             } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_NUMBERS)){
                 switchView.setText(R.string.gd_dg);
+                translateFromGaelic = true;
             } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_GENERIC)){
                 switchView.setText(R.string.from_gd);
+                translateFromGaelic = true;
             }
 
         } else {
+            Log.i("Info", "Translating from English/digits");
             if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_WORDS)){
                 switchView.setText(R.string.en_gd);
+                translateFromGaelic = false;
             } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_NUMBERS)){
                 switchView.setText(R.string.dg_gd);
+                translateFromGaelic = false;
             } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_GENERIC)){
                 switchView.setText(R.string.from_en);
+                translateFromGaelic = false;
             }
         }
     }
