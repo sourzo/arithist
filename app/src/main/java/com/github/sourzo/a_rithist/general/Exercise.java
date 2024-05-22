@@ -1,5 +1,7 @@
 package com.github.sourzo.a_rithist.general;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Exercise {
@@ -41,6 +43,7 @@ public class Exercise {
     //TODO deal with apostrophes? In terms of messing up the code?
     public static String standardise(String anyString, boolean checkAccents) {
         anyString = anyString.trim().toLowerCase();
+        //Standardise accents
         if (checkAccents){
             anyString = anyString
                     .replaceAll("á", "à")
@@ -56,7 +59,10 @@ public class Exercise {
                     .replaceAll("óò", "o")
                     .replaceAll("úù", "u");
         }
-
+        //remove (sg) or (pl) from solutions containing you (sg) or you (pl)
+        anyString = anyString
+                .replaceAll(" \\(sg\\)","")
+                .replaceAll(" \\(pl\\)","");
         return anyString;
     }
 
