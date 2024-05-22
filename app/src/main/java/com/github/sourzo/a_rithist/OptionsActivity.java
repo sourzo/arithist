@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -20,7 +21,6 @@ import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
 import com.github.sourzo.a_rithist.gaidhlig.LessonInfo;
 import com.github.sourzo.a_rithist.general.Lesson;
 import com.github.sourzo.a_rithist.general.VocabTable;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -38,7 +38,9 @@ public class OptionsActivity extends AppCompatActivity {
     Spinner vocabSpinnerView;
     EditText vocabListSizeView;
     EditText largestNumberView;
-    com.google.android.material.switchmaterial.SwitchMaterial translationSwitchView;
+    RadioGroup translationOptionsView;
+    RadioButton toGaelicButtonView;
+    RadioButton fromGaelicButtonView;
     RadioGroup sentenceOptionsView;
     RadioButton sentenceFullView;
     RadioButton sentenceBlankView;
@@ -58,7 +60,8 @@ public class OptionsActivity extends AppCompatActivity {
     CheckBox pronounsView;
     CheckBox nounsView;
     com.google.android.material.switchmaterial.SwitchMaterial checkAccentsSwitchView;
-
+    LinearLayout checkAccentsSwitchContainerView;
+    TextView checkAccentsReactiveTextView;
 
     //Views: Titles --------------------------------------------------------------------------------
     TextView lessonTitle;
@@ -174,16 +177,17 @@ public class OptionsActivity extends AppCompatActivity {
             largestNumberView.setVisibility(View.GONE);
         }
 
-        //translation direction: change text as switch is pressed
-        if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE)){
-            setTranslationDirection(translationSwitchView.isChecked(), translationSwitchView, lessonID);
-
-            translationSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> setTranslationDirection(isChecked, translationSwitchView, lessonID));
-        } else {
-            Log.d("Info","No option for translation direction");
+        //translation direction
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE)){
             translateDiv.setVisibility(View.GONE);
             translationDirectionTitle.setVisibility(View.GONE);
-            translationSwitchView.setVisibility(View.GONE);
+            translationOptionsView.setVisibility(View.GONE);
+        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_NUMBERS)){
+            toGaelicButtonView.setText(R.string.dg_gd);
+            fromGaelicButtonView.setText(R.string.en_gd);
+        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_GENERIC)){
+            toGaelicButtonView.setText(R.string.from_en);
+            fromGaelicButtonView.setText(R.string.from_gd);
         }
 
         //Sentence type
@@ -240,8 +244,8 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //Check accents
-        setCheckAccentsSwitch(checkAccentsSwitchView.isChecked(), checkAccentsSwitchView);
-        checkAccentsSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> setCheckAccentsSwitch(isChecked, checkAccentsSwitchView));
+        setYNSwitch(checkAccentsSwitchView.isChecked(), checkAccentsReactiveTextView);
+        checkAccentsSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> setYNSwitch(isChecked, checkAccentsReactiveTextView));
     }
 
     //User interaction -----------------------------------------------------------------------------
@@ -266,6 +270,10 @@ public class OptionsActivity extends AppCompatActivity {
             } else {
                 largestNumber = Math.min(Integer.parseInt(largestNumberView.getText().toString()), GrammarGd.largestTranslatableNumber);
             }
+        }
+
+        if (translationOptionsView.getVisibility() != View.GONE){
+            translateFromGaelic = fromGaelicButtonView.isChecked();
         }
 
         if (sentenceOptionsView.getVisibility() != View.GONE){
@@ -341,44 +349,12 @@ public class OptionsActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private void setCheckAccentsSwitch(boolean isChecked, SwitchMaterial switchView){
+    private void setYNSwitch(boolean isChecked, TextView reactiveText){
         checkAccents = isChecked;
         if (isChecked){
-            switchView.setText(R.string.check_accents_switch_text_yes);
+            reactiveText.setText(R.string.check_accents_switch_text_yes);
         } else {
-            switchView.setText(R.string.check_accents_switch_text_no);
-        }
-    }
-
-    /**Based on the Switch value, sets the text for the Switch view to the appropriate value for
-     * translation direction, and sets the lesson options value*/
-    private void setTranslationDirection(boolean isChecked, SwitchMaterial switchView, String lessonID){
-        translateFromGaelic = isChecked;
-        if (isChecked){
-            Log.i("Info", "Translating from Gaelic");
-            if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_WORDS)){
-                switchView.setText(R.string.gd_en);
-                translateFromGaelic = true;
-            } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_NUMBERS)){
-                switchView.setText(R.string.gd_dg);
-                translateFromGaelic = true;
-            } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_GENERIC)){
-                switchView.setText(R.string.from_gd);
-                translateFromGaelic = true;
-            }
-
-        } else {
-            Log.i("Info", "Translating from English/digits");
-            if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_WORDS)){
-                switchView.setText(R.string.en_gd);
-                translateFromGaelic = false;
-            } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_NUMBERS)){
-                switchView.setText(R.string.dg_gd);
-                translateFromGaelic = false;
-            } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_GENERIC)){
-                switchView.setText(R.string.from_en);
-                translateFromGaelic = false;
-            }
+            reactiveText.setText(R.string.check_accents_switch_text_no);
         }
     }
 
@@ -413,12 +389,14 @@ public class OptionsActivity extends AppCompatActivity {
         vocabSpinnerView = findViewById(R.id.vocab_list_spinner);
         vocabListSizeView = findViewById(R.id.vocab_list_size);
         largestNumberView = findViewById(R.id.largest_number);
-        translationSwitchView = findViewById(R.id.translation_switch);
+        translationOptionsView = findViewById(R.id.translation_options);
+        toGaelicButtonView = findViewById(R.id.toGaelicButton);
+        fromGaelicButtonView = findViewById(R.id.fromGaelicButton);
         sentenceOptionsView = findViewById(R.id.sentence_options);
         sentenceFullView = findViewById(R.id.full_sentence);
         sentenceBlankView = findViewById(R.id.fill_in_blanks);
         sentenceQAView = findViewById(R.id.q_and_a);
-        genderOptionsView = findViewById(R.id.gender_mode_options);
+        genderOptionsView = findViewById(R.id.gender_mode_options_container);
         genderAdjView = findViewById(R.id.gender_adj);
         genderDefArtView = findViewById(R.id.gender_def_art);
         comparativesView = findViewById(R.id.comparatives);
@@ -433,6 +411,8 @@ public class OptionsActivity extends AppCompatActivity {
         pronounsView = findViewById(R.id.pronouns);
         nounsView = findViewById(R.id.nouns);
         checkAccentsSwitchView = findViewById(R.id.check_accents_switch);
+        checkAccentsSwitchContainerView = findViewById(R.id.check_accents_switch_container);
+        checkAccentsReactiveTextView = findViewById(R.id.check_accents_reactive_text);
 
         //Views: Titles --------------------------------------------------------------------------------
         lessonTitle = findViewById(R.id.lesson_name);
@@ -445,7 +425,7 @@ public class OptionsActivity extends AppCompatActivity {
         compSupTitle = findViewById(R.id.comp_sup_title);
         verbTenseTitle = findViewById(R.id.verb_tense_title);
         verbFormTitle = findViewById(R.id.verb_form_title);
-        prepObjTitle = findViewById(R.id.obj_prep);
+        prepObjTitle = findViewById(R.id.obj_prep_title);
 
         //Views : Section Dividers ---------------------------------------------------------------------
         translateDiv = findViewById(R.id.translation_divider);
@@ -479,6 +459,7 @@ public class OptionsActivity extends AppCompatActivity {
         i.putExtra("negQuestions", negQuestions);
         i.putExtra("pronouns", pronouns);
         i.putExtra("nouns", nouns);
+        i.putExtra("checkAccents", checkAccents);
 
         Log.i("Options", "lessonID = " + lessonID);
         Log.i("Options", "translateFromGaelic = " + translateFromGaelic);

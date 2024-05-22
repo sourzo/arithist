@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -49,6 +50,8 @@ public class LessonActivity extends AppCompatActivity {
     Button buttonView;
     boolean showingAnswer = false;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +76,21 @@ public class LessonActivity extends AppCompatActivity {
             sampleVocabList.getRandomRows(vocabListSize);
         }
         newExercise();
+        userResponseView.setOnKeyListener((v, keyCode, event) -> {
+            // If the event is a key-down event on the "enter" button
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                    (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                // Perform action on key press
+                buttonPress(buttonView);
+                return true;
+            }
+            return false;
+        });
     }
+
+
+
+
 
     public void buttonPress(View v){
         if (showingAnswer){

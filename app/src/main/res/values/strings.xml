@@ -5,7 +5,9 @@
     <string name="optionsMessage">Options</string>
     <string name="vocabTitle">Vocabulary list:</string>
     <string name="vocab_list_size_title">Number of words (max %d):</string>
+    <string name="vocab_list_size_prompt">Num</string>
     <string name="largest_number_title">Largest number to translate (max %d):</string>
+    <string name="largest_number_prompt">Num</string>
     <string name="translationTitle">Translation direction:</string>
     <string name="gd_en">Gaelic to English</string>
     <string name="en_gd">English to Gaelic</string>
@@ -17,7 +19,7 @@
     <string name="sentence_full">Translate full sentence</string>
     <string name="sentence_blanks">Fill in the blanks</string>
     <string name="sentence_qa">Answer questions</string>
-    <string name="gender_mode">Gender of nouns using...</string>
+    <string name="gender_mode">Gender of nouns using…</string>
     <string name="adj">Adjectives</string>
     <string name="def_art">Definite Articles (nom.)</string>
     <string name="which">Practice which?</string>
@@ -34,13 +36,13 @@
     <string name="neg_q">Negative questions</string>
     <string name="obj_prep">What should be the object for the prepositions?</string>
     <string name="pronouns">Prepositional pronouns</string>
-    <string name="nouns">Prepositions with nouns (names, professions, etc)</string>
+    <string name="nouns">Prepositions with names, professions, etc</string>
     <string name="check_accents_title">Check accents?</string>
     <string name="check_accents_switch_text_yes">Yes</string>
     <string name="check_accents_switch_text_no">No</string>
     <string name="submit_options">Start lesson</string>
     <string name="answer">Answer</string>
-    <string name="submit_solution">Submit</string>
-    <string name="next_exercise">Continue</string>
+    <string name="submit_solution">Check</string>
+    <string name="next_exercise">Next</string>
     <string name="incorrect">Incorrect! The correct answer is: </string>
 </resources>

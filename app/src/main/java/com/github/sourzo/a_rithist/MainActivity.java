@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -27,13 +25,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lessonDisplayTexts);
         simpleList.setAdapter(arrayAdapter);
 
-        simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(MainActivity.this, OptionsActivity.class);
-                i.putExtra("lessonID", lessonIDs.get(position));
-                startActivity(i);
-            }
+        simpleList.setOnItemClickListener((parent, view, position, id) -> {
+            Intent i = new Intent(MainActivity.this, OptionsActivity.class);
+            i.putExtra("lessonID", lessonIDs.get(position));
+            startActivity(i);
         });
     }
 
