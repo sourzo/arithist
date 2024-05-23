@@ -19,13 +19,16 @@ import android.widget.Toast;
 
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
 import com.github.sourzo.a_rithist.gaidhlig.LessonInfo;
+import com.github.sourzo.a_rithist.general.AndroidAppRes;
 import com.github.sourzo.a_rithist.general.Lesson;
+import com.github.sourzo.a_rithist.general.LessonOptions;
 import com.github.sourzo.a_rithist.general.VocabTable;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -88,42 +91,27 @@ public class OptionsActivity extends AppCompatActivity {
     View prepObjDiv;
 
     //Options values -------------------------------------------------------------------------------
-    String lessonID;
+    LessonOptions lo;
     List<String> validVocabFileNames;
     VocabTable fullVocabList;
-    String vocabListName;
-    int vocabListSize;
-    int largestNumber;
-    boolean translateFromGaelic;
-    String sentenceType;
-    String genderType;
-    boolean comparatives;
-    boolean superlatives;
-    boolean past;
-    boolean present;
-    boolean future;
-    boolean posStatements;
-    boolean negStatements;
-    boolean posQuestions;
-    boolean negQuestions;
-    boolean pronouns;
-    boolean nouns;
-    boolean checkAccents;
+    AndroidAppRes androidAppRes;
 
     //Activity setup -------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lo = new LessonOptions();
+        androidAppRes = new AndroidAppRes(this.getApplication().getAssets());
         setContentView(R.layout.activity_options);
         setAllViews();
 
         //Get info from main menu selection
         Intent i = getIntent();
-        lessonID = i.getStringExtra("lessonID");
-        lessonTitle.setText(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).displayName);
+        lo.lessonID = i.getStringExtra("lessonID");
+        lessonTitle.setText(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).displayName);
 
         //Vocab list spinner: Change max number of words as switch is pressed
-        setValidVocabFiles(new HashSet<>(Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).requiredColumns)));
+        setValidVocabFiles(new HashSet<>(Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).requiredColumns)));
 
         if (validVocabFileNames.size() == 0){
             vocabDiv.setVisibility(View.GONE);
@@ -141,8 +129,8 @@ public class OptionsActivity extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     //TODO
-                    fullVocabList = new VocabTable(parent.getContext(), validVocabFileNames.get(position));
-                    vocabListName = validVocabFileNames.get(position);
+                    fullVocabList = new VocabTable(androidAppRes, validVocabFileNames.get(position));
+                    lo.vocabListName = validVocabFileNames.get(position);
 
                     //Set the size of the vocabulary table
                     long maxWords = fullVocabList.size();
@@ -155,8 +143,8 @@ public class OptionsActivity extends AppCompatActivity {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-                    fullVocabList = new VocabTable(parent.getContext(), validVocabFileNames.get(0));
-                    vocabListName = validVocabFileNames.get(0);
+                    fullVocabList = new VocabTable(androidAppRes, validVocabFileNames.get(0));
+                    lo.vocabListName = validVocabFileNames.get(0);
                     long maxWords = fullVocabList.size();
                     vocabListSizeView.setHint(String.valueOf(maxWords));
                     String prompt = getString(R.string.vocab_list_size_title, maxWords);
@@ -166,7 +154,7 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //translating numbers - max number field
-        if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.MAX_NUM)){
+        if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.MAX_NUM)){
             String prompt = getString(R.string.largest_number_title, GrammarGd.largestTranslatableNumber);
             largestNumberTitle.setText(prompt);
             largestNumberView.setHint(String.valueOf(GrammarGd.largestTranslatableNumber));
@@ -178,21 +166,21 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //translation direction
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE)){
             translateDiv.setVisibility(View.GONE);
             translationDirectionTitle.setVisibility(View.GONE);
             translationOptionsView.setVisibility(View.GONE);
-        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_NUMBERS)){
+        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_NUMBERS)){
             toGaelicButtonView.setText(R.string.dg_gd);
             fromGaelicButtonView.setText(R.string.en_gd);
-        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_GENERIC)){
+        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_GENERIC)){
             toGaelicButtonView.setText(R.string.from_en);
             fromGaelicButtonView.setText(R.string.from_gd);
         }
 
         //Sentence type
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.SENTENCE_QA)){
-            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.SENTENCE)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.SENTENCE_QA)){
+            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.SENTENCE)){
                 sentenceDiv.setVisibility(View.GONE);
                 sentenceTitle.setVisibility(View.GONE);
                 sentenceOptionsView.setVisibility(View.GONE);
@@ -202,14 +190,14 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //Gender options
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.GENDER_MODE)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.GENDER_MODE)){
             genderDiv.setVisibility(View.GONE);
             genderTitle.setVisibility(View.GONE);
             genderOptionsView.setVisibility(View.GONE);
         }
 
         //comparatives/superlatives
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.COMP_SUP)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.COMP_SUP)){
             compSupDiv.setVisibility(View.GONE);
             compSupTitle.setVisibility(View.GONE);
             comparativesView.setVisibility(View.GONE);
@@ -217,7 +205,7 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //Verb tense
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.CHOSEN_TENSE)) {
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.CHOSEN_TENSE)) {
             verbTenseDiv.setVisibility(View.GONE);
             verbTenseTitle.setVisibility(View.GONE);
             pastView.setVisibility(View.GONE);
@@ -226,7 +214,7 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //Sentence type
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.VERB_FORM)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.VERB_FORM)){
             verbFormDiv.setVisibility(View.GONE);
             verbFormTitle.setVisibility(View.GONE);
             posStatementsView.setVisibility(View.GONE);
@@ -236,7 +224,7 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //Preposition object
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).options).contains(Lesson.lessonOptions.PREP_OBJECT)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.PREP_OBJECT)){
             prepObjDiv.setVisibility(View.GONE);
             prepObjTitle.setVisibility(View.GONE);
             pronounsView.setVisibility(View.GONE);
@@ -258,31 +246,31 @@ public class OptionsActivity extends AppCompatActivity {
         //Apply settings
         if (vocabListSizeView.getVisibility() != View.GONE){
             if (vocabListSizeView.getText().toString().equals("")){
-                vocabListSize = fullVocabList.size();
+                lo.vocabListSize = fullVocabList.size();
             } else {
-                vocabListSize = Math.min(Integer.parseInt(vocabListSizeView.getText().toString()), fullVocabList.size());
+                lo.vocabListSize = Math.min(Integer.parseInt(vocabListSizeView.getText().toString()), fullVocabList.size());
             }
         }
 
         if (largestNumberView.getVisibility() != View.GONE){
             if (largestNumberView.getText().toString().equals("")){
-                largestNumber = GrammarGd.largestTranslatableNumber;
+                lo.largestNumber = GrammarGd.largestTranslatableNumber;
             } else {
-                largestNumber = Math.min(Integer.parseInt(largestNumberView.getText().toString()), GrammarGd.largestTranslatableNumber);
+                lo.largestNumber = Math.min(Integer.parseInt(largestNumberView.getText().toString()), GrammarGd.largestTranslatableNumber);
             }
         }
 
         if (translationOptionsView.getVisibility() != View.GONE){
-            translateFromGaelic = fromGaelicButtonView.isChecked();
+            lo.translateFromGaelic = fromGaelicButtonView.isChecked();
         }
 
         if (sentenceOptionsView.getVisibility() != View.GONE){
             if (sentenceFullView.isChecked()){
-                sentenceType = "full";
+                lo.sentenceType = "full";
             } else if (sentenceBlankView.isChecked()){
-                sentenceType = "blanks";
+                lo.sentenceType = "blanks";
             } else if (sentenceQAView.isChecked()){
-                sentenceType = "qa";
+                lo.sentenceType = "qa";
             } else {
                 Toast.makeText(v.getContext(),"Please select the question type", Toast.LENGTH_SHORT).show();
                 return;
@@ -291,9 +279,9 @@ public class OptionsActivity extends AppCompatActivity {
 
         if (genderOptionsView.getVisibility() != View.GONE){
             if (genderAdjView.isChecked()){
-                genderType = "adj";
+                lo.genderType = "adj";
             } else if (genderDefArtView.isChecked()){
-                genderType = "defArt";
+                lo.genderType = "defArt";
             } else {
                 Toast.makeText(v.getContext(),"Please select a gender of nouns option", Toast.LENGTH_SHORT).show();
                 return;
@@ -305,8 +293,8 @@ public class OptionsActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(),"Please select at least one of: comparatives or superlatives", Toast.LENGTH_SHORT).show();
                 return;
             } else {
-                comparatives = comparativesView.isChecked();
-                superlatives = superlativesView.isChecked();
+                lo.comparatives = comparativesView.isChecked();
+                lo.superlatives = superlativesView.isChecked();
             }
         }
 
@@ -315,9 +303,9 @@ public class OptionsActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(),"Please select at least one tense", Toast.LENGTH_SHORT).show();
                 return;
             } else {
-                past = pastView.isChecked();
-                present = presentView.isChecked();
-                future = futureView.isChecked();
+                lo.past = pastView.isChecked();
+                lo.present = presentView.isChecked();
+                lo.future = futureView.isChecked();
             }
         }
 
@@ -326,10 +314,10 @@ public class OptionsActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(),"Please select at least one sentence type (positive/negative, statement/question)", Toast.LENGTH_SHORT).show();
                 return;
             } else {
-                posStatements = posStatementsView.isChecked();
-                negStatements = posStatementsView.isChecked();
-                posQuestions = posQuestionsView.isChecked();
-                negQuestions = negQuestionsView.isChecked();
+                lo.posStatements = posStatementsView.isChecked();
+                lo.negStatements = posStatementsView.isChecked();
+                lo.posQuestions = posQuestionsView.isChecked();
+                lo.negQuestions = negQuestionsView.isChecked();
             }
         }
 
@@ -338,8 +326,8 @@ public class OptionsActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(),"Please select at least one of: pronouns or nouns", Toast.LENGTH_SHORT).show();
                 return;
             } else {
-                pronouns = pronounsView.isChecked();
-                nouns = nounsView.isChecked();
+                lo.pronouns = pronounsView.isChecked();
+                lo.nouns = nounsView.isChecked();
             }
         }
 
@@ -350,7 +338,7 @@ public class OptionsActivity extends AppCompatActivity {
     }
 
     private void setYNSwitch(boolean isChecked, TextView reactiveText){
-        checkAccents = isChecked;
+        lo.checkAccents = isChecked;
         if (isChecked){
             reactiveText.setText(R.string.check_accents_switch_text_yes);
         } else {
@@ -441,44 +429,26 @@ public class OptionsActivity extends AppCompatActivity {
 
     /**Adds all the options values as extended data for the intent.*/
     private void passOptionsToLesson(Intent i){
-        i.putExtra("lessonID",lessonID);
-        i.putExtra("vocabListName", vocabListName);
-        i.putExtra("vocabListSize", vocabListSize);
-        i.putExtra("largestNumber",largestNumber);
-        i.putExtra("translateFromGaelic", translateFromGaelic);
-        i.putExtra("sentenceType", sentenceType);
-        i.putExtra("genderType", genderType);
-        i.putExtra("comparatives", comparatives);
-        i.putExtra("superlatives", superlatives);
-        i.putExtra("past", past);
-        i.putExtra("present", present);
-        i.putExtra("future", future);
-        i.putExtra("posStatements", posStatements);
-        i.putExtra("negStatements", negStatements);
-        i.putExtra("posQuestions", posQuestions);
-        i.putExtra("negQuestions", negQuestions);
-        i.putExtra("pronouns", pronouns);
-        i.putExtra("nouns", nouns);
-        i.putExtra("checkAccents", checkAccents);
+        i.putExtra("lessonOptions", (Serializable) lo);
 
-        Log.i("Options", "lessonID = " + lessonID);
-        Log.i("Options", "translateFromGaelic = " + translateFromGaelic);
-        Log.i("Options", "vocabListName = " + vocabListName);
-        Log.i("Options", "vocabListSize = " + vocabListSize);
-        Log.i("Options", "largestNumber = " + largestNumber);
-        Log.i("Options", "sentenceType = " + sentenceType);
-        Log.i("Options", "genderType = " + genderType);
-        Log.i("Options", "comparatives = " + comparatives);
-        Log.i("Options", "superlatives = " + superlatives);
-        Log.i("Options", "past = " + past);
-        Log.i("Options", "present = " + present);
-        Log.i("Options", "future = " + future);
-        Log.i("Options", "posStatements = " + posStatements);
-        Log.i("Options", "negStatements = " + negStatements);
-        Log.i("Options", "posQuestions = " + posQuestions);
-        Log.i("Options", "negQuestions = " + negQuestions);
-        Log.i("Options", "pronouns = " + pronouns);
-        Log.i("Options", "nouns = " + nouns);
-        Log.i("Options","checkAccents = " + checkAccents);
+        Log.i("Options", "lessonID = " + lo.lessonID);
+        Log.i("Options", "translateFromGaelic = " + lo.translateFromGaelic);
+        Log.i("Options", "vocabListName = " + lo.vocabListName);
+        Log.i("Options", "vocabListSize = " + lo.vocabListSize);
+        Log.i("Options", "largestNumber = " + lo.largestNumber);
+        Log.i("Options", "sentenceType = " + lo.sentenceType);
+        Log.i("Options", "genderType = " + lo.genderType);
+        Log.i("Options", "comparatives = " + lo.comparatives);
+        Log.i("Options", "superlatives = " + lo.superlatives);
+        Log.i("Options", "past = " + lo.past);
+        Log.i("Options", "present = " + lo.present);
+        Log.i("Options", "future = " + lo.future);
+        Log.i("Options", "posStatements = " + lo.posStatements);
+        Log.i("Options", "negStatements = " + lo.negStatements);
+        Log.i("Options", "posQuestions = " + lo.posQuestions);
+        Log.i("Options", "negQuestions = " + lo.negQuestions);
+        Log.i("Options", "pronouns = " + lo.pronouns);
+        Log.i("Options", "nouns = " + lo.nouns);
+        Log.i("Options","checkAccents = " + lo.checkAccents);
     }
 }

@@ -13,34 +13,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.sourzo.a_rithist.gaidhlig.LessonInfo;
+import com.github.sourzo.a_rithist.general.AndroidAppRes;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
+import com.github.sourzo.a_rithist.general.LessonOptions;
 import com.github.sourzo.a_rithist.general.VocabTable;
 
 import java.util.Objects;
 
 public class LessonActivity extends AppCompatActivity {
+    public LessonOptions lo;
     public ExerciseGenerator exGen;
-    public String lessonID;
-    public String vocabListName;
-    public VocabTable sampleVocabList;
-    public int vocabListSize;
-    public int largestNumber;
-    public boolean translateFromGaelic;
-    public String sentenceType;
-    public String genderType;
-    public boolean comparatives;
-    public boolean superlatives;
-    public boolean past;
-    public boolean present;
-    public boolean future;
-    public boolean posStatements;
-    public boolean negStatements;
-    public boolean posQuestions;
-    public boolean negQuestions;
-    public boolean pronouns;
-    public boolean nouns;
-    public boolean checkAccents;
     public Exercise e;
     TextView lessonTitleView;
     TextView questionView;
@@ -65,15 +48,16 @@ public class LessonActivity extends AppCompatActivity {
 
         //Import options from OptionsActivity
         getOptionsForLesson();
+
         //Instantiate exercise generator
-        exGen = Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).getGenerator.apply(this);
+        exGen = Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).getGenerator.apply(this.lo);
         //Activity title
-        lessonTitleView.setText(Objects.requireNonNull(LessonInfo.lessonSet.get(lessonID)).displayName);
+        lessonTitleView.setText(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).displayName);
 
         //load vocab set
-        if (vocabListName != null){
-            sampleVocabList = new VocabTable(this, vocabListName);
-            sampleVocabList.getRandomRows(vocabListSize);
+        if (lo.vocabListName != null){
+            lo.sampleVocabList = new VocabTable(lo.androidAppRes, lo.vocabListName);
+            lo.sampleVocabList.getRandomRows(lo.vocabListSize);
         }
         newExercise();
         userResponseView.setOnKeyListener((v, keyCode, event) -> {
@@ -87,10 +71,6 @@ public class LessonActivity extends AppCompatActivity {
             return false;
         });
     }
-
-
-
-
 
     public void buttonPress(View v){
         if (showingAnswer){
@@ -106,7 +86,7 @@ public class LessonActivity extends AppCompatActivity {
     public void checkUserResponse(){
         String userResponse = userResponseView.getText().toString();
 
-        if (e.checkAnswer(userResponse, checkAccents)){
+        if (e.checkAnswer(userResponse, lo.checkAccents)){
             solutionView.setText("Correct!");
         } else {
             String solutionMessage = "Incorrect! A correct answer is: " + e.getSolution();
@@ -133,44 +113,29 @@ public class LessonActivity extends AppCompatActivity {
     /**Pipes the selected user options from the OptionsActivity*/
     private void getOptionsForLesson(){
         Intent i = getIntent();
-        lessonID = i.getStringExtra("lessonID");
-        vocabListName = i.getStringExtra("vocabListName");
-        vocabListSize = i.getIntExtra("vocabListSize", 0);
-        largestNumber = i.getIntExtra("largestNumber",1);
-        translateFromGaelic = i.getBooleanExtra("translateFromGaelic", false);
-        sentenceType = i.getStringExtra("sentenceType");
-        genderType = i.getStringExtra("genderType");
-        comparatives = i.getBooleanExtra("comparatives", false);
-        superlatives = i.getBooleanExtra("superlatives", false);
-        past = i.getBooleanExtra("past", false);
-        present = i.getBooleanExtra("present", false);
-        future = i.getBooleanExtra("future", false);
-        posStatements = i.getBooleanExtra("posStatements", false);
-        negStatements = i.getBooleanExtra("negStatements", false);
-        posQuestions = i.getBooleanExtra("posQuestions", false);
-        negQuestions = i.getBooleanExtra("negQuestions", false);
-        pronouns = i.getBooleanExtra("pronouns", false);
-        nouns = i.getBooleanExtra("nouns", false);
-        checkAccents = i.getBooleanExtra("checkAccents",true);
+        Log.i("Test","Starting to get lo");
+        lo = (LessonOptions) i.getSerializableExtra("lessonOptions");
+        Log.i("Test","Got lo");
+        lo.androidAppRes = new AndroidAppRes(this.getAssets());
 
-        Log.i("Options", "lessonID = " + lessonID);
-        Log.i("Options", "translateFromGaelic = " + translateFromGaelic);
-        Log.i("Options", "vocabListName = " + vocabListName);
-        Log.i("Options", "vocabListSize = " + vocabListSize);
-        Log.i("Options", "largestNumber = " + largestNumber);
-        Log.i("Options", "sentenceType = " + sentenceType);
-        Log.i("Options", "genderType = " + genderType);
-        Log.i("Options", "comparatives = " + comparatives);
-        Log.i("Options", "superlatives = " + superlatives);
-        Log.i("Options", "past = " + past);
-        Log.i("Options", "present = " + present);
-        Log.i("Options", "future = " + future);
-        Log.i("Options", "posStatements = " + posStatements);
-        Log.i("Options", "negStatements = " + negStatements);
-        Log.i("Options", "posQuestions = " + posQuestions);
-        Log.i("Options", "negQuestions = " + negQuestions);
-        Log.i("Options", "pronouns = " + pronouns);
-        Log.i("Options", "nouns = " + nouns);
-        Log.i("Options","checkAccents = " + checkAccents);
+        Log.i("Options", "lessonID = " + lo.lessonID);
+        Log.i("Options", "translateFromGaelic = " + lo.translateFromGaelic);
+        Log.i("Options", "vocabListName = " + lo.vocabListName);
+        Log.i("Options", "vocabListSize = " + lo.vocabListSize);
+        Log.i("Options", "largestNumber = " + lo.largestNumber);
+        Log.i("Options", "sentenceType = " + lo.sentenceType);
+        Log.i("Options", "genderType = " + lo.genderType);
+        Log.i("Options", "comparatives = " + lo.comparatives);
+        Log.i("Options", "superlatives = " + lo.superlatives);
+        Log.i("Options", "past = " + lo.past);
+        Log.i("Options", "present = " + lo.present);
+        Log.i("Options", "future = " + lo.future);
+        Log.i("Options", "posStatements = " + lo.posStatements);
+        Log.i("Options", "negStatements = " + lo.negStatements);
+        Log.i("Options", "posQuestions = " + lo.posQuestions);
+        Log.i("Options", "negQuestions = " + lo.negQuestions);
+        Log.i("Options", "pronouns = " + lo.pronouns);
+        Log.i("Options", "nouns = " + lo.nouns);
+        Log.i("Options","checkAccents = " + lo.checkAccents);
     }
 }

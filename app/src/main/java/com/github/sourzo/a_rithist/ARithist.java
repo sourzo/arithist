@@ -11,5 +11,4 @@ public class ARithist extends Application {
         super.onCreate();
         DynamicColors.applyToActivitiesIfAvailable(this);
     }
-
 }

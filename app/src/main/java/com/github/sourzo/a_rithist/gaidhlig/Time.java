@@ -2,18 +2,18 @@ package com.github.sourzo.a_rithist.gaidhlig;
 
 
 
-import com.github.sourzo.a_rithist.LessonActivity;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
+import com.github.sourzo.a_rithist.general.LessonOptions;
 
 import java.util.Random;
 
 public class Time extends ExerciseGenerator {
     GrammarGd g;
     /**Creates a new exercise generator. Requires context to load vocab tables.*/
-    public Time(LessonActivity la){
-        super(la);
-        g = new GrammarGd(la);
+    public Time(LessonOptions lo){
+        super(lo);
+        g = new GrammarGd(lo.androidAppRes);
     }
     public Exercise generate() {
         //Setup ------------------------------------------------------------------------------------
@@ -30,14 +30,14 @@ public class Time extends ExerciseGenerator {
         }
 
         //PrePrompt --------------------------------------------------------------------------------
-        if (la.translateFromGaelic){
+        if (lo.translateFromGaelic){
             e.setPrePrompt("What time is it? (Digital hh:mm)");
         } else {
             e.setPrePrompt("Dè an uair a tha e?");
         }
 
         //Question ---------------------------------------------------------------------------------
-        if (la.translateFromGaelic){
+        if (lo.translateFromGaelic){
             e.setQuestion("Tha e " + getTime(hrsNum,minsNum));
         } else {
             e.setQuestion(hrsDigStr + ":" + minsDigStr);
@@ -47,7 +47,7 @@ public class Time extends ExerciseGenerator {
         //EditText Prompt --------------------------------------------------------------------------
 
         //Solutions --------------------------------------------------------------------------------
-         if (la.translateFromGaelic) {
+         if (lo.translateFromGaelic) {
              //Gaelic to digits (need digits as strings)
              //include a.m. and p.m. times and leading/dropped zeros for hours
              String hrsAm = String.valueOf(getHrsAm(hrsNum));

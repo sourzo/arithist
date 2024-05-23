@@ -1,8 +1,6 @@
 package com.github.sourzo.a_rithist.english;
 
-import android.content.Context;
-
-import com.github.sourzo.a_rithist.LessonActivity;
+import com.github.sourzo.a_rithist.general.AndroidAppRes;
 import com.github.sourzo.a_rithist.general.VocabTable;
 
 import java.util.Arrays;
@@ -11,12 +9,12 @@ import java.util.Set;
 
 public class GrammarEn {
     //Setup ----------------------------------------------------------------------------------------
-    LessonActivity la;
+    AndroidAppRes appRes;
     public VocabTable en;
     /**Creates a new English Grammar instance. Requires context to load vocab tables.*/
-    public GrammarEn(LessonActivity la){
-        this.la = la;
-        en = new VocabTable(la, "grammar_english.csv");
+    public GrammarEn(AndroidAppRes appRes){
+        this.appRes = appRes;
+        en = new VocabTable(appRes, "grammar_english.csv");
     }
 
     //Definitions ----------------------------------------------------------------------------------

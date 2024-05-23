@@ -10,7 +10,7 @@ public class Lesson {
     public String[] requiredColumns;
     public topicTags[] topics;
     public  lessonOptions[] options;
-    public Function<LessonActivity, ExerciseGenerator> getGenerator;
+    public Function<LessonOptions, ExerciseGenerator> getGenerator;
 
 
     //constructors----------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ public class Lesson {
                   String[] requiredColumns,
                   topicTags[] topics,
                   lessonOptions[] options,
-                  Function<LessonActivity, ExerciseGenerator> getGenerator){
+                  Function<LessonOptions, ExerciseGenerator> getGenerator){
         this.displayName = displayName;
         this.requiredColumns = requiredColumns;
         this.topics = topics;

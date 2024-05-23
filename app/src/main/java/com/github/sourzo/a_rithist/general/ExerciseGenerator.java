@@ -1,12 +1,10 @@
 package com.github.sourzo.a_rithist.general;
 
-import com.github.sourzo.a_rithist.LessonActivity;
-
 public abstract class ExerciseGenerator {
 
-    protected LessonActivity la;
-    public ExerciseGenerator(LessonActivity la){
-        this.la = la;
+    protected LessonOptions lo;
+    public ExerciseGenerator(LessonOptions lo){
+        this.lo = lo;
     }
 
     public abstract Exercise generate();

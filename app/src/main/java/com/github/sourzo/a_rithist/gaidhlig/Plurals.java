@@ -2,22 +2,22 @@ package com.github.sourzo.a_rithist.gaidhlig;
 
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
-import com.github.sourzo.a_rithist.LessonActivity;
+import com.github.sourzo.a_rithist.general.LessonOptions;
 
 import java.util.HashMap;
 import java.util.Random;
 
 public class Plurals extends ExerciseGenerator {
-    public Plurals(LessonActivity la) {super(la);}
+    public Plurals(LessonOptions lo) {super(lo);}
 
     public Exercise generate() {
         //Setup ------------------------------------------------------------------------------------
         Exercise e = new Exercise();
-        int vocabNum = new Random().nextInt(la.sampleVocabList.size());
-        HashMap<String,String> randomWord = la.sampleVocabList.data.get(vocabNum);
+        int vocabNum = new Random().nextInt(lo.sampleVocabList.size());
+        HashMap<String,String> randomWord = lo.sampleVocabList.data.get(vocabNum);
 
         //PrePrompt --------------------------------------------------------------------------------
-        if (la.translateFromGaelic){
+        if (lo.translateFromGaelic){
             e.setPrePrompt("Pluralise:");
         } else {
             e.setPrePrompt("Pluralise the Gaelic for:");
@@ -26,7 +26,7 @@ public class Plurals extends ExerciseGenerator {
         //EditText Prompt --------------------------------------------------------------------------
 
         //Question ---------------------------------------------------------------------------------
-        if (la.translateFromGaelic){
+        if (lo.translateFromGaelic){
             e.setQuestion(randomWord.get("nom_sing"));
         } else {
             e.setQuestion(randomWord.get("english"));

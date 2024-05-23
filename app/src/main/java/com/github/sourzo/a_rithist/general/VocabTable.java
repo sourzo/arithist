@@ -1,12 +1,9 @@
 package com.github.sourzo.a_rithist.general;
 
-import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +14,6 @@ import java.util.Set;
 public class VocabTable {
     //Fields-----------------------------------------------------------------------
     /**Location of vocab lists - currently the user home directory*/
-    static String directory = System.getProperty("user.home");
 
     /**The names of the columns from the input csv table.*/
     String[] colNames;
@@ -29,12 +25,13 @@ public class VocabTable {
 
     //Constructors-----------------------------------------------------------------
 
-    /**Reads a csv file with headers to create a vocabulary dataset {@link #data}
+    /**
+     * Reads a csv file with headers to create a vocabulary dataset {@link #data}
      * the form of a list, where each item in the list is a row from the text file.
      * Every row is mapped to the column header.
-     * @param filepath The file path of the csv file*/
-    public VocabTable(Context context, String filepath) {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getAssets().open(filepath)))) {
+     */
+    public VocabTable(AppRes appRes, String filepath) {
+        try (BufferedReader br = new BufferedReader(appRes.getFileStream(filepath))) {
             String line;
             colNames = br.readLine().split(","); //First line = headers
             while ((line = br.readLine()) != null) { //Subsequent lines = vocab

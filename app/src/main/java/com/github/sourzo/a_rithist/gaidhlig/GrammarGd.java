@@ -1,6 +1,6 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
-import com.github.sourzo.a_rithist.LessonActivity;
+import com.github.sourzo.a_rithist.general.AndroidAppRes;
 import com.github.sourzo.a_rithist.general.VocabTable;
 
 import java.util.Arrays;
@@ -12,19 +12,17 @@ import java.util.Set;
 public class GrammarGd {
 
     //Setup -------------------------------------------------------------------
-    LessonActivity la;
     /**Creates a new Gaelic Grammar instance. Requires context to load vocab tables.*/
-    public GrammarGd(LessonActivity la){
-        this.la = la;
-        pp = new VocabTable(la,"grammar_prepPronouns.csv");
-        names = new VocabTable(la,"people_names.csv");
-        numbers = new VocabTable(la,"grammar_numbers.csv");
-        professions = new VocabTable(la,"people_professions.csv");
-        similes = new VocabTable(la,"adjectives_comparisons.csv");
-        adjectives = new VocabTable(la,"adjectives_misc.csv");
-        list_months = new VocabTable(la,"datetime_months.csv");
-        list_seasons = new VocabTable(la,"datetime_seasons.csv");
-        list_holidays = new VocabTable(la,"datetime_holidays.csv");
+    public GrammarGd(AndroidAppRes appRes){
+        pp = new VocabTable(appRes,"grammar_prepPronouns.csv");
+        names = new VocabTable(appRes,"people_names.csv");
+        numbers = new VocabTable(appRes,"grammar_numbers.csv");
+        professions = new VocabTable(appRes,"people_professions.csv");
+        similes = new VocabTable(appRes,"adjectives_comparisons.csv");
+        adjectives = new VocabTable(appRes,"adjectives_misc.csv");
+        list_months = new VocabTable(appRes,"datetime_months.csv");
+        list_seasons = new VocabTable(appRes,"datetime_seasons.csv");
+        list_holidays = new VocabTable(appRes,"datetime_holidays.csv");
     }
 
     //Vocabulary/grammar files ------------------------------------------------
