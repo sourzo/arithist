@@ -56,7 +56,7 @@ public class LessonActivity extends AppCompatActivity {
 
         //load vocab set
         if (lo.vocabListName != null){
-            lo.sampleVocabList = new VocabTable(lo.androidAppRes, lo.vocabListName);
+            lo.sampleVocabList = new VocabTable(lo.appRes, lo.vocabListName);
             lo.sampleVocabList.getRandomRows(lo.vocabListSize);
         }
         newExercise();
@@ -116,7 +116,7 @@ public class LessonActivity extends AppCompatActivity {
         Log.i("Test","Starting to get lo");
         lo = (LessonOptions) i.getSerializableExtra("lessonOptions");
         Log.i("Test","Got lo");
-        lo.androidAppRes = new AndroidAppRes(this.getAssets());
+        lo.appRes = new AndroidAppRes(this.getAssets());
 
         Log.i("Options", "lessonID = " + lo.lessonID);
         Log.i("Options", "translateFromGaelic = " + lo.translateFromGaelic);
@@ -124,7 +124,8 @@ public class LessonActivity extends AppCompatActivity {
         Log.i("Options", "vocabListSize = " + lo.vocabListSize);
         Log.i("Options", "largestNumber = " + lo.largestNumber);
         Log.i("Options", "sentenceType = " + lo.sentenceType);
-        Log.i("Options", "genderType = " + lo.genderType);
+        Log.i("Options", "genderAdj = " + lo.genderAdj);
+        Log.i("Options", "genderDefArtNom = " + lo.genderDefArtNom);
         Log.i("Options", "comparatives = " + lo.comparatives);
         Log.i("Options", "superlatives = " + lo.superlatives);
         Log.i("Options", "past = " + lo.past);

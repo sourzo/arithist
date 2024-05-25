@@ -29,11 +29,12 @@ public class LessonInfo {
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
                         new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY},
                         PossessionAig::new));
-//        lessonSet.put("gender",
-//                new Lesson("Gender of nouns (using adjectives/articles)",
-//                        new String[] {"english", "nom_sing", "gender"},
-//                        new Lesson.topicTags[] {Lesson.topicTags.VOCABULARY, Lesson.topicTags.ADJECTIVES, Lesson.topicTags.ARTICLES},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.GENDER_MODE, Lesson.lessonOptions.VOCABULARY}));
+        lessonSet.put("gender",
+                new Lesson("Gender of nouns (using adjectives/articles)",
+                        new String[] {"english", "nom_sing", "gender"},
+                        new Lesson.topicTags[] {Lesson.topicTags.VOCABULARY, Lesson.topicTags.ADJECTIVES, Lesson.topicTags.ARTICLES},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.GENDER_MODE, Lesson.lessonOptions.VOCABULARY},
+                        Gender::new));
         lessonSet.put("a4_numbers",
                 new Lesson("Numbers",
                         new String[] {},

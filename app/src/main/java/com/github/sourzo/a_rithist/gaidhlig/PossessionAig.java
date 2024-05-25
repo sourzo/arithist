@@ -13,8 +13,8 @@ public class PossessionAig extends ExerciseGenerator {
     /**Creates a new exercise generator. Requires context to load vocab tables.*/
     public PossessionAig(LessonOptions lo){
         super(lo);
-        gg = new GrammarGd(lo.androidAppRes);
-        ge = new GrammarEn(lo.androidAppRes);
+        gg = new GrammarGd(lo.appRes);
+        ge = new GrammarEn(lo.appRes);
     }
     public Exercise generate() {
         //Setup ------------------------------------------------------------------------------------

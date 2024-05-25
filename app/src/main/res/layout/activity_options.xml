@@ -212,26 +212,21 @@
                 android:text="@string/gender_mode"
                 android:textAlignment="textStart"
                 android:textSize="16sp" />
-
-            <RadioGroup
-                android:id="@+id/gender_mode_options_container"
+            <CheckBox
+                android:id="@+id/gender_adj"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp">
+                android:layout_marginHorizontal="16dp"
+                android:checked="true"
+                android:text="@string/adj" />
 
-                <RadioButton
-                    android:id="@+id/gender_adj"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/adj" />
-
-                <RadioButton
-                    android:id="@+id/gender_def_art"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/def_art" />
-            </RadioGroup>
+            <CheckBox
+                android:id="@+id/gender_def_art_nom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:checked="true"
+                android:text="@string/def_art_nom" />
 
             <!-- comparatives/superlatives options -->
             <View

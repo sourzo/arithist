@@ -12,7 +12,7 @@ public class Numbers extends ExerciseGenerator {
     /**Creates a new exercise generator. Requires context to load vocab tables.*/
     public Numbers(LessonOptions lo){
         super(lo);
-        g = new GrammarGd(lo.androidAppRes);
+        g = new GrammarGd(lo.appRes);
     }
 
     public Exercise generate() {

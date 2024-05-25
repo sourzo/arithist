@@ -3,7 +3,7 @@ package com.github.sourzo.a_rithist.general;
 import java.io.Serializable;
 
 public class LessonOptions implements Serializable {
-    public transient AndroidAppRes androidAppRes;
+    public transient AndroidAppRes appRes;
     public String lessonID;
     public String vocabListName;
     public VocabTable sampleVocabList;
@@ -11,7 +11,8 @@ public class LessonOptions implements Serializable {
     public int largestNumber;
     public boolean translateFromGaelic;
     public String sentenceType;
-    public String genderType;
+    public boolean genderAdj;
+    public boolean genderDefArtNom;
     public boolean comparatives;
     public boolean superlatives;
     public boolean past;

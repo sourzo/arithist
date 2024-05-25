@@ -21,7 +21,7 @@
     <string name="sentence_qa">Answer questions</string>
     <string name="gender_mode">Gender of nouns using…</string>
     <string name="adj">Adjectives</string>
-    <string name="def_art">Definite Articles (nom.)</string>
+    <string name="def_art_nom">Definite Articles (nom.)</string>
     <string name="which">Practice which?</string>
     <string name="comp">Comparatives</string>
     <string name="sup">Superlatives</string>

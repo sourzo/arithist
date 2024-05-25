@@ -1,5 +1,7 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
+import static java.util.Arrays.asList;
+
 import com.github.sourzo.a_rithist.general.AndroidAppRes;
 import com.github.sourzo.a_rithist.general.VocabTable;
 
@@ -7,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class GrammarGd {
@@ -52,24 +55,36 @@ public class GrammarGd {
         MASCULINE,
         FEMININE
     }
+    enum grammaticalCase {
+        NOMINAL,
+        PREPOSITIONAL,
+        POSSESSIVE,
+        GENITIVE
+    }
     /**Set of broad vowels, including accents*/
-    private final static Set<String> broadVowels = new HashSet<>(Arrays.asList("a", "à", "á", "o", "ò", "ó", "u", "ù", "ú"));
+    private final static Set<String> broadVowels = new HashSet<>(asList("a", "à", "á", "o", "ò", "ó", "u", "ù", "ú"));
     /**Set of slender vowels, including accents*/
-    private final static Set<String> slenderVowels = new HashSet<>(Arrays.asList("e", "è", "é", "i", "ì", "í"));
+    private final static Set<String> slenderVowels = new HashSet<>(asList("e", "è", "é", "i", "ì", "í"));
     /**Set containing all vowels, including accents*/
     private final static Set<String> vowels = new HashSet<>(broadVowels);//slender vowels added below
     static {vowels.addAll(slenderVowels);}
+    private final static Set<String> lrn = new HashSet<>(asList("l", "r", "n"));
+    private final static Set<String> lrnv = new HashSet<>();
+    static{
+        lrnv.addAll(lrn);
+        lrnv.addAll(vowels);
+    }
     /**Set of labials (b, m, f, p)*/
-    private final static Set<String> labials = new HashSet<>(Arrays.asList("b", "m", "f", "p"));
+    private final static Set<String> labials = new HashSet<>(asList("b", "m", "f", "p"));
     /**Set of dentals (d, t). These sometimes don't lenite.*/
-    private final static Set<String> dentals = new HashSet<>(Arrays.asList("d", "t"));
+    private final static Set<String> dentals = new HashSet<>(asList("d", "t"));
     /**Set of letters and strings which never lenite in writing (vowels, l, r, n, sm, st, sg, sp, t-)
      * <P>Note that not all lenition is written - for example, a word beginning with "l" does change the sound of
      * the "l" in a lenition scenario, but there's no "h" added in writing. This app only deals with written lenition.*/
-    private final static Set<String> neverLenite = new HashSet<>(Arrays.asList("l", "r", "n", "sm", "st", "sg", "sp", "t-")); //vowels added below
+    private final static Set<String> neverLenite = new HashSet<>(asList("l", "r", "n", "sm", "st", "sg", "sp", "t-")); //vowels added below
     static {neverLenite.addAll(vowels);}
 
-    private final static Set<String> definiteArticles = new HashSet<>(Arrays.asList("an ", "na ", "a' ", "a’ ", "am ", "an t-"));
+    private final static Set<String> definiteArticles = new HashSet<>(asList("an ", "na ", "a' ", "a’ ", "am ", "an t-"));
 
     //Irregular verbs ----------------------------------------------------------
     /**The irregular past-tense forms (primary and secondary, respectively) of verbs.
@@ -81,26 +96,26 @@ public class GrammarGd {
      * (Chì mi Athair) and the secondary (dependent) form is used for negative statements and questions (Am faic tu Athair?*/
     private final static HashMap<String, List<String>> irregularFuture = new HashMap<>();
     static {
-        irregularPast.put("rach", Arrays.asList("chaidh","deach"));
-        irregularPast.put("abair", Arrays.asList("thuirt", "tuirt"));
-        irregularPast.put("dèan", Arrays.asList("rinn", "do rinn"));
-        irregularPast.put("cluinn", Arrays.asList("chuala", "cuala"));
-        irregularPast.put("faic", Arrays.asList("chunnaic", "faca"));
-        irregularPast.put("thig", Arrays.asList("thàinig", "tàinig"));
-        irregularPast.put("thoir", Arrays.asList("thug", "tug"));
-        irregularPast.put("ruig", Arrays.asList("ràinig", "do ràinig"));
-        irregularPast.put("beir", Arrays.asList("rug", "do rug"));
-        irregularPast.put("faigh", Arrays.asList("fhuair", "d' fhuair"));
-        irregularPast.put("bi", Arrays.asList("bha", "robh"));
+        irregularPast.put("rach", asList("chaidh","deach"));
+        irregularPast.put("abair", asList("thuirt", "tuirt"));
+        irregularPast.put("dèan", asList("rinn", "do rinn"));
+        irregularPast.put("cluinn", asList("chuala", "cuala"));
+        irregularPast.put("faic", asList("chunnaic", "faca"));
+        irregularPast.put("thig", asList("thàinig", "tàinig"));
+        irregularPast.put("thoir", asList("thug", "tug"));
+        irregularPast.put("ruig", asList("ràinig", "do ràinig"));
+        irregularPast.put("beir", asList("rug", "do rug"));
+        irregularPast.put("faigh", asList("fhuair", "d' fhuair"));
+        irregularPast.put("bi", asList("bha", "robh"));
 
-        irregularFuture.put("rach", Arrays.asList("thèid", "tèid"));
-        irregularFuture.put("abair", Arrays.asList("canaidh", "can"));
-        irregularFuture.put("dèan", Arrays.asList("nì", "dèan"));
-        irregularFuture.put("faic", Arrays.asList("chì", "faic"));
-        irregularFuture.put("thig", Arrays.asList("thig", "tig"));
-        irregularFuture.put("thoir", Arrays.asList("bheir", "toir"));
-        irregularFuture.put("faigh", Arrays.asList("gheibh", "faigh"));
-        irregularFuture.put("bi", Arrays.asList("bidh", "bi"));
+        irregularFuture.put("rach", asList("thèid", "tèid"));
+        irregularFuture.put("abair", asList("canaidh", "can"));
+        irregularFuture.put("dèan", asList("nì", "dèan"));
+        irregularFuture.put("faic", asList("chì", "faic"));
+        irregularFuture.put("thig", asList("thig", "tig"));
+        irregularFuture.put("thoir", asList("bheir", "toir"));
+        irregularFuture.put("faigh", asList("gheibh", "faigh"));
+        irregularFuture.put("bi", asList("bidh", "bi"));
     }
 
     //Helper functions -----------------------------------------------------
@@ -160,7 +175,7 @@ public class GrammarGd {
     /**Remove the definite article from a word*/
     public static String removeArticle(String word) {
         String wordLower = word.toLowerCase();
-        if (definiteArticles.stream().anyMatch(art -> wordLower.startsWith(art))) {
+        if (definiteArticles.stream().anyMatch(wordLower::startsWith)) {
             String stripWord = word.split(" ", 2)[1];
             if (stripWord.startsWith("t-")) {
                 return stripWord.substring(2);
@@ -179,7 +194,7 @@ public class GrammarGd {
      * @return MASCULINE or FEMININE (as an enumerated type)*/
     public static grammaticalGender guessGender(String word) {
         String w = word.toLowerCase().trim();
-        if (definiteArticles.stream().anyMatch(art -> w.startsWith(art))) {
+        if (definiteArticles.stream().anyMatch(w::startsWith)) {
             if (w.startsWith("a' ") ||
                     w.startsWith("an fh") ||
                     (w.startsWith("an t-s") && vowels.contains(Character.toString(w.charAt(6)))) ||
@@ -283,4 +298,97 @@ public class GrammarGd {
         return "";
     }
 
+    /**The common article pattern used for singular nom-fem, prep, and gen-masc.*/
+    public String articleStandard(String word) {
+        String w = word.toLowerCase();
+        if (Arrays.asList(new Character[]{'b', 'c', 'g', 'm', 'p'}).contains(w.charAt(0))) {
+            return "a' " + lenite(word, dentals);
+        } else if (w.charAt(0) == 's') {
+
+            if (lrnv.contains(w.substring(1,2))) {
+                return "an t-" + word;
+            } else {
+                return "an " + word;
+                //Does this lenite ??
+            }
+        } else if (w.charAt(0) == 'f')
+            return "an " + lenite(word);
+        else {
+            return anm(word);
+        }
+    }
+
+    /**Add the common article ('the' in English) to a Gaelic word with no article
+     sg_pl: sg/pl (singular or plural)
+     gender: masc/fem
+     case: nom/gen/prep (nominative, genitive, prepositional)
+     (no vocative - slenderisation can't be automated)*/
+    public String commonArticle(String word,
+                                String sg_pl,
+                                String gender,
+                                grammaticalCase caseType) {
+        word = removeArticle(word);
+        String wordLower = word.toLowerCase();
+        //singular
+        if (Objects.equals(sg_pl, "sg")) {
+            //nominal case
+            if (caseType == grammaticalCase.NOMINAL) {  //masculine
+                if (gender.equals("masc")) {
+                    if (labials.contains(wordLower.substring(0,1))) {
+                        word = "am " + word;
+                    } else if (vowels.contains(wordLower.substring(0,1))) {
+                        word = "an t-" + word;
+                    } else {
+                        word = anm(word);
+                    }
+                }
+                //feminine
+                else if (gender.equals("fem")) {
+                    word = articleStandard(word);
+                }
+            }
+
+            //genitive case
+            else if
+            (caseType == grammaticalCase.GENITIVE) {
+                //masculine
+                if (gender.equals("masc")) {
+                    word = articleStandard(word);
+                }
+                //feminine
+                else if (gender.equals("fem")) {
+                    if (vowels.contains(wordLower.substring(0, 1))) {
+                        word = "na h-" + word;
+                    } else {
+                        word = "na " + word;
+                    }
+                }
+            }
+
+            //prepositional case
+            else if (caseType == grammaticalCase.PREPOSITIONAL) {
+                //both genders
+                word = articleStandard(word);
+            }
+        }
+
+        //plural
+        else if (sg_pl.equals("pl")) {
+            //genitive
+            if (caseType == grammaticalCase.GENITIVE) {
+                if (labials.contains(wordLower.substring(0,1))) {
+                    word = "nam " + word;
+                } else {
+                    word = "nan " + word;
+                }
+            } else {
+                if (vowels.contains(wordLower.substring(0,1))){
+                    word = "na h-" + word;
+                } else {
+                    word = "na " + word;
+                }
+            }
+        }
+        return word;
+    }
 }

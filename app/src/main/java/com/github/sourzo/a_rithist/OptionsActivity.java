@@ -48,9 +48,8 @@ public class OptionsActivity extends AppCompatActivity {
     RadioButton sentenceFullView;
     RadioButton sentenceBlankView;
     RadioButton sentenceQAView;
-    RadioGroup genderOptionsView;
-    RadioButton genderDefArtView;
-    RadioButton genderAdjView;
+    CheckBox genderDefArtNomView;
+    CheckBox genderAdjView;
     CheckBox comparativesView;
     CheckBox superlativesView;
     CheckBox pastView;
@@ -193,7 +192,8 @@ public class OptionsActivity extends AppCompatActivity {
         if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.GENDER_MODE)){
             genderDiv.setVisibility(View.GONE);
             genderTitle.setVisibility(View.GONE);
-            genderOptionsView.setVisibility(View.GONE);
+            genderAdjView.setVisibility(View.GONE);
+            genderDefArtNomView.setVisibility(View.GONE);
         }
 
         //comparatives/superlatives
@@ -277,15 +277,14 @@ public class OptionsActivity extends AppCompatActivity {
             }
         }
 
-        if (genderOptionsView.getVisibility() != View.GONE){
-            if (genderAdjView.isChecked()){
-                lo.genderType = "adj";
-            } else if (genderDefArtView.isChecked()){
-                lo.genderType = "defArt";
-            } else {
+        if (genderDiv.getVisibility() != View.GONE){
+           if (!genderAdjView.isChecked() && !genderDefArtNomView.isChecked()){
                 Toast.makeText(v.getContext(),"Please select a gender of nouns option", Toast.LENGTH_SHORT).show();
                 return;
-            }
+           } else {
+               lo.genderAdj = genderAdjView.isChecked();
+               lo.genderDefArtNom = genderDefArtNomView.isChecked();
+           }
         }
 
         if (compSupDiv.getVisibility() != View.GONE){
@@ -384,9 +383,8 @@ public class OptionsActivity extends AppCompatActivity {
         sentenceFullView = findViewById(R.id.full_sentence);
         sentenceBlankView = findViewById(R.id.fill_in_blanks);
         sentenceQAView = findViewById(R.id.q_and_a);
-        genderOptionsView = findViewById(R.id.gender_mode_options_container);
         genderAdjView = findViewById(R.id.gender_adj);
-        genderDefArtView = findViewById(R.id.gender_def_art);
+        genderDefArtNomView = findViewById(R.id.gender_def_art_nom);
         comparativesView = findViewById(R.id.comparatives);
         superlativesView = findViewById(R.id.superlatives);
         pastView = findViewById(R.id.past);
@@ -437,7 +435,8 @@ public class OptionsActivity extends AppCompatActivity {
         Log.i("Options", "vocabListSize = " + lo.vocabListSize);
         Log.i("Options", "largestNumber = " + lo.largestNumber);
         Log.i("Options", "sentenceType = " + lo.sentenceType);
-        Log.i("Options", "genderType = " + lo.genderType);
+        Log.i("Options", "genderAdj = " + lo.genderAdj);
+        Log.i("Options", "genderDefArtNom = " + lo.genderDefArtNom);
         Log.i("Options", "comparatives = " + lo.comparatives);
         Log.i("Options", "superlatives = " + lo.superlatives);
         Log.i("Options", "past = " + lo.past);
