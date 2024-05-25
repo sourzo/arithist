@@ -47,11 +47,12 @@ public class LessonInfo {
                         new Lesson.topicTags[] {Lesson.topicTags.VOCABULARY},
                         new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_GENERIC, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY},
                         Plurals::new));
-//        lessonSet.put("preferences",
-//                new Lesson("Preferences (I would like/prefer etc) using the prepositional pronoun 'le'",
-//                        new String[] {"english", "nom_sing"},
-//                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY}));
+        lessonSet.put("preferences",
+                new Lesson("Preferences (I would like/prefer etc) using the prepositional pronoun 'le'",
+                        new String[] {"english", "nom_sing"},
+                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY},
+                        Preferences::new));
 //        lessonSet.put("a3_verb_tenses",
 //                new Lesson("Verb tenses",
 //                        new String[] {"english", "en_past", "en_vn", "root", "verbal_noun"},
