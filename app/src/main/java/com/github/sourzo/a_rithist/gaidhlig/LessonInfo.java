@@ -58,11 +58,12 @@ public class LessonInfo {
 //                        new String[] {"english", "en_past", "en_vn", "root", "verbal_noun"},
 //                        new Lesson.topicTags[] {Lesson.topicTags.VERBS, Lesson.topicTags.VOCABULARY},
 //                        new Lesson.lessonOptions[] {Lesson.lessonOptions.CHOSEN_TENSE, Lesson.lessonOptions.VERB_FORM, Lesson.lessonOptions.VOCABULARY}));
-//        lessonSet.put("professions_annan",
-//                new Lesson("Professions: the prepositional pronoun 'ann an'",
-//                        new String[] {},
-//                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE}));
+        lessonSet.put("professions_annan",
+                new Lesson("Professions: the prepositional pronoun 'ann an'",
+                        new String[] {},
+                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE},
+                        ProfessionsAnn::new));
 //        lessonSet.put("a8_emphasis_adjectives",
 //                new Lesson("Emphatic pronouns and adjectives",
 //                        new String[] {"english", "adj_gd"},

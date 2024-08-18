@@ -61,6 +61,13 @@ public class GrammarGd {
         POSSESSIVE,
         GENITIVE
     }
+
+    enum VerbForm {
+        POS_STATEMENT,
+        NEG_STATEMENT,
+        POS_QUESTION,
+        NEG_QUESTION
+    }
     /**Set of broad vowels, including accents*/
     private final static Set<String> broadVowels = new HashSet<>(asList("a", "à", "á", "o", "ò", "ó", "u", "ù", "ú"));
     /**Set of slender vowels, including accents*/
@@ -245,7 +252,35 @@ public class GrammarGd {
         }
     }
 
-    //TODO slenderise(), shorten()
+    //TODO slenderise()
+
+    /**Removes the last set of vowels from a word, and changes nn to n*/
+    public String shorten(String word) {
+        //TODO check indices!
+        if (word.endsWith("il") || word.endsWith("in") || word.endsWith("ir")) {
+            String consonants = word.replaceAll("aeiouàèìòùáéióú","");
+            String penultimateConstant = consonants.substring(consonants.length()-2,consonants.length()-1);
+            int cut_position = word.lastIndexOf(penultimateConstant);
+            String shorter_word = word.substring(0,cut_position) + word.substring(word.length()-1);
+            if (shorter_word.replaceAll("aeiouàèìòùáéióú","").length() == shorter_word.length()) {
+                return word;
+            } else {
+                return shorter_word;
+            }
+        } else if (word.endsWith(("inn"))) {
+            String consonants = word.replaceAll("aeiouàèìòùáéióú","");
+            String prePenultimateConstant = consonants.substring(consonants.length()-3,consonants.length()-2);
+            int cut_position = word.lastIndexOf(prePenultimateConstant);
+            String shorter_word = word.substring(0,cut_position) + "n";
+            if (shorter_word.replaceAll("aeiouàèìòùáéióú","").length() == shorter_word.length()) {
+                return word;
+            } else {
+                return shorter_word;
+            }
+        } else {
+            return word;
+        }
+    }
 
     /**Add "an" or "am" to the start of a word, depending on whether the word starts with the labials (b,m,f,p)*/
     public static String anm(String word) {
@@ -390,5 +425,121 @@ public class GrammarGd {
             }
         }
         return word;
+    }
+
+    /**Simple past/future tense of a verb*/
+    //TODO Check grammatical accuracy of verb stuff - see IonnsaichSeo for examples
+    public String transformVerb(String root, String tense, VerbForm verbForm) {
+        root = root.toLowerCase();
+        String verb = "";
+        switch (tense) {
+            case "past":
+                if (irregularPast.containsKey(root)) {
+                    if (verbForm.equals(VerbForm.POS_STATEMENT)) {
+                        ////Primary form
+                        verb = irregularPast.get(root).get(0);
+                    } else {
+                        //Secondary form
+                        verb = irregularPast.get(root).get(1);
+                    }
+                } else {
+                    //regular past
+                    if (vowels.contains(root.substring(0, 1))) {
+                        verb = "dh'" + root;
+                    } else if (root.charAt(0) == 'f' && vowels.contains(root.substring(1, 2))) {
+                        verb = "dh'fh" + root.substring(1);
+                    } else {
+                        verb = lenite(root);
+                    }
+                    //secondary form
+                    if (!verbForm.equals(VerbForm.POS_STATEMENT))
+                    {
+                        verb = "do " + verb;
+                    }
+                }
+                break;
+            case "future":
+                if (irregularFuture.containsKey(root)) {
+                    if (verbForm.equals(VerbForm.POS_STATEMENT)){
+                        //Primary form
+                        verb = irregularFuture.get(root).get(0);
+                    } else{
+                        //Secondary form
+                        verb = irregularFuture.get(root).get(1);
+                    }
+                }
+                else {
+                    //regular future
+                    if (verbForm.equals(VerbForm.POS_STATEMENT)){
+                        //primary form
+                        if (endWidth(root).equals(grammaticalWidth.BROAD)) {
+                            verb = root + "aidh";
+                        } else {
+                            //some slender-ended verbs need shortening
+                            verb = shorten(root) + "idh";
+                        }
+                    } else {
+                        //secondary form
+                        if (verbForm.equals(VerbForm.NEG_STATEMENT)) {
+                            verb = lenite(root);
+                        } else {
+                            verb = root;
+                        }
+                    }
+                }
+                break;
+            case "present":
+                if (root.equals("bi")) {
+                    if (verbForm.equals(VerbForm.POS_STATEMENT)){
+                        //primary form
+                        verb = "tha";
+                    } else {
+                        //secondary form
+                        verb = "eil";
+                    }
+                }
+                break;
+        }
+
+        switch (verbForm) {
+            //Negative prefixes
+            case NEG_QUESTION:
+                if (verb.equals("faca")) {
+                    verb = "nach fhaca";
+                } else {
+                    verb = "nach " + verb;
+                }
+                break;
+            case NEG_STATEMENT:
+                verb = cha(verb);
+                break;
+            //Positive prefixes (questions only)
+            case POS_QUESTION:
+                if (!verb.equals("eil")) {
+                    verb = anm(verb);
+                } else {
+                    verb = "a bh" + verb;
+                }
+                break;
+        }
+        return verb;
+    }
+
+
+
+    /**Verbal noun tense of given verb, vn.
+     Input must be the verbal noun form.*/
+    public String verbal_noun(String vn, String person, String tense, VerbForm verbForm) {
+        if (tense.equals("vn_past") || tense.equals("vn_future")) {
+            tense = tense.substring(3);
+        }
+        String bi = transformVerb("bi", tense, verbForm);
+        if (vowels.contains(vn.substring(0,1)))
+        {
+            vn = "ag " + vn;
+        } else {
+            vn = "a' " + vn;
+        }
+        return bi + " " + person + " " + vn;
     }
 }

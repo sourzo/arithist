@@ -27,106 +27,106 @@ public class Preferences extends ExerciseGenerator {
         Exercise e = new Exercise();
         int object_num = new Random().nextInt(lo.sampleVocabList.size());
         HashMap<String,String> randomWord = lo.sampleVocabList.data.get(object_num);
-        int subject_num = new Random().nextInt(7);
+        int subjectNum = new Random().nextInt(7);
         int tense = new Random().nextInt(2); // 0 = present tense, 1 = future conditional
         boolean positive = new Random().nextBoolean(); // F = positive, T = negative
-        int likepref = new Random().nextInt(2); // 0 = like, 1 = prefer
+        int likePref = new Random().nextInt(2); // 0 = like, 1 = prefer
 
         //Parts of sentence --------------------------------------------------------
-        String obj_indef = ge.enIndefArticle(lo.sampleVocabList.get(object_num,"english"));
+        String objIndef = ge.enIndefArticle(lo.sampleVocabList.get(object_num,"english"));
 
         //English
-        String like_prefer_en;
+        String likePreferEn;
         if (tense == 0) {
             if (positive) {
-                like_prefer_en = "";
+                likePreferEn = "";
             } else {
-                like_prefer_en = ge.en.get(subject_num,"do_pres").toLowerCase() + "n't ";
+                likePreferEn = ge.en.get(subjectNum,"do_pres").toLowerCase() + "n't ";
             }
         } else {
             if (positive) {
-                like_prefer_en = "would ";
+                likePreferEn = "would ";
             } else {
-                like_prefer_en = "wouldn't ";
+                likePreferEn = "wouldn't ";
             }
         }
-        if (likepref == 0) {
-            like_prefer_en = like_prefer_en + "like";
+        if (likePref == 0) {
+            likePreferEn = likePreferEn + "like";
         } else {
-            like_prefer_en = like_prefer_en + "prefer";
+            likePreferEn = likePreferEn + "prefer";
         }
         if (tense == 0 && positive)
         {
             HashSet<String> hsn = new HashSet<>(Arrays.asList("he", "she", "name"));
-            if (hsn.contains(ge.en.get(subject_num,"en_subj").toLowerCase()))
+            if (hsn.contains(ge.en.get(subjectNum,"en_subj").toLowerCase()))
             {
-                like_prefer_en = like_prefer_en + "s";
+                likePreferEn = likePreferEn + "s";
             }      
         }
 
     //Gaelic
-        String like_prefer_gd;
+        String likePreferGd;
         if (positive) {
-            if (likepref == 0) {
+            if (likePref == 0) {
                 if (tense == 0) {
-                    like_prefer_gd = "is toil";
+                    likePreferGd = "is toil";
                 } else {
-                    like_prefer_gd = "bu toil";
+                    likePreferGd = "bu toil";
                 }
             } else {
                 if (tense == 0) {
-                    like_prefer_gd = "is fheàrr";
+                    likePreferGd = "is fheàrr";
                 } else {
-                    like_prefer_gd = "b' fheàrr";
+                    likePreferGd = "b' fheàrr";
                 }
             }
         } else {
-            if (likepref == 0) {
+            if (likePref == 0) {
                 if (tense == 0) {
-                    like_prefer_gd = "cha toil";
+                    likePreferGd = "cha toil";
                 } else {
-                    like_prefer_gd = "cha bu toil";
+                    likePreferGd = "cha bu toil";
                 }
             } else {
                 if (tense == 0) {
-                        like_prefer_gd = "chan fheàrr";
+                        likePreferGd = "chan fheàrr";
                 } else {
-                        like_prefer_gd = "cha b' fheàrr";
+                        likePreferGd = "cha b' fheàrr";
                 }
             }
         }
 
         //Construct sentences ------------------------------------------------------
-        String sentence_en = capitalise(ge.en.get(subject_num,"en_subj")) + " " + like_prefer_en.toLowerCase() + " " + obj_indef.toLowerCase();
-        String sentence_gd = capitalise(like_prefer_gd) + " " + g.pp.get(subject_num,"le").toLowerCase() + " " + Objects.requireNonNull(randomWord.get("nom_sing")).toLowerCase();
+        String sentenceEn = capitalise(ge.en.get(subjectNum,"en_subj")) + " " + likePreferEn.toLowerCase() + " " + objIndef.toLowerCase();
+        String sentenceGd = capitalise(likePreferGd) + " " + g.pp.get(subjectNum,"le").toLowerCase() + " " + Objects.requireNonNull(randomWord.get("nom_sing")).toLowerCase();
 
         //Prompts ----------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");
 
         if (Objects.equals(lo.sentenceType, "blanks")) {
             if (lo.translateFromGaelic) {
-                String etp = " " + like_prefer_en.toLowerCase() + " " + obj_indef.toLowerCase();
+                String etp = " " + likePreferEn.toLowerCase() + " " + objIndef.toLowerCase();
                 e.setEditTextPrompt(etp);
                 e.setEditTextCursorPosition(0);
             } else {
-                String etp =capitalise(like_prefer_gd) + "  " + Objects.requireNonNull(randomWord.get("nom_sing")).toLowerCase();
+                String etp =capitalise(likePreferGd) + "  " + Objects.requireNonNull(randomWord.get("nom_sing")).toLowerCase();
                 e.setEditTextPrompt(etp);
-                int cursor = like_prefer_gd.length() + 1;
+                int cursor = likePreferGd.length() + 1;
                 e.setEditTextCursorPosition(cursor);
             }
         }
         //Question ---------------------------------------------------------------------------------
         if (lo.translateFromGaelic) {
-            e.setQuestion(sentence_gd);
+            e.setQuestion(sentenceGd);
         } else {
-            e.setQuestion(sentence_en);
+            e.setQuestion(sentenceEn);
         }
 
         //Solutions --------------------------------------------------------------------------------
         if (lo.translateFromGaelic) {
-            e.addSolution(sentence_en);
+            e.addSolution(sentenceEn);
         } else {
-            e.addSolution(sentence_gd);
+            e.addSolution(sentenceGd);
         }
 
         //Output -----------------------------------------------------------------------------------

@@ -16,24 +16,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        simpleList = findViewById(R.id.simpleListView);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lessonDisplayTexts);
-        simpleList.setAdapter(arrayAdapter);
-
-        simpleList.setOnItemClickListener((parent, view, position, id) -> {
-            Intent i = new Intent(MainActivity.this, OptionsActivity.class);
-            i.putExtra("lessonID", lessonIDs.get(position));
-            startActivity(i);
-        });
-    }
-
     //List of lessons
-    ListView simpleList;
+    ListView lessonListView;
     static List<String> lessonIDs = new ArrayList<>();
     static List<String> lessonDisplayTexts = new ArrayList<>();
     static {
@@ -41,5 +25,24 @@ public class MainActivity extends AppCompatActivity {
             lessonIDs.add(lesson.getKey());
             lessonDisplayTexts.add(lesson.getValue().displayName);
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        lessonListView = findViewById(R.id.simpleListView);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                lessonDisplayTexts);
+        lessonListView.setAdapter(arrayAdapter);
+
+        lessonListView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent i = new Intent(MainActivity.this, OptionsActivity.class);
+            i.putExtra("lessonID", lessonIDs.get(position));
+            startActivity(i);
+        });
     }
 }

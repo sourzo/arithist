@@ -34,8 +34,8 @@ public class Exercise {
 
     /**A generic function to set a string to some standard format to aid sentence comparisons
      * <UL>
-     *  <Li>Removes leading & trailing blanks
-     *  <Li>Sets all characters to lower-case
+     *  <LI>Removes leading & trailing blanks
+     *  <LI>Sets all characters to lower-case
      *  <LI>Sets all acute accents to grave
      * </UL>
      * @param anyString The sentence to standardise
