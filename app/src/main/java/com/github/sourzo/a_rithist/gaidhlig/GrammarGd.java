@@ -40,12 +40,12 @@ public class GrammarGd {
     VocabTable list_holidays;
 
 
-    //Definitions--------------------------------------------------------------
+    //Enums --------------------------------------------------------------
     /**The largest number which the code is capable of translating!*/
     public static int largestTranslatableNumber = 100;
 
     /**Enumerated type: Grammatical Person (I, you, he, she, we, youse, they)*/
-    private enum Person {
+    public enum GrammaticalPerson {
         FIRST_SINGULAR,
         SECOND_SINGULAR,
         THIRD_SINGULAR_MALE,
@@ -78,30 +78,27 @@ public class GrammarGd {
         POS_QUESTION,
         NEG_QUESTION
     }
-    /**Set of broad vowels, including accents*/
-    private final static Set<String> broadVowels = new HashSet<>(asList("a", "à", "á", "o", "ò", "ó", "u", "ù", "ú"));
-    /**Set of slender vowels, including accents*/
-    private final static Set<String> slenderVowels = new HashSet<>(asList("e", "è", "é", "i", "ì", "í"));
-    /**Set containing all vowels, including accents*/
-    private final static Set<String> vowels = new HashSet<>(broadVowels);//slender vowels added below
-    static {vowels.addAll(slenderVowels);}
-    private final static Set<String> lrn = new HashSet<>(asList("l", "r", "n"));
-    private final static Set<String> lrnv = new HashSet<>();
-    static{
-        lrnv.addAll(lrn);
-        lrnv.addAll(vowels);
-    }
-    /**Set of labials (b, m, f, p)*/
-    private final static Set<String> labials = new HashSet<>(asList("b", "m", "f", "p"));
-    /**Set of dentals (d, t). These sometimes don't lenite.*/
-    private final static Set<String> dentals = new HashSet<>(asList("d", "t"));
-    /**Set of letters and strings which never lenite in writing (vowels, l, r, n, sm, st, sg, sp, t-)
-     * <P>Note that not all lenition is written - for example, a word beginning with "l" does change the sound of
-     * the "l" in a lenition scenario, but there's no "h" added in writing. This app only deals with written lenition.*/
-    private final static Set<String> neverLenite = new HashSet<>(asList("l", "r", "n", "sm", "st", "sg", "sp", "t-")); //vowels added below
-    static {neverLenite.addAll(vowels);}
 
-    private final static Set<String> definiteArticles = new HashSet<>(asList("an ", "na ", "a' ", "a’ ", "am ", "an t-"));
+    //Regular Expressions --------------------------------------------------------------
+
+    /**Regular expression matching words which start with broad vowels (a, o, u). Includes accented vowels.*/
+    private final static String broadVowelsRegex = "[aàáoòóuùú].*";
+    /**Regular expression matching words which start with slender vowels (e, i). Includes accented vowels.*/
+    private final static String slenderVowelsRegex = "[eèéiìí].*";
+    /**Regular expression matching words which start with vowels (a, e, i, o, u). Includes accented vowels.*/
+    private final static String vowelsRegex = "[aàáeèéiìíoòóuùú].*";
+    /**Regular expression matching words which start with the consonants l, r, n, or vowels (a, e, i, o, u). Includes accented vowels.*/
+    private final static String lrnvRegex = "[lrnaàáeèéiìíoòóuùú].*";
+    /**Regular expression matching the labials (b, m, f, p).*/
+    private final static String labialsRegex = "[bmfp].*";
+    /**Regular expression matching the dentals (d, t).*/
+    private final static String dentalsRegex = "[dt].*";
+    /**Regular expression matching the words which never lenite in writing (those starting with a vowel, l, r, n, sm, st, sg, sp, or t-).
+     * Note that not all lenition is written - for example, a word beginning with "l" does change the sound of
+     *      * the "l" in a lenition scenario, but there's no "h" added in writing. This app only deals with written lenition.*/
+    private final static String neverLeniteRegex = "([lrnaàáeèéiìíoòóuùú]|sm|st|sg|sp|t-).*";
+    /**Regular expression matching words which start with definite articles (an, am, na, a', an t-)*/
+    private final static String definiteArticlesRegex = "(an |na |a' |a’ |am ).*";
 
     //Irregular verbs ----------------------------------------------------------
     /**The irregular past-tense forms (primary and secondary, respectively) of verbs.
@@ -179,11 +176,11 @@ public class GrammarGd {
         String lastVowel = "";
         for (int i = word.length()-1; i >= 0; i--) {
             lastVowel = Character.toString(word.charAt(i));
-            if (vowels.contains(lastVowel)) {
+            if (lastVowel.matches(vowelsRegex)) {
                 break;
             }
         }
-        if (slenderVowels.contains(lastVowel)) {
+        if (lastVowel.matches(slenderVowelsRegex)) {
             return GrammaticalWidth.SLENDER;
         }
         return GrammaticalWidth.BROAD;
@@ -192,7 +189,7 @@ public class GrammarGd {
     /**Remove the definite article from a word*/
     public static String removeArticle(String word) {
         String wordLower = word.toLowerCase();
-        if (definiteArticles.stream().anyMatch(wordLower::startsWith)) {
+        if (wordLower.matches(definiteArticlesRegex)) {
             String stripWord = word.split(" ", 2)[1];
             if (stripWord.startsWith("t-")) {
                 return stripWord.substring(2);
@@ -211,11 +208,11 @@ public class GrammarGd {
      * @return MASCULINE or FEMININE (as an enumerated type)*/
     public static GrammaticalGender guessGender(String word) {
         String w = word.toLowerCase().trim();
-        if (definiteArticles.stream().anyMatch(w::startsWith)) {
+        if (w.matches(definiteArticlesRegex)) {
             if (w.startsWith("a' ") ||
                     w.startsWith("an fh") ||
-                    (w.startsWith("an t-s") && vowels.contains(Character.toString(w.charAt(6)))) ||
-                    (w.startsWith("an ") && vowels.contains(Character.toString(w.charAt(3))))
+                    (w.startsWith("an t-s") && Character.toString(w.charAt(6)).matches(vowelsRegex)) ||
+                    (w.startsWith("an ") && Character.toString(w.charAt(3)).matches(vowelsRegex))
             ) {
                 return GrammaticalGender.FEMININE;
             } else {
@@ -236,27 +233,18 @@ public class GrammarGd {
         }
     }
 
-    /**Lenite words - can add other letters which should not lenite, eg dentals
-     * @param word The word to be lenited
-     * @param alsoDontLenite A set of strings (letters) which should not lenite in addition to the usual set
-     * @return A word which will be lenited or not, depending on what letter(s) it starts with*/
-    public static String lenite(String word, Set<String> alsoDontLenite) {
-        String wordLower = word.toLowerCase();
-        if (alsoDontLenite.stream().anyMatch(wordLower::startsWith)) {
-            return word;
-        }
-        return lenite(word);
-    }
-
     /**Lenite words, excluding those which start with the letters which never lenite.
      * @param word The word to be lenited
+     * @param dontLeniteDentals If {@code true} then words starting with the dentals (d, t) will not lenite
      * @return A word which will be lenited or not, depending on what letter(s) it starts with
-     * @see #neverLenite*/
-    public static String lenite(String word) {
+     * @see #neverLeniteRegex*/
+    public static String lenite(String word, boolean dontLeniteDentals) {
         String wordLower = word.toLowerCase();
-        if (neverLenite.stream().anyMatch(wordLower::startsWith)) {
+        if (wordLower.matches(neverLeniteRegex)) {
             return word;
         } else if (wordLower.startsWith("h")){
+            return word;
+        } else if (dontLeniteDentals && wordLower.matches(dentalsRegex)) {
             return word;
         } else {
             return word.charAt(0) + "h" + word.substring(1);
@@ -296,9 +284,9 @@ public class GrammarGd {
     /**Add "an" or "am" to the start of a word, depending on whether the word starts with the labials (b,m,f,p)*/
     public static String anm(String word) {
         String wordLower = word.toLowerCase();
-        if (definiteArticles.stream().anyMatch(wordLower::startsWith)) {
+        if (wordLower.matches(definiteArticlesRegex)) {
             return word;
-        } else if (labials.stream().anyMatch(wordLower::startsWith)){
+        } else if (wordLower.matches(labialsRegex)) {
             return "am " + word;
         } else {
             return "an " + word;
@@ -308,12 +296,12 @@ public class GrammarGd {
     /**Add "cha" or "chan" to the start of a word*/
     public static String cha(String word) {
         String wordLower = word.toLowerCase();
-        if (vowels.stream().anyMatch(wordLower::startsWith)) {
+        if (wordLower.matches(vowelsRegex)) {
             return "chan " + word;
-        } else if (wordLower.charAt(0)=='f' && vowels.stream().anyMatch(v -> wordLower.substring(1).startsWith(v))) {
+        } else if (wordLower.charAt(0)=='f' && wordLower.substring(1).matches(vowelsRegex)) {
             return "chan fh" + word.substring(1);
         } else {
-            return "cha " + lenite(word, dentals);
+            return "cha " + lenite(word, true);
         }
     }
 
@@ -348,17 +336,17 @@ public class GrammarGd {
     public String articleStandard(String word) {
         String w = word.toLowerCase();
         if (Arrays.asList(new Character[]{'b', 'c', 'g', 'm', 'p'}).contains(w.charAt(0))) {
-            return "a' " + lenite(word, dentals);
+            return "a' " + lenite(word, true);
         } else if (w.charAt(0) == 's') {
 
-            if (lrnv.contains(w.substring(1,2))) {
+            if (w.matches(lrnvRegex)) {
                 return "an t-" + word;
             } else {
                 return "an " + word;
                 //Does this lenite ??
             }
         } else if (w.charAt(0) == 'f')
-            return "an " + lenite(word);
+            return "an " + lenite(word, false);
         else {
             return anm(word);
         }
@@ -380,9 +368,9 @@ public class GrammarGd {
             //nominal case
             if (caseType == GrammaticalCase.NOMINAL) {  //masculine
                 if (gender.equals("masc")) {
-                    if (labials.contains(wordLower.substring(0,1))) {
+                    if (wordLower.matches(labialsRegex)) {
                         word = "am " + word;
-                    } else if (vowels.contains(wordLower.substring(0,1))) {
+                    } else if (wordLower.matches(vowelsRegex)) {
                         word = "an t-" + word;
                     } else {
                         word = anm(word);
@@ -403,7 +391,7 @@ public class GrammarGd {
                 }
                 //feminine
                 else if (gender.equals("fem")) {
-                    if (vowels.contains(wordLower.substring(0, 1))) {
+                    if (wordLower.matches(vowelsRegex)) {
                         word = "na h-" + word;
                     } else {
                         word = "na " + word;
@@ -422,13 +410,13 @@ public class GrammarGd {
         else if (sg_pl.equals("pl")) {
             //genitive
             if (caseType == GrammaticalCase.GENITIVE) {
-                if (labials.contains(wordLower.substring(0,1))) {
+                if (wordLower.matches(labialsRegex)) {
                     word = "nam " + word;
                 } else {
                     word = "nan " + word;
                 }
             } else {
-                if (vowels.contains(wordLower.substring(0,1))){
+                if (wordLower.matches(vowelsRegex)){
                     word = "na h-" + word;
                 } else {
                     word = "na " + word;
@@ -462,9 +450,9 @@ public class GrammarGd {
                 if (outputPossession) {
                     if (output.length() == 0) {
                         //his + vowel
-                        output += lenite(possession);
+                        output += lenite(possession, false);
                     } else {
-                        output += " " + lenite(possession);
+                        output += " " + lenite(possession, false);
                     }
                 }
                 break;
@@ -523,12 +511,12 @@ public class GrammarGd {
                     }
                 } else {
                     //regular past
-                    if (vowels.contains(root.substring(0, 1))) {
+                    if (root.matches(vowelsRegex)) {
                         verb = "dh'" + root;
-                    } else if (root.charAt(0) == 'f' && vowels.contains(root.substring(1, 2))) {
+                    } else if (root.charAt(0) == 'f' && root.substring(1).matches(vowelsRegex)) {
                         verb = "dh'fh" + root.substring(1);
                     } else {
-                        verb = lenite(root);
+                        verb = lenite(root, false);
                     }
                     //secondary form
                     if (!verbForm.equals(VerbForm.POS_STATEMENT))
@@ -560,7 +548,7 @@ public class GrammarGd {
                     } else {
                         //secondary form
                         if (verbForm.equals(VerbForm.NEG_STATEMENT)) {
-                            verb = lenite(root);
+                            verb = lenite(root, false);
                         } else {
                             verb = root;
                         }
@@ -613,7 +601,7 @@ public class GrammarGd {
             tense = tense.substring(3);
         }
         String bi = transformVerb("bi", tense, verbForm);
-        if (vowels.contains(vn.substring(0,1)))
+        if (vn.matches(vowelsRegex))
         {
             vn = "ag " + vn;
         } else {
