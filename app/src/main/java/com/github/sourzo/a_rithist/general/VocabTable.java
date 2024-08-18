@@ -19,7 +19,10 @@ public class VocabTable {
     String[] colNames;
 
     /**A list of vocabulary mappings. Each map-item in the list represents a word,
-     * and each element of that map is a different grammatical form of that word.*/
+     * and each element of that map is a different grammatical form of that word.
+     * <P> Each list entry (HashMap) represents a row in the input data table.
+     * The HashMap key is the column name. The HashMap value
+     * is the table entry in that column for that row.</P>*/
     public List<HashMap<String,String>> data = new ArrayList<>();
 
 
@@ -140,6 +143,15 @@ public class VocabTable {
         } else {
             return data.get(rowNum).get(colname);
         }
+    }
+
+    public int getRow(String colname, String value) {
+        for (int i = 0; i < this.size(); i++) {
+            if (data.get(i).get(colname).equals(value)){
+                return i;
+            }
+        }
+        return Integer.MAX_VALUE; //this shouldn't happen
     }
 
 }

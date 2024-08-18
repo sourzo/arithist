@@ -2,6 +2,7 @@ package com.github.sourzo.a_rithist.gaidhlig.lessons;
 
 import com.github.sourzo.a_rithist.english.GrammarEn;
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
+import com.github.sourzo.a_rithist.gaidhlig.GrammaticalPerson;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;
@@ -21,13 +22,15 @@ public class PossessionAig extends ExerciseGenerator {
         //Setup ------------------------------------------------------------------------------------
         Exercise e = new Exercise();
         int objectNum = new Random().nextInt(lo.sampleVocabList.size());
-        int personNum = new Random().nextInt(7);
+        GrammaticalPerson person = GrammaticalPerson.random();
+        int persNumEn = ge.en.getRow("en_subj", person.en_subj);
+        int persNumPp = gg.pp.getRow("en_subj", person.en_subj);
 
         //Construct sentences ----------------------------------------------------------------------
         String objIndef = ge.enIndefArticle(lo.sampleVocabList.get(objectNum, "english"));
 
-        String sentenceEn = capitalise(ge.en.get(personNum, "en_subj")) + " " + ge.en.get(personNum, "have_pres").toLowerCase() + " " + objIndef.toLowerCase();
-        String sentenceGd = "Tha " + lo.sampleVocabList.get(objectNum, "nom_sing").toLowerCase() + " " + gg.pp.get(personNum, "aig").toLowerCase();
+        String sentenceEn = capitalise(person.en_subj) + " " + ge.en.get(persNumEn, "have_pres").toLowerCase() + " " + objIndef.toLowerCase();
+        String sentenceGd = "Tha " + lo.sampleVocabList.get(objectNum, "nom_sing").toLowerCase() + " " + gg.pp.get(persNumPp, "aig").toLowerCase();
 
         //PrePrompt --------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");

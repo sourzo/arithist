@@ -2,6 +2,7 @@ package com.github.sourzo.a_rithist.gaidhlig.lessons;
 
 import com.github.sourzo.a_rithist.english.GrammarEn;
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
+import com.github.sourzo.a_rithist.gaidhlig.GrammaticalPerson;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;
@@ -10,13 +11,13 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class ProfessionsAnn extends ExerciseGenerator {
-    GrammarGd g;
+    GrammarGd gg;
     GrammarEn ge;
 
     /**Creates a new exercise generator. Requires context to load vocab tables.*/
     public ProfessionsAnn(LessonOptions lo){
         super(lo);
-        g = new GrammarGd(lo.appRes);
+        gg = new GrammarGd(lo.appRes);
         ge = new GrammarEn(lo.appRes);
         lo.vocabListName = "people_professions.csv";
     }
@@ -25,29 +26,31 @@ public class ProfessionsAnn extends ExerciseGenerator {
         //Setup ------------------------------------------------------------------------------------
         Exercise e = new Exercise();
         //randomiser
-        int personNum = new Random().nextInt(7);
+        GrammaticalPerson person = GrammaticalPerson.random();
+        int persNumEn = ge.en.getRow("en_subj", person.en_subj);
+        int persNumPp = gg.pp.getRow("en_subj", person.en_subj);
         int professionNum = new Random().nextInt(lo.sampleVocabList.size());
         HashMap<String,String> profession = lo.sampleVocabList.data.get(professionNum);
 
         //Gaelic parts of sentence
-        String ppAnn = g.pp.get(personNum,"ann an");
+        String ppAnn = gg.pp.get(persNumPp,"ann an");
 
         String professionGd;
-        if (personNum < 4){
-            professionGd = profession.get("nom_sing");
-        } else {
+        if (person.isPlural){
             professionGd = profession.get("nom_pl");
+        } else {
+            professionGd = profession.get("nom_sing");
         }
 
         //English
-        String pronounEn = g.pp.get(personNum,"en_subj");
-        String beEn = ge.en.get(personNum,"be_pres");
+        String pronounEn = person.en_subj;
+        String beEn = ge.en.get(persNumEn,"be_pres");
 
         String professionEn = profession.get("english");
-        if (personNum < 4){
-            professionEn = ge.enIndefArticle(professionEn);
-        } else {
+        if (person.isPlural){
             professionEn = ge.pluralise(professionEn);
+        } else {
+            professionEn = ge.enIndefArticle(professionEn);
         }
 
         //Sentences:

@@ -423,21 +423,22 @@ public class GrammarGd {
      * @param person 0 = my, 1 = your(sg), 2 = his, 3 = her, 4 = our, 5 = your(pl), 6 = their
      * @param outputPossession Whether to include the possession in the outputs
      * */
-    public String articlePossessive(String possession, int person, boolean outputPossession) {
+    public String articlePossessive(String possession, GrammaticalPerson person, boolean outputPossession) {
+        int persNumPp = pp.getRow("en_subj", person.en_subj);
 
         String output;
 
         if (possession.matches("[aeiouàèìòùáéíóú].*")) {
             String[] whoseVowel = {"m'", "d'", "", "a", "àr", "ùr", "an"};
-            output = whoseVowel[person];
+            output = whoseVowel[person.ordinal()];
         } else {
-            output = pp.get(person, "possessive");
+            output = pp.get(persNumPp, "possessive");
         }
 
         switch (person) {
-            case 0:
-            case 1:
-            case 2:
+            case FIRST_SINGULAR:
+            case SECOND_SINGULAR:
+            case THIRD_SINGULAR_MALE:
                 // my/your/his -> lenition
                 if (outputPossession) {
                     if (output.length() == 0) {
@@ -448,7 +449,7 @@ public class GrammarGd {
                     }
                 }
                 break;
-            case 3:
+            case THIRD_SINGULAR_FEMALE:
                 //her + vowel -> "h-"
                 if (possession.matches("[aeiouàèìòùáéíóú].*")) {
                     output += " h-";
@@ -459,8 +460,8 @@ public class GrammarGd {
                     output += " " + possession;
                 }
                 break;
-            case 4:
-            case 5:
+            case FIRST_PLURAL:
+            case SECOND_PLURAL:
                 // (y)our + vowel -> n-
                 if (possession.matches("[aeiouàèìòùáéíóú].*")) {
                     output += " n-";
@@ -471,7 +472,7 @@ public class GrammarGd {
                     output += " " + possession;
                 }
                 break;
-            case 6:
+            case THIRD_PLURAL:
                 // bmfp: an -> am
                 if (possession.matches("[bmfp].*")) {
                     output = "am";

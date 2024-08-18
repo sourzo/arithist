@@ -1,8 +1,7 @@
 package com.github.sourzo.a_rithist.gaidhlig.lessons;
 
-import static java.util.Arrays.asList;
-
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
+import com.github.sourzo.a_rithist.gaidhlig.GrammaticalPerson;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;
@@ -10,17 +9,16 @@ import com.github.sourzo.a_rithist.general.LessonOptions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
 
 public class VerbTenses extends ExerciseGenerator {
-    GrammarGd g;
+    GrammarGd gg;
 
     /**Creates a new exercise generator. Requires context to load vocab tables.*/
     public VerbTenses(LessonOptions lo){
         super(lo);
-        g = new GrammarGd(lo.appRes);
+        gg = new GrammarGd(lo.appRes);
     }
 
     public Exercise generate() {
@@ -28,7 +26,8 @@ public class VerbTenses extends ExerciseGenerator {
         Exercise e = new Exercise();
 //        int vocabNum = new Random().nextInt(lo.sampleVocabList.size());
 //        HashMap<String,String> verb = lo.sampleVocabList.data.get(vocabNum);
-//        int pers_num = new Random().nextInt(g.pp.size());
+//        GrammaticalPerson person = GrammaticalPerson.random();
+//        int persNumPp = gg.pp.getRow("en_subj", person.en_subj);
 //
 //        //verb forms statement/question, positive/negative
 //        ArrayList<GrammarGd.VerbForm> verbFormOptions = new ArrayList<>();
@@ -47,14 +46,14 @@ public class VerbTenses extends ExerciseGenerator {
 //        if (lo.future){tenseOptions.add("vn_future");}
 //        String chosen_tense = tenseOptions.get(new Random().nextInt(tenseOptions.size()));
 //
-//        String person_gd = g.pp.get(pers_num,"pronoun_gd");
-//        String person_en = g.pp.get(pers_num,"en_subj");
+//        String person_gd = gg.pp.get(persNumPp,"pronoun_gd");
+//        String person_en = person.en_subj;
 //
 //        if (Objects.equals(chosen_tense, "past")
 //                || Objects.equals(chosen_tense, "future"))
 //        {
 //            String v_root = verb.get("root");
-//            String verb_gd = g.transformVerb(
+//            String verb_gd = gg.transformVerb(
 //                    v_root,
 //                    chosen_tense,
 //                    verbForm);
@@ -65,7 +64,7 @@ public class VerbTenses extends ExerciseGenerator {
 //            }
 //        } else {
 //            String v_noun = verb.get("verbal_noun");
-//            String sentence_gd = g.verbal_noun(v_noun,
+//            String sentence_gd = gg.verbal_noun(v_noun,
 //                    person_gd,
 //                    chosen_tense,
 //                    verbForm);
@@ -73,7 +72,7 @@ public class VerbTenses extends ExerciseGenerator {
 //
 //        sentence_gd = capitalise(sentence_gd);
 //
-//        String sentence_en = g.en_verb(vocab_sample, verb_num,
+//        String sentence_en = gg.en_verb(vocab_sample, verb_num,
 //                person_en,
 //                chosen_tense,
 //                verbForm);

@@ -2,6 +2,7 @@ package com.github.sourzo.a_rithist.gaidhlig.lessons;
 
 import com.github.sourzo.a_rithist.english.GrammarEn;
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
+import com.github.sourzo.a_rithist.gaidhlig.GrammaticalPerson;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;
@@ -25,16 +26,17 @@ public class PossessionMo extends ExerciseGenerator {
         Exercise e = new Exercise();
         int whatNum = new Random().nextInt(lo.sampleVocabList.size());
         int whereNum = new Random().nextInt(3);
-        int whoseNum = new Random().nextInt(7);
+        GrammaticalPerson person = GrammaticalPerson.random();
+        int persNumPp = gg.pp.getRow("en_subj", person.en_subj);
 
         HashMap<String,String> randomWord = lo.sampleVocabList.data.get(whatNum);
 
         //Parts of sentence: Gaelic ----------------------------------------------------------------
         String gdWhat = "errorNoAssignment";
-        if (whoseNum < 4){
-            gdWhat = randomWord.get("nom_sing");
-        } else {
+        if (person.isPlural){
             gdWhat = randomWord.get("nom_pl");
+        } else {
+            gdWhat = randomWord.get("nom_sing");
         }
 
         String gdWhere = "errorNoAssignment";
@@ -56,21 +58,21 @@ public class PossessionMo extends ExerciseGenerator {
 
         //Special cases: Daughter and father don't use this form of possession, they use "aig".
         if (randomWord.get("possessive_compatible").equals("no")) {
-            if (whoseNum < 4) {
-                gdWhoseWhat = "an " + gdWhat + gg.pp.get(whoseNum,"aig");
+            if (person.isPlural) {
+                gdWhoseWhat = "na " + gdWhat + gg.pp.get(persNumPp,"aig");
             } else {
-                gdWhoseWhat = "na " + gdWhat + gg.pp.get(whoseNum,"aig");
+                gdWhoseWhat = gg.anm(gdWhat) + gg.pp.get(persNumPp,"aig");
             }
         } else {
             //Not daughter/father
-            gdWhoseWhat = gg.articlePossessive(gdWhat, whoseNum, true);
+            gdWhoseWhat = gg.articlePossessive(gdWhat, person, true);
         }
 
         //Parts of sentence: English ---------------------------------------------------------------
         String enWhat = randomWord.get("english");
-
         String enBe = "errorNoAssignment";
-        if (whoseNum >= 4){
+
+        if (person.isPlural){
             enWhat = ge.pluralise(enWhat);
             enBe = "are";
         } else {
@@ -97,7 +99,7 @@ public class PossessionMo extends ExerciseGenerator {
                 enWhereAlt = "errorSwitchFail";
         }
 
-        String enWhose = gg.pp.get(whoseNum, "en_poss");
+        String enWhose = gg.pp.get(persNumPp, "en_poss");
 
         //Construct sentences ----------------------------------------------------------------------
         String sentenceEn = capitalise(enWhere) + " " + enBe + " " + enWhose + " " + enWhat;
