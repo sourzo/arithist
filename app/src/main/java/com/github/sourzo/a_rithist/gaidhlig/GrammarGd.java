@@ -7,10 +7,9 @@ import com.github.sourzo.a_rithist.general.VocabTable;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import java.util.Random;
 
 public class GrammarGd {
 
@@ -29,50 +28,38 @@ public class GrammarGd {
     }
 
     //Vocabulary/grammar files ------------------------------------------------
-    VocabTable pp;
-    VocabTable names;
-    VocabTable numbers;
-    VocabTable professions;
-    VocabTable similes;
-    VocabTable adjectives;
-    VocabTable list_months;
-    VocabTable list_seasons;
-    VocabTable list_holidays;
-
+    public VocabTable pp;
+    public VocabTable names;
+    public VocabTable numbers;
+    public VocabTable professions;
+    public VocabTable similes;
+    public VocabTable adjectives;
+    public VocabTable list_months;
+    public VocabTable list_seasons;
+    public VocabTable list_holidays;
 
     //Enums --------------------------------------------------------------
-    /**The largest number which the code is capable of translating!*/
-    public static int largestTranslatableNumber = 100;
 
-    /**Enumerated type: Grammatical Person (I, you, he, she, we, youse, they)*/
-    public enum GrammaticalPerson {
-        FIRST_SINGULAR,
-        SECOND_SINGULAR,
-        THIRD_SINGULAR_MALE,
-        THIRD_SINGULAR_FEMALE,
-        FIRST_PLURAL,
-        SECOND_PLURAL,
-        THIRD_PLURAL
-    }
     /**Enumerated type: BROAD (a, o, u) or SLENDER (e, i)*/
-    private enum GrammaticalWidth {
+    public enum GrammaticalWidth {
         BROAD,
         SLENDER
     }
 
     /**Enumerated type: The grammatical gender (MASCULINE or FEMININE)*/
-    private enum GrammaticalGender {
+    public enum GrammaticalGender {
         MASCULINE,
-        FEMININE
+        FEMININE,
+        UNDETERMINED
     }
-    enum GrammaticalCase {
+    public enum GrammaticalCase {
         NOMINAL,
         PREPOSITIONAL,
         POSSESSIVE,
         GENITIVE
     }
 
-    enum VerbForm {
+    public enum VerbForm {
         POS_STATEMENT,
         NEG_STATEMENT,
         POS_QUESTION,
@@ -131,6 +118,10 @@ public class GrammarGd {
         irregularFuture.put("faigh", asList("gheibh", "faigh"));
         irregularFuture.put("bi", asList("bidh", "bi"));
     }
+
+    //Fields: other ----------------------------------------------------
+    /**The largest number which the code is capable of translating!*/
+    public static int largestTranslatableNumber = 100;
 
     //Helper functions -----------------------------------------------------
 
@@ -209,6 +200,7 @@ public class GrammarGd {
     public static GrammaticalGender guessGender(String word) {
         String w = word.toLowerCase().trim();
         if (w.matches(definiteArticlesRegex)) {
+            //Some definite articles are only used for feminine words
             if (w.startsWith("a' ") ||
                     w.startsWith("an fh") ||
                     (w.startsWith("an t-s") && Character.toString(w.charAt(6)).matches(vowelsRegex)) ||
@@ -229,7 +221,7 @@ public class GrammarGd {
             if (endWidth(w1) == GrammaticalWidth.SLENDER){
                 return GrammaticalGender.FEMININE;
             }
-            return GrammaticalGender.MASCULINE;
+            return GrammaticalGender.UNDETERMINED;
         }
     }
 
@@ -591,8 +583,6 @@ public class GrammarGd {
         }
         return verb;
     }
-
-
 
     /**Verbal noun tense of given verb, vn.
      Input must be the verbal noun form.*/

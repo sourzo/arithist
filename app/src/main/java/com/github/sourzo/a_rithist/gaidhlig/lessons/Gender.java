@@ -1,9 +1,10 @@
-package com.github.sourzo.a_rithist.gaidhlig;
+package com.github.sourzo.a_rithist.gaidhlig.lessons;
 
 import static com.github.sourzo.a_rithist.gaidhlig.GrammarGd.lenite;
 
 import android.util.Log;
 
+import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;

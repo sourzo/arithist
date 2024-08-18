@@ -1,5 +1,14 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
+import com.github.sourzo.a_rithist.gaidhlig.lessons.BasicVocab;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.Gender;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.Numbers;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.Plurals;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.PossessionAig;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.PossessionMo;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.Preferences;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.ProfessionsAnn;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.Time;
 import com.github.sourzo.a_rithist.general.Lesson;
 
 import java.util.TreeMap;
