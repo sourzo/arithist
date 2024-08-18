@@ -51,7 +51,7 @@ public class Gender extends ExerciseGenerator {
                 sentenceGd = g.commonArticle(randomWord.get("nom_sing"),
                         "sg",
                         randomWord.get("gender"),
-                        GrammarGd.grammaticalCase.NOMINAL);
+                        GrammarGd.GrammaticalCase.NOMINAL);
                 break;
 
             //warning - vocab lists don't have prep_sing at the moment
@@ -61,7 +61,7 @@ public class Gender extends ExerciseGenerator {
                 sentenceGd = g.commonArticle(randomWord.get("prep_sing"),
                         "sg",
                         randomWord.get("gender"),
-                        GrammarGd.grammaticalCase.PREPOSITIONAL);
+                        GrammarGd.GrammaticalCase.PREPOSITIONAL);
                 break;
 
             //warning - vocab lists don't have poss_sing at the moment
@@ -71,7 +71,7 @@ public class Gender extends ExerciseGenerator {
                 sentenceGd = g.commonArticle(randomWord.get("poss_sing"),
                         "sg",
                         randomWord.get("gender"),
-                        GrammarGd.grammaticalCase.POSSESSIVE);
+                        GrammarGd.GrammaticalCase.POSSESSIVE);
                 break;
             default:
                 sentenceEn="";

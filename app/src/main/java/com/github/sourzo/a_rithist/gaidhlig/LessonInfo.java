@@ -69,11 +69,12 @@ public class LessonInfo {
 //                        new String[] {"english", "adj_gd"},
 //                        new Lesson.topicTags[] {Lesson.topicTags.ADJECTIVES},
 //                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY}));
-//        lessonSet.put("possession_mo",
-//                new Lesson("Possession using the possessive articles 'mo', 'do', etc",
-//                        new String[] {"english", "nom_sing", "nom_pl"},
-//                        new Lesson.topicTags[] {Lesson.topicTags.ARTICLES},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY}));
+        lessonSet.put("possession_mo",
+                new Lesson("Possession using the possessive articles 'mo', 'do', etc",
+                        new String[] {"english", "nom_sing", "nom_pl", "possessive_compatible"},
+                        new Lesson.topicTags[] {Lesson.topicTags.ARTICLES},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY},
+                        PossessionMo::new));
 //        lessonSet.put("where_from",
 //                new Lesson("Where are they from? - using the preposition 'à(s)",
 //                        new String[] {"english", "nom_sing", "gender"},

@@ -44,18 +44,28 @@ public class GrammarGd {
     /**The largest number which the code is capable of translating!*/
     public static int largestTranslatableNumber = 100;
 
+    /**Enumerated type: Grammatical Person (I, you, he, she, we, youse, they)*/
+    private enum Person {
+        FIRST_SINGULAR,
+        SECOND_SINGULAR,
+        THIRD_SINGULAR_MALE,
+        THIRD_SINGULAR_FEMALE,
+        FIRST_PLURAL,
+        SECOND_PLURAL,
+        THIRD_PLURAL
+    }
     /**Enumerated type: BROAD (a, o, u) or SLENDER (e, i)*/
-    private enum grammaticalWidth {
+    private enum GrammaticalWidth {
         BROAD,
         SLENDER
     }
 
     /**Enumerated type: The grammatical gender (MASCULINE or FEMININE)*/
-    private enum grammaticalGender {
+    private enum GrammaticalGender {
         MASCULINE,
         FEMININE
     }
-    enum grammaticalCase {
+    enum GrammaticalCase {
         NOMINAL,
         PREPOSITIONAL,
         POSSESSIVE,
@@ -164,7 +174,7 @@ public class GrammarGd {
     /**Does a word end with a broad or slender vowel?
      * @param word A Gaelic word
      * @return BROAD or SLENDER (as an enumerated type)*/
-    public static grammaticalWidth endWidth(String word) {
+    public static GrammaticalWidth endWidth(String word) {
         word = word.toLowerCase();
         String lastVowel = "";
         for (int i = word.length()-1; i >= 0; i--) {
@@ -174,9 +184,9 @@ public class GrammarGd {
             }
         }
         if (slenderVowels.contains(lastVowel)) {
-            return grammaticalWidth.SLENDER;
+            return GrammaticalWidth.SLENDER;
         }
-        return grammaticalWidth.BROAD;
+        return GrammaticalWidth.BROAD;
     }
 
     /**Remove the definite article from a word*/
@@ -199,7 +209,7 @@ public class GrammarGd {
      * (eg does it describe a person, is it a country)
      * @param word The word of unknown gender
      * @return MASCULINE or FEMININE (as an enumerated type)*/
-    public static grammaticalGender guessGender(String word) {
+    public static GrammaticalGender guessGender(String word) {
         String w = word.toLowerCase().trim();
         if (definiteArticles.stream().anyMatch(w::startsWith)) {
             if (w.startsWith("a' ") ||
@@ -207,22 +217,22 @@ public class GrammarGd {
                     (w.startsWith("an t-s") && vowels.contains(Character.toString(w.charAt(6)))) ||
                     (w.startsWith("an ") && vowels.contains(Character.toString(w.charAt(3))))
             ) {
-                return grammaticalGender.FEMININE;
+                return GrammaticalGender.FEMININE;
             } else {
                 return guessGender(removeArticle(w));
             }
         } else {
             String w1 = extractFirstWord(w)[0];
             if (w1.endsWith("ag") || (w1.endsWith("achd") + w1).equals("cailleach")) {
-                return grammaticalGender.FEMININE;
+                return GrammaticalGender.FEMININE;
             }
             if (w1.equals("caraid") || w1.equals("nàmhaid")) {
-                return grammaticalGender.MASCULINE;
+                return GrammaticalGender.MASCULINE;
             }
-            if (endWidth(w1) == grammaticalWidth.SLENDER){
-                return grammaticalGender.FEMININE;
+            if (endWidth(w1) == GrammaticalWidth.SLENDER){
+                return GrammaticalGender.FEMININE;
             }
-            return grammaticalGender.MASCULINE;
+            return GrammaticalGender.MASCULINE;
         }
     }
 
@@ -240,7 +250,8 @@ public class GrammarGd {
 
     /**Lenite words, excluding those which start with the letters which never lenite.
      * @param word The word to be lenited
-     * @return A word which will be lenited or not, depending on what letter(s) it starts with*/
+     * @return A word which will be lenited or not, depending on what letter(s) it starts with
+     * @see #neverLenite*/
     public static String lenite(String word) {
         String wordLower = word.toLowerCase();
         if (neverLenite.stream().anyMatch(wordLower::startsWith)) {
@@ -361,13 +372,13 @@ public class GrammarGd {
     public String commonArticle(String word,
                                 String sg_pl,
                                 String gender,
-                                grammaticalCase caseType) {
+                                GrammaticalCase caseType) {
         word = removeArticle(word);
         String wordLower = word.toLowerCase();
         //singular
         if (Objects.equals(sg_pl, "sg")) {
             //nominal case
-            if (caseType == grammaticalCase.NOMINAL) {  //masculine
+            if (caseType == GrammaticalCase.NOMINAL) {  //masculine
                 if (gender.equals("masc")) {
                     if (labials.contains(wordLower.substring(0,1))) {
                         word = "am " + word;
@@ -385,7 +396,7 @@ public class GrammarGd {
 
             //genitive case
             else if
-            (caseType == grammaticalCase.GENITIVE) {
+            (caseType == GrammaticalCase.GENITIVE) {
                 //masculine
                 if (gender.equals("masc")) {
                     word = articleStandard(word);
@@ -401,7 +412,7 @@ public class GrammarGd {
             }
 
             //prepositional case
-            else if (caseType == grammaticalCase.PREPOSITIONAL) {
+            else if (caseType == GrammaticalCase.PREPOSITIONAL) {
                 //both genders
                 word = articleStandard(word);
             }
@@ -410,7 +421,7 @@ public class GrammarGd {
         //plural
         else if (sg_pl.equals("pl")) {
             //genitive
-            if (caseType == grammaticalCase.GENITIVE) {
+            if (caseType == GrammaticalCase.GENITIVE) {
                 if (labials.contains(wordLower.substring(0,1))) {
                     word = "nam " + word;
                 } else {
@@ -425,6 +436,74 @@ public class GrammarGd {
             }
         }
         return word;
+    }
+
+    /**The possessive article (plus the thing being possessed)
+     * @param possession The thing being possessed
+     * @param person 0 = my, 1 = your(sg), 2 = his, 3 = her, 4 = our, 5 = your(pl), 6 = their
+     * @param outputPossession Whether to include the possession in the outputs
+     * */
+    public String articlePossessive(String possession, int person, boolean outputPossession) {
+
+        String output;
+
+        if (possession.matches("[aeiouàèìòùáéíóú].*")) {
+            String[] whoseVowel = {"m'", "d'", "", "a", "àr", "ùr", "an"};
+            output = whoseVowel[person];
+        } else {
+            output = pp.get(person, "possessive");
+        }
+
+        switch (person) {
+            case 0:
+            case 1:
+            case 2:
+                // my/your/his -> lenition
+                if (outputPossession) {
+                    if (output.length() == 0) {
+                        //his + vowel
+                        output += lenite(possession);
+                    } else {
+                        output += " " + lenite(possession);
+                    }
+                }
+                break;
+            case 3:
+                //her + vowel -> "h-"
+                if (possession.matches("[aeiouàèìòùáéíóú].*")) {
+                    output += " h-";
+                    if (outputPossession) {
+                        output += possession;
+                    }
+                } else if (outputPossession) {
+                    output += " " + possession;
+                }
+                break;
+            case 4:
+            case 5:
+                // (y)our + vowel -> n-
+                if (possession.matches("[aeiouàèìòùáéíóú].*")) {
+                    output += " n-";
+                    if (outputPossession) {
+                        output += possession;
+                    }
+                } else if (outputPossession) {
+                    output += " " + possession;
+                }
+                break;
+            case 6:
+                // bmfp: an -> am
+                if (possession.matches("[bmfp].*")) {
+                    output = "am";
+                }
+                if (outputPossession) {
+                    output += " " + possession;
+                }
+                break;
+            default:
+                break;
+        }
+        return output;
     }
 
     /**Simple past/future tense of a verb*/
@@ -472,7 +551,7 @@ public class GrammarGd {
                     //regular future
                     if (verbForm.equals(VerbForm.POS_STATEMENT)){
                         //primary form
-                        if (endWidth(root).equals(grammaticalWidth.BROAD)) {
+                        if (endWidth(root).equals(GrammaticalWidth.BROAD)) {
                             verb = root + "aidh";
                         } else {
                             //some slender-ended verbs need shortening

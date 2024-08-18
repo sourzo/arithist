@@ -1,23 +1,23 @@
-english,nom_sing,nom_pl,gender
-hat,ad,adan,fem
-bonnet,bonaid,bonaidean,fem
-kilt,fèileadh,fèilidhean,masc
-skirt,sgiort,sgiortan,fem
-shirt,lèine,lèintean,fem
-jumper,geansaidh,geansaidhean,masc
-t-shirt,lèine-t,lèintean-t,fem
-sock,stocainn,stocainnean,fem
-shoe,bròg,brògan,fem
-trousers,briogais,briogaisean,fem
-dress,dreasa,dreasaichean,fem
-underwear,drathais,drathaisean,fem
-bra,brà,bràthan,masc
-jacket,seacaid,seacaidean,fem
-coat,còta,còtaichean,masc
-glove,miotag,miotagan,fem
-scarf,sgarfa,sgarfaichean,fem
-welly boot,bòtann,bòtannan,masc
-watch,uaireadair,uaireadairean,masc
-shorts,briogais ghoirid,briogaisean ghoirid,fem
-belt,crios,criosan,masc
-suit,deise,deiseachan,fem
+english,nom_sing,nom_pl,gender,possessive_compatible
+hat,ad,adan,fem,yes
+bonnet,bonaid,bonaidean,fem,yes
+kilt,fèileadh,fèilidhean,masc,yes
+skirt,sgiort,sgiortan,fem,yes
+shirt,lèine,lèintean,fem,yes
+jumper,geansaidh,geansaidhean,masc,yes
+t-shirt,lèine-t,lèintean-t,fem,yes
+sock,stocainn,stocainnean,fem,yes
+shoe,bròg,brògan,fem,yes
+trousers,briogais,briogaisean,fem,yes
+dress,dreasa,dreasaichean,fem,yes
+underwear,drathais,drathaisean,fem,yes
+bra,brà,bràthan,masc,yes
+jacket,seacaid,seacaidean,fem,yes
+coat,còta,còtaichean,masc,yes
+glove,miotag,miotagan,fem,yes
+scarf,sgarfa,sgarfaichean,fem,yes
+welly boot,bòtann,bòtannan,masc,yes
+watch,uaireadair,uaireadairean,masc,yes
+shorts,briogais ghoirid,briogaisean ghoirid,fem,yes
+belt,crios,criosan,masc,yes
+suit,deise,deiseachan,fem,yes
