@@ -1,10 +1,14 @@
 package com.github.sourzo.a_rithist.english;
 
+import com.github.sourzo.a_rithist.gaidhlig.GrammaticalPerson;
+import com.github.sourzo.a_rithist.gaidhlig.SentenceType;
+import com.github.sourzo.a_rithist.gaidhlig.Tense;
 import com.github.sourzo.a_rithist.general.AndroidAppRes;
 import com.github.sourzo.a_rithist.general.VocabTable;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -78,4 +82,61 @@ public class GrammarEn {
         }
     }
 
+    public String transformVerb(HashMap<String,String> verb,
+                                GrammaticalPerson person,
+                                Tense tense,
+                                SentenceType sentenceType) {
+
+        String neg = "";
+        if (!sentenceType.isPositive){
+            if (!sentenceType.isQuestion){
+                neg = " not";
+            } else {
+                neg = "n't";
+            }
+        }
+
+        if (sentenceType.isQuestion){
+            if (tense.equals(Tense.PRESENT_VERBAL_NOUN)){
+                if (person.equals(GrammaticalPerson.FIRST_SINGULAR) && !sentenceType.isPositive){
+                    return "Aren't " + person.en_subj + " " + verb.get("en_vn");
+                } else {
+                    return en.filterMatches("en_subj", person.en_subj).get("be_pres",0) + neg + " " + person.en_subj + " " + verb.get("en_vn");
+                }
+            } else if (tense.equals(Tense.PAST)){
+                return "Did" + neg + " " + person.en_subj + " " + verb.get("english");
+            } else if (tense.equals(Tense.PAST_VERBAL_NOUN)){
+                return en.filterMatches("en_subj", person.en_subj).get("be_past",0) + neg + " " + person.en_subj + " " + verb.get("en_vn");
+            } else {
+                String start;
+                if (sentenceType.isPositive) {
+                    start = "Will ";
+                } else {
+                    start = "Won't ";
+                }
+                if (tense.equals(Tense.FUTURE)) {
+                    return start + person.en_subj + " " + verb.get("english");
+                } else if (tense.equals(Tense.FUTURE_VERBAL_NOUN)){
+                    return start + person.en_subj + " be " + verb.get("en_vn");
+                }
+            }
+        } else {
+            if (tense.equals(Tense.PRESENT_VERBAL_NOUN)){
+                return person.en_subj + " " + en.filterMatches("en_subj", person.en_subj).get("be_pres",0) + neg + " " + verb.get("en_vn");
+            } else if (tense.equals(Tense.PAST)){
+                if (sentenceType.isPositive){
+                    return person.en_subj + " " + verb.get("en_past");
+                } else {
+                    return person.en_subj + " did not " + verb.get("en_past");
+                }
+            } else if (tense.equals(Tense.PAST_VERBAL_NOUN)){
+                return person.en_subj + en.filterMatches("en_subj", person.en_subj).get("be_past",0);
+            } else if (tense.equals(Tense.FUTURE)){
+                return person.en_subj + " will " + neg + " " + verb.get("english");
+            } else if (tense.equals(Tense.FUTURE_VERBAL_NOUN)){
+                return person.en_subj + " will " + neg + " be " + verb.get("en_vn");
+            }
+        }
+        return "error in making english form of verb";
+    }
 }
