@@ -153,25 +153,25 @@
 
             </RadioGroup>
 
-            <!-- sentence options -->
+            <!-- response type options -->
             <View
-                android:id="@+id/sentence_divider"
+                android:id="@+id/response_type_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="16dp"
                 android:background="@android:color/darker_gray" />
 
             <TextView
-                android:id="@+id/sentence_title"
+                android:id="@+id/response_type_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:text="@string/sentenceTitle"
+                android:text="@string/responseTypeTitle"
                 android:textAlignment="textStart"
                 android:textSize="16sp" />
 
             <RadioGroup
-                android:id="@+id/sentence_options"
+                android:id="@+id/response_type_options"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -180,19 +180,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="@string/sentence_full" />
+                    android:text="@string/response_full" />
 
                 <RadioButton
                     android:id="@+id/fill_in_blanks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sentence_blanks" />
+                    android:text="@string/response_blanks" />
 
                 <RadioButton
                     android:id="@+id/q_and_a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sentence_qa" />
+                    android:text="@string/response_qa" />
             </RadioGroup>
 
             <!-- gender options -->
@@ -304,14 +304,14 @@
 
             <!-- Sentence type -->
             <View
-                android:id="@+id/verb_form_divider"
+                android:id="@+id/sentence_type_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="16dp"
                 android:background="@android:color/darker_gray" />
 
             <TextView
-                android:id="@+id/verb_form_title"
+                android:id="@+id/sentence_type_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"

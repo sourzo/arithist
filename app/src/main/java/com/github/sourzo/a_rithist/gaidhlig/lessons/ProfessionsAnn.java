@@ -59,7 +59,7 @@ public class ProfessionsAnn extends ExerciseGenerator {
 
         //Prompt -----------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");
-        if (lo.sentenceType.equals("blanks")) {
+        if (lo.responseType.equals("blanks")) {
             if (lo.translateFromGaelic) {
                 e.setEditTextPrompt(" " + professionEn.toLowerCase());
                 e.setEditTextCursorPosition(0);

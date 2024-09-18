@@ -10,7 +10,7 @@ public class LessonOptions implements Serializable {
     public int vocabListSize;
     public int largestNumber;
     public boolean translateFromGaelic;
-    public String sentenceType;
+    public String responseType;
     public boolean genderAdj;
     public boolean genderDefArtNom;
     public boolean comparatives;

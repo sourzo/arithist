@@ -108,7 +108,7 @@ public class PossessionMo extends ExerciseGenerator {
         //Prompt -----------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");
 
-        if (lo.sentenceType.equals("blanks")){
+        if (lo.responseType.equals("blanks")){
             if (lo.translateFromGaelic){
                 String editTextPrompt = capitalise(enWhere) + " " + enBe + "  " + enWhat;
                 e.setEditTextPrompt(editTextPrompt);

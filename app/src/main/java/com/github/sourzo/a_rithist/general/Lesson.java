@@ -1,7 +1,5 @@
 package com.github.sourzo.a_rithist.general;
 
-import com.github.sourzo.a_rithist.LessonActivity;
-
 import java.util.function.Function;
 
 public class Lesson {
@@ -43,7 +41,7 @@ public class Lesson {
         GENDER_MODE,
         COMP_SUP,
         CHOSEN_TENSE,
-        VERB_FORM,
+        SENTENCE_TYPE,
         TRANSLATE,
         TRANSLATE_WORDS,
         TRANSLATE_NUMBERS,

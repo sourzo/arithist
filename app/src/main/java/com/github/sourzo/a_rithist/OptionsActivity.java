@@ -44,10 +44,10 @@ public class OptionsActivity extends AppCompatActivity {
     RadioGroup translationOptionsView;
     RadioButton toGaelicButtonView;
     RadioButton fromGaelicButtonView;
-    RadioGroup sentenceOptionsView;
-    RadioButton sentenceFullView;
-    RadioButton sentenceBlankView;
-    RadioButton sentenceQAView;
+    RadioGroup responseTypeOptionsView;
+    RadioButton responseFullView;
+    RadioButton responseBlankView;
+    RadioButton responseQAView;
     CheckBox genderDefArtNomView;
     CheckBox genderAdjView;
     CheckBox comparativesView;
@@ -71,22 +71,22 @@ public class OptionsActivity extends AppCompatActivity {
     TextView vocabTitle;
     TextView vocabListSizeTitle;
     TextView largestNumberTitle;
-    TextView sentenceTitle;
+    TextView responseTypeTitle;
     TextView genderTitle;
     TextView compSupTitle;
     TextView verbTenseTitle;
-    TextView verbFormTitle;
+    TextView sentenceTypeTitle;
     TextView prepObjTitle;
 
     //Views : Section Dividers ---------------------------------------------------------------------
     View translateDiv;
     View vocabDiv;
     View largestNumberDiv;
-    View sentenceDiv;
+    View responseTypeDiv;
     View genderDiv;
     View compSupDiv;
     View verbTenseDiv;
-    View verbFormDiv;
+    View sentenceTypeDiv;
     View prepObjDiv;
 
     //Options values -------------------------------------------------------------------------------
@@ -180,11 +180,11 @@ public class OptionsActivity extends AppCompatActivity {
         //Sentence type
         if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.SENTENCE_QA)){
             if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.SENTENCE)){
-                sentenceDiv.setVisibility(View.GONE);
-                sentenceTitle.setVisibility(View.GONE);
-                sentenceOptionsView.setVisibility(View.GONE);
+                responseTypeDiv.setVisibility(View.GONE);
+                responseTypeTitle.setVisibility(View.GONE);
+                responseTypeOptionsView.setVisibility(View.GONE);
             } else {
-                sentenceQAView.setVisibility(View.GONE);
+                responseQAView.setVisibility(View.GONE);
             }
         }
 
@@ -214,9 +214,9 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //Sentence type
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.VERB_FORM)){
-            verbFormDiv.setVisibility(View.GONE);
-            verbFormTitle.setVisibility(View.GONE);
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.SENTENCE_TYPE)){
+            sentenceTypeDiv.setVisibility(View.GONE);
+            sentenceTypeTitle.setVisibility(View.GONE);
             posStatementsView.setVisibility(View.GONE);
             negStatementsView.setVisibility(View.GONE);
             posQuestionsView.setVisibility(View.GONE);
@@ -264,15 +264,15 @@ public class OptionsActivity extends AppCompatActivity {
             lo.translateFromGaelic = fromGaelicButtonView.isChecked();
         }
 
-        if (sentenceOptionsView.getVisibility() != View.GONE){
-            if (sentenceFullView.isChecked()){
-                lo.sentenceType = "full";
-            } else if (sentenceBlankView.isChecked()){
-                lo.sentenceType = "blanks";
-            } else if (sentenceQAView.isChecked()){
-                lo.sentenceType = "qa";
+        if (responseTypeOptionsView.getVisibility() != View.GONE){
+            if (responseFullView.isChecked()){
+                lo.responseType = "full";
+            } else if (responseBlankView.isChecked()){
+                lo.responseType = "blanks";
+            } else if (responseQAView.isChecked()){
+                lo.responseType = "qa";
             } else {
-                Toast.makeText(v.getContext(),"Please select the question type", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(),"Please select the response type", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -308,7 +308,7 @@ public class OptionsActivity extends AppCompatActivity {
             }
         }
 
-        if (verbFormDiv.getVisibility() != View.GONE){
+        if (sentenceTypeDiv.getVisibility() != View.GONE){
             if (!posStatementsView.isChecked() && !negStatementsView.isChecked() && !posQuestionsView.isChecked() && !negQuestionsView.isChecked()){
                 Toast.makeText(v.getContext(),"Please select at least one sentence type (positive/negative, statement/question)", Toast.LENGTH_SHORT).show();
                 return;
@@ -379,10 +379,10 @@ public class OptionsActivity extends AppCompatActivity {
         translationOptionsView = findViewById(R.id.translation_options);
         toGaelicButtonView = findViewById(R.id.toGaelicButton);
         fromGaelicButtonView = findViewById(R.id.fromGaelicButton);
-        sentenceOptionsView = findViewById(R.id.sentence_options);
-        sentenceFullView = findViewById(R.id.full_sentence);
-        sentenceBlankView = findViewById(R.id.fill_in_blanks);
-        sentenceQAView = findViewById(R.id.q_and_a);
+        responseTypeOptionsView = findViewById(R.id.response_type_options);
+        responseFullView = findViewById(R.id.full_sentence);
+        responseBlankView = findViewById(R.id.fill_in_blanks);
+        responseQAView = findViewById(R.id.q_and_a);
         genderAdjView = findViewById(R.id.gender_adj);
         genderDefArtNomView = findViewById(R.id.gender_def_art_nom);
         comparativesView = findViewById(R.id.comparatives);
@@ -406,22 +406,22 @@ public class OptionsActivity extends AppCompatActivity {
         vocabTitle = findViewById(R.id.vocab_list_spinner_title);
         vocabListSizeTitle = findViewById(R.id.vocab_list_size_title);
         largestNumberTitle = findViewById(R.id.largest_number_title);
-        sentenceTitle = findViewById(R.id.sentence_title);
+        responseTypeTitle = findViewById(R.id.response_type_title);
         genderTitle = findViewById(R.id.gender_mode_title);
         compSupTitle = findViewById(R.id.comp_sup_title);
         verbTenseTitle = findViewById(R.id.verb_tense_title);
-        verbFormTitle = findViewById(R.id.verb_form_title);
+        sentenceTypeTitle = findViewById(R.id.sentence_type_title);
         prepObjTitle = findViewById(R.id.obj_prep_title);
 
         //Views : Section Dividers ---------------------------------------------------------------------
         translateDiv = findViewById(R.id.translation_divider);
         vocabDiv = findViewById(R.id.vocab_divider);
         largestNumberDiv = findViewById(R.id.largest_number_divider);
-        sentenceDiv = findViewById(R.id.sentence_divider);
+        responseTypeDiv = findViewById(R.id.response_type_divider);
         genderDiv = findViewById(R.id.gender_divider);
         compSupDiv = findViewById(R.id.comp_sup_divider);
         verbTenseDiv = findViewById(R.id.verb_tense_divider);
-        verbFormDiv = findViewById(R.id.verb_form_divider);
+        sentenceTypeDiv = findViewById(R.id.sentence_type_divider);
         prepObjDiv = findViewById(R.id.obj_prep_divider);
     }
 
@@ -434,7 +434,7 @@ public class OptionsActivity extends AppCompatActivity {
         Log.i("Options", "vocabListName = " + lo.vocabListName);
         Log.i("Options", "vocabListSize = " + lo.vocabListSize);
         Log.i("Options", "largestNumber = " + lo.largestNumber);
-        Log.i("Options", "sentenceType = " + lo.sentenceType);
+        Log.i("Options", "sentenceType = " + lo.responseType);
         Log.i("Options", "genderAdj = " + lo.genderAdj);
         Log.i("Options", "genderDefArtNom = " + lo.genderDefArtNom);
         Log.i("Options", "comparatives = " + lo.comparatives);

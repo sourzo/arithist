@@ -15,10 +15,10 @@
     <string name="dg_gd">Digits to Gaelic</string>
     <string name="from_gd">Translate from Gaelic </string>
     <string name="from_en">Translate from English</string>
-    <string name="sentenceTitle">Question type:</string>
-    <string name="sentence_full">Translate full sentence</string>
-    <string name="sentence_blanks">Fill in the blanks</string>
-    <string name="sentence_qa">Answer questions</string>
+    <string name="responseTypeTitle">Response type:</string>
+    <string name="response_full">Translate full sentence</string>
+    <string name="response_blanks">Fill in the blanks</string>
+    <string name="response_qa">Answer questions</string>
     <string name="gender_mode">Gender of nouns using…</string>
     <string name="adj">Adjectives</string>
     <string name="def_art_nom">Definite Articles (nom.)</string>

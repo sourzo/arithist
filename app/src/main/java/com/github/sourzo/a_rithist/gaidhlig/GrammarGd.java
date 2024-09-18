@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public class GrammarGd {
 
@@ -59,12 +58,6 @@ public class GrammarGd {
         GENITIVE
     }
 
-    public enum VerbForm {
-        POS_STATEMENT,
-        NEG_STATEMENT,
-        POS_QUESTION,
-        NEG_QUESTION
-    }
 
     //Regular Expressions --------------------------------------------------------------
 
@@ -81,8 +74,8 @@ public class GrammarGd {
     /**Regular expression matching the dentals (d, t).*/
     private final static String dentalsRegex = "[dt].*";
     /**Regular expression matching the words which never lenite in writing (those starting with a vowel, l, r, n, sm, st, sg, sp, or t-).
-     * Note that not all lenition is written - for example, a word beginning with "l" does change the sound of
-     *      * the "l" in a lenition scenario, but there's no "h" added in writing. This app only deals with written lenition.*/
+     * <P>Note that not all lenition is written - for example, a word beginning with "l" does change the sound of
+     * the "l" in a lenition scenario, but there's no "h" added in writing. This app only deals with written lenition.</P>*/
     private final static String neverLeniteRegex = "([lrnaàáeèéiìíoòóuùú]|sm|st|sg|sp|t-).*";
     /**Regular expression matching words which start with definite articles (an, am, na, a', an t-)*/
     private final static String definiteArticlesRegex = "(an |na |a' |a’ |am ).*";
@@ -489,13 +482,16 @@ public class GrammarGd {
 
     /**Simple past/future tense of a verb*/
     //TODO Check grammatical accuracy of verb stuff - see IonnsaichSeo for examples
-    public String transformVerb(String root, String tense, VerbForm verbForm) {
+    public String transformVerb(String root, Tense tense, SentenceType sentenceType) {
+        if (tense.equals(Tense.PAST_VERBAL_NOUN) || tense.equals(Tense.FUTURE_VERBAL_NOUN)){
+            return transformVerb(root, tense, sentenceType);
+        }
         root = root.toLowerCase();
         String verb = "";
         switch (tense) {
-            case "past":
+            case PAST:
                 if (irregularPast.containsKey(root)) {
-                    if (verbForm.equals(VerbForm.POS_STATEMENT)) {
+                    if (sentenceType.equals(SentenceType.POS_STATEMENT)) {
                         ////Primary form
                         verb = irregularPast.get(root).get(0);
                     } else {
@@ -503,7 +499,7 @@ public class GrammarGd {
                         verb = irregularPast.get(root).get(1);
                     }
                 } else {
-                    //regular past
+                    //regular past: Lenite, and add "dh'" if it's a vowel or f+vowel
                     if (root.matches(vowelsRegex)) {
                         verb = "dh'" + root;
                     } else if (root.charAt(0) == 'f' && root.substring(1).matches(vowelsRegex)) {
@@ -511,16 +507,16 @@ public class GrammarGd {
                     } else {
                         verb = lenite(root, false);
                     }
-                    //secondary form
-                    if (!verbForm.equals(VerbForm.POS_STATEMENT))
+                    //secondary form: add 'do '
+                    if (!sentenceType.equals(SentenceType.POS_STATEMENT))
                     {
                         verb = "do " + verb;
                     }
                 }
                 break;
-            case "future":
+            case FUTURE:
                 if (irregularFuture.containsKey(root)) {
-                    if (verbForm.equals(VerbForm.POS_STATEMENT)){
+                    if (sentenceType.equals(SentenceType.POS_STATEMENT)){
                         //Primary form
                         verb = irregularFuture.get(root).get(0);
                     } else{
@@ -530,7 +526,7 @@ public class GrammarGd {
                 }
                 else {
                     //regular future
-                    if (verbForm.equals(VerbForm.POS_STATEMENT)){
+                    if (sentenceType.equals(SentenceType.POS_STATEMENT)){
                         //primary form
                         if (endWidth(root).equals(GrammaticalWidth.BROAD)) {
                             verb = root + "aidh";
@@ -540,7 +536,7 @@ public class GrammarGd {
                         }
                     } else {
                         //secondary form
-                        if (verbForm.equals(VerbForm.NEG_STATEMENT)) {
+                        if (sentenceType.equals(SentenceType.NEG_STATEMENT)) {
                             verb = lenite(root, false);
                         } else {
                             verb = root;
@@ -548,9 +544,9 @@ public class GrammarGd {
                     }
                 }
                 break;
-            case "present":
+            case PRESENT_VERBAL_NOUN:
                 if (root.equals("bi")) {
-                    if (verbForm.equals(VerbForm.POS_STATEMENT)){
+                    if (sentenceType.equals(SentenceType.POS_STATEMENT)){
                         //primary form
                         verb = "tha";
                     } else {
@@ -561,7 +557,7 @@ public class GrammarGd {
                 break;
         }
 
-        switch (verbForm) {
+        switch (sentenceType) {
             //Negative prefixes
             case NEG_QUESTION:
                 if (verb.equals("faca")) {
@@ -587,11 +583,13 @@ public class GrammarGd {
 
     /**Verbal noun tense of given verb, vn.
      Input must be the verbal noun form.*/
-    public String verbal_noun(String vn, String person, String tense, VerbForm verbForm) {
-        if (tense.equals("vn_past") || tense.equals("vn_future")) {
-            tense = tense.substring(3);
+    public String verbal_noun(String vn, String person, Tense tense, SentenceType sentenceType) {
+        if (tense.equals(Tense.PAST_VERBAL_NOUN)){
+            tense = Tense.PAST;
+        } else if (tense.equals(Tense.FUTURE_VERBAL_NOUN)) {
+            tense = Tense.FUTURE;
         }
-        String bi = transformVerb("bi", tense, verbForm);
+        String bi = transformVerb("bi", tense, sentenceType);
         if (vn.matches(vowelsRegex))
         {
             vn = "ag " + vn;

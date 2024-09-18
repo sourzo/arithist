@@ -107,7 +107,7 @@ public class Preferences extends ExerciseGenerator {
         //Prompts ----------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");
 
-        if (Objects.equals(lo.sentenceType, "blanks")) {
+        if (Objects.equals(lo.responseType, "blanks")) {
             if (lo.translateFromGaelic) {
                 String etp = " " + likePreferEn.toLowerCase() + " " + objIndef.toLowerCase();
                 e.setEditTextPrompt(etp);

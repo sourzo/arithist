@@ -123,7 +123,7 @@ public class LessonActivity extends AppCompatActivity {
         Log.i("Options", "vocabListName = " + lo.vocabListName);
         Log.i("Options", "vocabListSize = " + lo.vocabListSize);
         Log.i("Options", "largestNumber = " + lo.largestNumber);
-        Log.i("Options", "sentenceType = " + lo.sentenceType);
+        Log.i("Options", "sentenceType = " + lo.responseType);
         Log.i("Options", "genderAdj = " + lo.genderAdj);
         Log.i("Options", "genderDefArtNom = " + lo.genderDefArtNom);
         Log.i("Options", "comparatives = " + lo.comparatives);

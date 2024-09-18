@@ -44,7 +44,7 @@ public class PossessionAig extends ExerciseGenerator {
         }
 
         //EditText Prompt --------------------------------------------------------------------------
-        if (lo.sentenceType.equals("blanks")){
+        if (lo.responseType.equals("blanks")){
             if (lo.translateFromGaelic){
                 String etp = " " + objIndef;
                 e.setEditTextPrompt(etp);
