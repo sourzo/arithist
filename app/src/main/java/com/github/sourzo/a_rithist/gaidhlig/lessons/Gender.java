@@ -1,7 +1,5 @@
 package com.github.sourzo.a_rithist.gaidhlig.lessons;
 
-import static com.github.sourzo.a_rithist.gaidhlig.GrammarGd.lenite;
-
 import android.util.Log;
 
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
@@ -33,7 +31,7 @@ public class Gender extends ExerciseGenerator {
         if (lo.genderAdj){genderOptions.add("adj");}
         if (lo.genderDefArtNom){genderOptions.add("defArtNom");}
         String genderMode = genderOptions.get(new Random().nextInt(genderOptions.size()));
-        String sentenceEn = "";
+        String sentenceEn;
         String sentenceGd = "";
         //Construct sentence -----------------------------------------------------------------------
         switch (genderMode) {
@@ -44,7 +42,7 @@ public class Gender extends ExerciseGenerator {
                 if (Objects.equals(randomWord.get("gender"), "masc")) {
                     sentenceGd = randomWord.get("nom_sing") + " " + adjectiveGd;
                 } else if (Objects.equals(randomWord.get("gender"), "fem")) {
-                    sentenceGd = randomWord.get("nom_sing") + " " + lenite(adjectiveGd, false);
+                    sentenceGd = randomWord.get("nom_sing") + " " + GrammarGd.lenite(adjectiveGd, false);
                 }
                 break;
             case "defArtNom":

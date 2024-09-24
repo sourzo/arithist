@@ -32,14 +32,14 @@ public class PossessionMo extends ExerciseGenerator {
         HashMap<String,String> randomWord = lo.sampleVocabList.data.get(whatNum);
 
         //Parts of sentence: Gaelic ----------------------------------------------------------------
-        String gdWhat = "errorNoAssignment";
+        String gdWhat;
         if (person.isPlural){
             gdWhat = randomWord.get("nom_pl");
         } else {
             gdWhat = randomWord.get("nom_sing");
         }
 
-        String gdWhere = "errorNoAssignment";
+        String gdWhere;
         switch (whereNum) {
             case 0:
                 gdWhere = "seo";
@@ -54,7 +54,7 @@ public class PossessionMo extends ExerciseGenerator {
                 gdWhere = "error";
         }
 
-        String gdWhoseWhat = "errorNoAssignment";
+        String gdWhoseWhat;
 
         //Special cases: Daughter and father don't use this form of possession, they use "aig".
         if (randomWord.get("possessive_compatible").equals("no")) {
@@ -70,7 +70,7 @@ public class PossessionMo extends ExerciseGenerator {
 
         //Parts of sentence: English ---------------------------------------------------------------
         String enWhat = randomWord.get("english");
-        String enBe = "errorNoAssignment";
+        String enBe;
 
         if (person.isPlural){
             enWhat = ge.pluralise(enWhat);
@@ -79,8 +79,8 @@ public class PossessionMo extends ExerciseGenerator {
             enBe = "is";
         }
 
-        String enWhere = "errorNoAssignment";
-        String enWhereAlt = "errorNoAssignment";
+        String enWhere;
+        String enWhereAlt;
         switch (whereNum) {
             case 0:
                 enWhere = "here";
@@ -103,12 +103,13 @@ public class PossessionMo extends ExerciseGenerator {
 
         //Construct sentences ----------------------------------------------------------------------
         String sentenceEn = capitalise(enWhere) + " " + enBe + " " + enWhose + " " + enWhat;
+        String sentenceEnAlt = capitalise(enWhereAlt) + " " + enBe + " " + enWhose + " " + enWhat;
         String sentenceGd = capitalise(gdWhere) + " " + gdWhoseWhat;
 
         //Prompt -----------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");
 
-        if (lo.responseType.equals("blanks")){
+        if (lo.responseType == LessonOptions.ResponseType.BLANKS) {
             if (lo.translateFromGaelic){
                 String editTextPrompt = capitalise(enWhere) + " " + enBe + "  " + enWhat;
                 e.setEditTextPrompt(editTextPrompt);
@@ -131,6 +132,7 @@ public class PossessionMo extends ExerciseGenerator {
         //Solutions --------------------------------------------------------------------------------
         if (lo.translateFromGaelic){
             e.addSolution(sentenceEn);
+            e.addSolution(sentenceEnAlt);
         } else {
             e.addSolution(sentenceGd);
         }

@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,6 +65,9 @@ public class VocabTable {
     //Properties--------------------------------------------------------------------
     public int size(){
         return data.size();
+    }
+    public Set<String> getColnames(){
+        return new HashSet<>(Arrays.asList(colNames));
     }
     //Extraction methods------------------------------------------------------------
 

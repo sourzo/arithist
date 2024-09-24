@@ -5,10 +5,12 @@ import static java.util.Arrays.asList;
 import com.github.sourzo.a_rithist.general.AndroidAppRes;
 import com.github.sourzo.a_rithist.general.VocabTable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class GrammarGd {
 
@@ -111,6 +113,19 @@ public class GrammarGd {
         irregularFuture.put("faigh", asList("gheibh", "faigh"));
         irregularFuture.put("bi", asList("bidh", "bi"));
     }
+    public final static HashMap<String, String> adjectiveModifiers = new HashMap<>();
+    public final static List<String> adjModList;
+    static {
+        adjectiveModifiers.put("", ""); //no adjective modifier
+        adjectiveModifiers.put("so ","cho ");
+        adjectiveModifiers.put("too ", "ro ");
+        adjectiveModifiers.put("very ", "glè ");
+        adjectiveModifiers.put("terribly ", "uabhasach ");
+        adjectiveModifiers.put("really ", "gu math ");
+        adjectiveModifiers.put("a bit ", "beagan ");
+        adjModList = new ArrayList<String>(adjectiveModifiers.keySet());
+
+    }
 
     //Fields: other ----------------------------------------------------
     /**The largest number which the code is capable of translating!*/
@@ -170,10 +185,18 @@ public class GrammarGd {
         return GrammaticalWidth.BROAD;
     }
 
+    /**@return {@code true} if word starts with */
+    public static boolean startsWithArticle(String string){
+        String stringLower = string.toLowerCase();
+        if (stringLower.matches(definiteArticlesRegex)) {
+            return true;
+        }
+        return false;
+    }
+
     /**Remove the definite article from a word*/
     public static String removeArticle(String word) {
-        String wordLower = word.toLowerCase();
-        if (wordLower.matches(definiteArticlesRegex)) {
+        if (startsWithArticle(word)) {
             String stripWord = word.split(" ", 2)[1];
             if (stripWord.startsWith("t-")) {
                 return stripWord.substring(2);
@@ -224,12 +247,12 @@ public class GrammarGd {
      * @return A word which will be lenited or not, depending on what letter(s) it starts with
      * @see #neverLeniteRegex*/
     public static String lenite(String word, boolean dontLeniteDentals) {
+        //TODO reverse the boolean arg to be leniteDentals
         String wordLower = word.toLowerCase();
-        if (wordLower.matches(neverLeniteRegex)) {
-            return word;
-        } else if (wordLower.startsWith("h")){
-            return word;
-        } else if (dontLeniteDentals && wordLower.matches(dentalsRegex)) {
+        if (wordLower.matches(neverLeniteRegex) ||
+                wordLower.startsWith("h") ||
+                wordLower.charAt(1) == 'h' ||
+                (dontLeniteDentals && wordLower.matches(dentalsRegex))) {
             return word;
         } else {
             return word.charAt(0) + "h" + word.substring(1);
@@ -290,6 +313,24 @@ public class GrammarGd {
         }
     }
 
+    public static String addDo(String word) {
+        if (startsWithArticle(word)){
+            String[] placeSeparated = GrammarGd.extractFirstWord(word);
+            if (placeSeparated[0].equals("na")) {
+                return "dha na " + placeSeparated[2]; //dha doesn't lenite place-name
+            } else if (placeSeparated[2].startsWith("t-")) {
+                return "dhan " + placeSeparated[2];
+            } else {
+                return "dhan " + GrammarGd.lenite(placeSeparated[2], false);
+            }
+        } else {
+            if (word.matches(vowelsRegex) || word.startsWith("fh")) {
+                return "a dh'" + word;
+            } else {
+                return "a " + word;
+            }
+        }
+    }
     /**Returns the Gaelic for the given integer. Currently works for numbers up to 100,
      * and uses the decimal counting system (as I've not learned the other).*/
     public String digitsToGd(int n) {
@@ -317,7 +358,12 @@ public class GrammarGd {
         return "";
     }
 
-    /**The common article pattern used for singular nom-fem, prep, and gen-masc.*/
+    /**The common article pattern used for singular:
+     * <UL>
+     *     <LI>nominal (feminine) </LI>
+     *     <LI>prepositional (masc and fem)</LI>
+     *     <LI>genitive/possessive (masculine)</LI>
+     * </UL> */
     public String articleStandard(String word) {
         String w = word.toLowerCase();
         if (Arrays.asList(new Character[]{'b', 'c', 'g', 'm', 'p'}).contains(w.charAt(0))) {
@@ -328,7 +374,7 @@ public class GrammarGd {
                 return "an t-" + word;
             } else {
                 return "an " + word;
-                //Does this lenite ??
+                //TODO Does this lenite ??
             }
         } else if (w.charAt(0) == 'f')
             return "an " + lenite(word, false);

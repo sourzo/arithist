@@ -127,7 +127,6 @@ public class OptionsActivity extends AppCompatActivity {
             vocabSpinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    //TODO
                     fullVocabList = new VocabTable(androidAppRes, validVocabFileNames.get(position));
                     lo.vocabListName = validVocabFileNames.get(position);
 
@@ -266,11 +265,11 @@ public class OptionsActivity extends AppCompatActivity {
 
         if (responseTypeOptionsView.getVisibility() != View.GONE){
             if (responseFullView.isChecked()){
-                lo.responseType = "full";
+                lo.responseType = LessonOptions.ResponseType.FULL_SENTENCE;
             } else if (responseBlankView.isChecked()){
-                lo.responseType = "blanks";
+                lo.responseType = LessonOptions.ResponseType.BLANKS;
             } else if (responseQAView.isChecked()){
-                lo.responseType = "qa";
+                lo.responseType = LessonOptions.ResponseType.Q_AND_A;
             } else {
                 Toast.makeText(v.getContext(),"Please select the response type", Toast.LENGTH_SHORT).show();
                 return;
@@ -346,25 +345,26 @@ public class OptionsActivity extends AppCompatActivity {
     }
 
     /**Get the names of the vocab files which contain the specified columns
-     * @param requiredColumns The columns which must all be present in a CSV file for it to be included in the returned set */
+     * @param requiredColumns The columns which must all be present in a CSV file for
+     *                        it to be included in the returned set */
     public void setValidVocabFiles(Set<String> requiredColumns) {
         validVocabFileNames = new ArrayList<>();
         if (requiredColumns.size()!=0){
             try {
                 for (String s : Objects.requireNonNull(getAssets().list(""))) {
-                    try (BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open(s)))) {
-                        Set<String> fileColumns = new HashSet<>(Arrays.asList(br.readLine().split(",")));
-                        if (fileColumns.containsAll(requiredColumns)) {
-                            validVocabFileNames.add(s);
+                    if (!lo.lessonID.equals("where_in") || s.startsWith("places_")) { //some lessons need the "places" vocab lists, or the random sentences will make less sense than usual
+                        try (BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open(s)))) {
+                            Set<String> fileColumns = new HashSet<>(Arrays.asList(br.readLine().split(",")));
+                            if (fileColumns.containsAll(requiredColumns)) {
+                                validVocabFileNames.add(s);
+                            }
+                        } catch (FileNotFoundException e) {
+                            Log.d("Error","Unable to open file " + s);
+                            e.printStackTrace();
                         }
-                    } catch (FileNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        Log.d("Error","Unable to open file " + s);
-                        e.printStackTrace();
                     }
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 Log.d("Error","Unable to list assets");
             }
         }

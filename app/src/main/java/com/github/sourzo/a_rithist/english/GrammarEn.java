@@ -127,16 +127,36 @@ public class GrammarEn {
                 if (sentenceType.isPositive){
                     return person.en_subj + " " + verb.get("en_past");
                 } else {
-                    return person.en_subj + " did not " + verb.get("en_past");
+                    return person.en_subj + " did not " + verb.get("english");
                 }
             } else if (tense.equals(Tense.PAST_VERBAL_NOUN)){
-                return person.en_subj + en.filterMatches("en_subj", person.en_subj).get("be_past",0);
+                return person.en_subj + " " +
+                        en.filterMatches("en_subj", person.en_subj).get("be_past",0) +
+                        neg + " " + verb.get("en_vn");
             } else if (tense.equals(Tense.FUTURE)){
-                return person.en_subj + " will " + neg + " " + verb.get("english");
+                return person.en_subj + " will" + neg + " " + verb.get("english");
             } else if (tense.equals(Tense.FUTURE_VERBAL_NOUN)){
-                return person.en_subj + " will " + neg + " be " + verb.get("en_vn");
+                return person.en_subj + " will" + neg + " be " + verb.get("en_vn");
             }
         }
         return "error in making english form of verb";
+    }
+
+    /** Conjugates the verb "to go" and returns the pronoun with the verb.
+     * @return [person] + [verb: to go]*/
+    public String toGo(GrammaticalPerson person, Tense tense) {
+        switch(tense){
+            case PAST:
+                return person.en_subj + " went";
+            case FUTURE:
+                return person.en_subj + " will go";
+            case FUTURE_VERBAL_NOUN:
+                return person.en_subj + " will be going";
+            case PAST_VERBAL_NOUN:
+                return person.en_subj + " " + en.filterMatches("en_subj", person.en_subj).get(0,"be_past") + " going";
+            case PRESENT_VERBAL_NOUN:
+                return person.en_subj + " " + en.filterMatches("en_subj", person.en_subj).get(0,"be_pres") + " going";
+        }
+    return "error - toGo - tense not recognised";
     }
 }

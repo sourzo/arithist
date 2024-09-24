@@ -57,7 +57,7 @@ public class LessonActivity extends AppCompatActivity {
         //load vocab set
         if (lo.vocabListName != null){
             lo.sampleVocabList = new VocabTable(lo.appRes, lo.vocabListName);
-            lo.sampleVocabList.getRandomRows(lo.vocabListSize);
+            lo.sampleVocabList = lo.sampleVocabList.getRandomRows(lo.vocabListSize);
         }
         newExercise();
         userResponseView.setOnKeyListener((v, keyCode, event) -> {
