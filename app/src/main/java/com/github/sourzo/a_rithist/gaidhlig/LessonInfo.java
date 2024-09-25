@@ -1,6 +1,7 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
 import com.github.sourzo.a_rithist.gaidhlig.lessons.BasicVocab;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.SayingsComparisons;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.EmphasisAdjectives;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.Gender;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.GoingTo;
@@ -79,7 +80,7 @@ public class LessonInfo {
                 new Lesson("Professions: the prepositional pronoun 'ann an'",
                         new String[] {},
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
-                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY},
                         ProfessionsAnn::new));
         lessonSet.put("a8_emphasis_adjectives",
                 new Lesson("Emphatic pronouns and adjectives",
@@ -105,12 +106,12 @@ public class LessonInfo {
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.PLACE},
                         new Lesson.lessonOptions[] {Lesson.lessonOptions.SENTENCE_QA, Lesson.lessonOptions.VOCABULARY},
                         WhereIn::new));
-//        lessonSet.put("comparisons",
-//                new Lesson("Comparisons (sayings)",
-//                        new String[] {},
-//                        new Lesson.topicTags[] {Lesson.topicTags.ADJECTIVES},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE},
-//                        Comparisons::new));
+        lessonSet.put("comparisons",
+                new Lesson("Sayings: Comparisons",
+                        new String[] {"english","simile_en","adj_gd","simile_gd"},
+                        new Lesson.topicTags[] {Lesson.topicTags.ADJECTIVES},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY},
+                        SayingsComparisons::new));
 //        lessonSet.put("a9_comparatives_superlatives",
 //                new Lesson("Adjectives: Comparatives and superlatives",
 //                        new String[] {"english", "nom_sing", "gender"},

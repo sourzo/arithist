@@ -55,7 +55,7 @@ public class LessonActivity extends AppCompatActivity {
         lessonTitleView.setText(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).displayName);
 
         //load vocab set
-        if (lo.vocabListName != null){
+        if (lo.vocabListName != null) {
             lo.sampleVocabList = new VocabTable(lo.appRes, lo.vocabListName);
             lo.sampleVocabList = lo.sampleVocabList.getRandomRows(lo.vocabListSize);
         }

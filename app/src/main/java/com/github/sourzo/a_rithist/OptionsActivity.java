@@ -110,8 +110,31 @@ public class OptionsActivity extends AppCompatActivity {
         lessonTitle.setText(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).displayName);
 
         //Vocab list spinner: Change max number of words as switch is pressed
-        setValidVocabFiles(new HashSet<>(Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).requiredColumns)));
+        setValidVocabFiles(new HashSet<>(Arrays.asList(LessonInfo.lessonSet.get(lo.lessonID).requiredColumns)));
 
+        //Listener for the vocab files spinner. When user selects a vocab file, it updates the vocab file list size view.
+        vocabSpinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                fullVocabList = new VocabTable(androidAppRes, validVocabFileNames.get(position));
+                lo.vocabListName = validVocabFileNames.get(position);
+
+                //Set the size of the vocabulary table
+                long maxWords = fullVocabList.size();
+                vocabListSizeView.setHint(String.valueOf(maxWords));
+                String prompt = getString(R.string.vocab_list_size_title, maxWords);
+                vocabListSizeTitle.setText(prompt);
+                //TODO: Toast error to user if max is exceeded
+                //TODO: if number is 1, then user can select the word?
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //pass - something is always selected
+            }
+        });
+
+        //When there's no vocab files required, set the vocab views to GONE
         if (validVocabFileNames.size() == 0){
             vocabDiv.setVisibility(View.GONE);
             vocabTitle.setVisibility(View.GONE);
@@ -124,31 +147,21 @@ public class OptionsActivity extends AppCompatActivity {
             vocabSpinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             vocabSpinnerView.setAdapter(vocabSpinnerAdapter);
 
-            vocabSpinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    fullVocabList = new VocabTable(androidAppRes, validVocabFileNames.get(position));
-                    lo.vocabListName = validVocabFileNames.get(position);
+            //If there's only one vocab list, then no point in asking the user to choose a vocab list
+            //Instead, just ask them to select how many words they want to use
+            if (validVocabFileNames.size() == 1) {
+                vocabTitle.setVisibility(View.GONE);
+                vocabSpinnerView.setVisibility(View.GONE);
+                fullVocabList = new VocabTable(androidAppRes, validVocabFileNames.get(0));
+                lo.vocabListName = validVocabFileNames.get(0);
 
-                    //Set the size of the vocabulary table
-                    long maxWords = fullVocabList.size();
-                    vocabListSizeView.setHint(String.valueOf(maxWords));
-                    String prompt = getString(R.string.vocab_list_size_title, maxWords);
-                    vocabListSizeTitle.setText(prompt);
-                    //TODO: Toast error to user if max is exceeded
-                    //TODO: if number is 1, then user can select the word?
-                }
+                //Set the size of the vocabulary table
+                long maxWords = fullVocabList.size();
+                vocabListSizeView.setHint(String.valueOf(maxWords));
+                String prompt = getString(R.string.vocab_list_size_title, maxWords);
+                vocabListSizeTitle.setText(prompt);
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    fullVocabList = new VocabTable(androidAppRes, validVocabFileNames.get(0));
-                    lo.vocabListName = validVocabFileNames.get(0);
-                    long maxWords = fullVocabList.size();
-                    vocabListSizeView.setHint(String.valueOf(maxWords));
-                    String prompt = getString(R.string.vocab_list_size_title, maxWords);
-                    vocabListSizeTitle.setText(prompt);
-                }
-            });
+            }
         }
 
         //translating numbers - max number field
@@ -349,23 +362,27 @@ public class OptionsActivity extends AppCompatActivity {
      *                        it to be included in the returned set */
     public void setValidVocabFiles(Set<String> requiredColumns) {
         validVocabFileNames = new ArrayList<>();
-        if (requiredColumns.size()!=0){
-            try {
-                for (String s : Objects.requireNonNull(getAssets().list(""))) {
-                    if (!lo.lessonID.equals("where_in") || s.startsWith("places_")) { //some lessons need the "places" vocab lists, or the random sentences will make less sense than usual
-                        try (BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open(s)))) {
-                            Set<String> fileColumns = new HashSet<>(Arrays.asList(br.readLine().split(",")));
-                            if (fileColumns.containsAll(requiredColumns)) {
-                                validVocabFileNames.add(s);
+        if (lo.lessonID.equals("professions_annan")){
+            validVocabFileNames.add("people_professions.csv");
+        } else {
+            if (requiredColumns.size()!=0) {
+                try {
+                    for (String s : Objects.requireNonNull(getAssets().list(""))) {
+                        if (!lo.lessonID.equals("where_in") || s.startsWith("places_")) { //some lessons need the "places" vocab lists, or the random sentences will make less sense than usual
+                            try (BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open(s)))) {
+                                Set<String> fileColumns = new HashSet<>(Arrays.asList(br.readLine().split(",")));
+                                if (fileColumns.containsAll(requiredColumns)) {
+                                    validVocabFileNames.add(s);
+                                }
+                            } catch (FileNotFoundException e) {
+                                Log.d("Error","Unable to open file " + s);
+                                e.printStackTrace();
                             }
-                        } catch (FileNotFoundException e) {
-                            Log.d("Error","Unable to open file " + s);
-                            e.printStackTrace();
                         }
                     }
+                } catch (IOException e) {
+                    Log.d("Error","Unable to list assets");
                 }
-            } catch (IOException e) {
-                Log.d("Error","Unable to list assets");
             }
         }
     }
