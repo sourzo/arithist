@@ -42,7 +42,7 @@ public class Gender extends ExerciseGenerator {
                 if (Objects.equals(randomWord.get("gender"), "masc")) {
                     sentenceGd = randomWord.get("nom_sing") + " " + adjectiveGd;
                 } else if (Objects.equals(randomWord.get("gender"), "fem")) {
-                    sentenceGd = randomWord.get("nom_sing") + " " + GrammarGd.lenite(adjectiveGd, false);
+                    sentenceGd = randomWord.get("nom_sing") + " " + GrammarGd.lenite(adjectiveGd, true);
                 }
                 break;
             case "defArtNom":

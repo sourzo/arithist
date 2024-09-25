@@ -246,13 +246,13 @@ public class GrammarGd {
      * @param dontLeniteDentals If {@code true} then words starting with the dentals (d, t) will not lenite
      * @return A word which will be lenited or not, depending on what letter(s) it starts with
      * @see #neverLeniteRegex*/
-    public static String lenite(String word, boolean dontLeniteDentals) {
+    public static String lenite(String word, boolean leniteDentals) {
         //TODO reverse the boolean arg to be leniteDentals
         String wordLower = word.toLowerCase();
         if (wordLower.matches(neverLeniteRegex) ||
                 wordLower.startsWith("h") ||
                 wordLower.charAt(1) == 'h' ||
-                (dontLeniteDentals && wordLower.matches(dentalsRegex))) {
+                (!leniteDentals && wordLower.matches(dentalsRegex))) {
             return word;
         } else {
             return word.charAt(0) + "h" + word.substring(1);
@@ -309,19 +309,19 @@ public class GrammarGd {
         } else if (wordLower.charAt(0)=='f' && wordLower.substring(1).matches(vowelsRegex)) {
             return "chan fh" + word.substring(1);
         } else {
-            return "cha " + lenite(word, true);
+            return "cha " + lenite(word, false);
         }
     }
 
     public static String addDo(String word) {
         if (startsWithArticle(word)){
-            String[] placeSeparated = GrammarGd.extractFirstWord(word);
+            String[] placeSeparated = extractFirstWord(word);
             if (placeSeparated[0].equals("na")) {
                 return "dha na " + placeSeparated[2]; //dha doesn't lenite place-name
             } else if (placeSeparated[2].startsWith("t-")) {
                 return "dhan " + placeSeparated[2];
             } else {
-                return "dhan " + GrammarGd.lenite(placeSeparated[2], false);
+                return "dhan " + lenite(placeSeparated[2], true);
             }
         } else {
             if (word.matches(vowelsRegex) || word.startsWith("fh")) {
@@ -367,7 +367,7 @@ public class GrammarGd {
     public String articleStandard(String word) {
         String w = word.toLowerCase();
         if (Arrays.asList(new Character[]{'b', 'c', 'g', 'm', 'p'}).contains(w.charAt(0))) {
-            return "a' " + lenite(word, true);
+            return "a' " + lenite(word, false);
         } else if (w.charAt(0) == 's') {
 
             if (w.matches(lrnvRegex)) {
@@ -377,7 +377,7 @@ public class GrammarGd {
                 //TODO Does this lenite ??
             }
         } else if (w.charAt(0) == 'f')
-            return "an " + lenite(word, false);
+            return "an " + lenite(word, true);
         else {
             return anm(word);
         }
@@ -482,9 +482,9 @@ public class GrammarGd {
                 if (outputPossession) {
                     if (output.length() == 0) {
                         //his + vowel
-                        output += lenite(possession, false);
+                        output += lenite(possession, true);
                     } else {
-                        output += " " + lenite(possession, false);
+                        output += " " + lenite(possession, true);
                     }
                 }
                 break;
@@ -551,7 +551,7 @@ public class GrammarGd {
                     } else if (root.charAt(0) == 'f' && root.substring(1).matches(vowelsRegex)) {
                         verb = "dh'fh" + root.substring(1);
                     } else {
-                        verb = lenite(root, false);
+                        verb = lenite(root, true);
                     }
                     //secondary form: add 'do '
                     if (!sentenceType.equals(SentenceType.POS_STATEMENT))
@@ -583,7 +583,7 @@ public class GrammarGd {
                     } else {
                         //secondary form
                         if (sentenceType.equals(SentenceType.NEG_STATEMENT)) {
-                            verb = lenite(root, false);
+                            verb = lenite(root, true);
                         } else {
                             verb = root;
                         }

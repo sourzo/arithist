@@ -52,7 +52,7 @@ public class EmphasisAdjectives extends ExerciseGenerator {
         assert adjModGd != null;
         if (adjModGd.equals("ro ") || adjModGd.equals("glè ")){
             assert adjectiveGd != null;
-            adjectiveGd = GrammarGd.lenite(adjectiveGd, true);
+            adjectiveGd = GrammarGd.lenite(adjectiveGd, false);
         }
         String sentenceGd = "Tha " + pers_emph + " " + adjModGd + adjectiveGd;
         String sentenceEn = "*" + capitalise(pronoun_en) + "* " +
