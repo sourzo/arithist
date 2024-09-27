@@ -76,13 +76,13 @@ public class VocabTable {
      * @param colname The name of the "column" in the data table
      * @param matchWord The value in that column to match on*/
     public VocabTable filterMatches(String colname, String matchWord) {
-        List<HashMap<String,String>> filteredList = new ArrayList<>();
-        for (HashMap<String,String> word : data) {
-            if (word.get(colname).equals(matchWord)) {
-                filteredList.add(word);
+        List<HashMap<String,String>> rows = new ArrayList<>();
+        for (HashMap<String,String> row : data) {
+            if (row.get(colname).toLowerCase().equals(matchWord.toLowerCase())) {
+                rows.add(row);
             }
         }
-        return new VocabTable(colNames, filteredList);
+        return new VocabTable(colNames, rows);
     }
 
     /**Create a new VocabList by filtering this one by row numbers*/

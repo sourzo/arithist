@@ -362,7 +362,7 @@ public class OptionsActivity extends AppCompatActivity {
      *                        it to be included in the returned set */
     public void setValidVocabFiles(Set<String> requiredColumns) {
         validVocabFileNames = new ArrayList<>();
-        if (lo.lessonID.equals("professions_annan")){
+        if (lo.lessonID.equals("professions_annan")) {
             validVocabFileNames.add("people_professions.csv");
         } else {
             if (requiredColumns.size()!=0) {

@@ -1,6 +1,7 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
 import com.github.sourzo.a_rithist.gaidhlig.lessons.BasicVocab;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.Months;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.SayingsComparisons;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.EmphasisAdjectives;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.Gender;
@@ -11,6 +12,7 @@ import com.github.sourzo.a_rithist.gaidhlig.lessons.PossessionAig;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.PossessionMo;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.Preferences;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.ProfessionsAnn;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.Seasons;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.Time;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.VerbTenses;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.WhereFrom;
@@ -124,18 +126,18 @@ public class LessonInfo {
                         new Lesson.topicTags[] {Lesson.topicTags.TIME},
                         new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_NUMBERS, Lesson.lessonOptions.TRANSLATE},
                         Time::new));
-//        lessonSet.put("a7_which_season",
-//                new Lesson("Which season? [Prepositions]",
-//                        new String[] {},
-//                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.DATETIME},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.SENTENCE},
-//                        Seasons::new));
-//        lessonSet.put("a6_which_month",
-//                new Lesson("Which month? [Prepositions]",
-//                        new String[] {},
-//                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.DATETIME},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.SENTENCE},
-//                        Months::new));
+        lessonSet.put("a7_which_season",
+                new Lesson("Which season? [Prepositions]",
+                        new String[] {},
+                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.DATETIME},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.SENTENCE},
+                        Seasons::new));
+        lessonSet.put("a6_which_month",
+                new Lesson("Which month? [Prepositions]",
+                        new String[] {},
+                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.DATETIME},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.SENTENCE},
+                        Months::new));
         lessonSet.put("going_to",
                 new Lesson("Going to [place]: the irregular verb 'rach' and the preposition 'do' with place-names",
                         new String[] {"english", "place_gd"},

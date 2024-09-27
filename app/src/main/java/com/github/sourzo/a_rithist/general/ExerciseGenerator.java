@@ -1,10 +1,18 @@
 package com.github.sourzo.a_rithist.general;
 
 public abstract class ExerciseGenerator {
-
     protected LessonOptions lo;
+
+    //Vocab lists which are needed for particular lessons
+    protected VocabTable monthsVocabList;
+    protected VocabTable seasonsVocabList;
+    protected VocabTable holidaysVocabList;
+
     public ExerciseGenerator(LessonOptions lo){
         this.lo = lo;
+        monthsVocabList = new VocabTable(lo.appRes, "datetime_months.csv");
+        seasonsVocabList = new VocabTable(lo.appRes, "datetime_seasons.csv");
+        holidaysVocabList = new VocabTable(lo.appRes, "datetime_holidays.csv");
     }
 
     public abstract Exercise generate();
