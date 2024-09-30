@@ -47,6 +47,8 @@ public class OptionsActivity extends AppCompatActivity {
     RadioGroup responseTypeOptionsView;
     RadioButton responseFullView;
     RadioButton responseBlankView;
+    RadioButton responseBlankVerbView;
+    RadioButton responseBlankPpView;
     RadioButton responseQAView;
     CheckBox genderDefArtNomView;
     CheckBox genderAdjView;
@@ -190,15 +192,28 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //Sentence type
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.SENTENCE_QA)){
-            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.SENTENCE)){
-                responseTypeDiv.setVisibility(View.GONE);
-                responseTypeTitle.setVisibility(View.GONE);
-                responseTypeOptionsView.setVisibility(View.GONE);
-            } else {
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_QA)
+                && !Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS)
+                && !Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS_PP)
+                && !Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS_VERB)){
+            responseTypeDiv.setVisibility(View.GONE);
+            responseTypeTitle.setVisibility(View.GONE);
+            responseTypeOptionsView.setVisibility(View.GONE);
+        } else {
+            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_QA)){
                 responseQAView.setVisibility(View.GONE);
             }
+            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS)){
+                responseBlankView.setVisibility(View.GONE);
+            }
+            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS_PP)){
+                responseBlankPpView.setVisibility(View.GONE);
+            }
+            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS_VERB)){
+                responseBlankVerbView.setVisibility(View.GONE);
+            }
         }
+
 
         //Gender options
         if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.GENDER_MODE)){
@@ -235,17 +250,16 @@ public class OptionsActivity extends AppCompatActivity {
             negQuestionsView.setVisibility(View.GONE);
         }
 
-        //Preposition object
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.PREP_OBJECT)){
-            prepObjDiv.setVisibility(View.GONE);
-            prepObjTitle.setVisibility(View.GONE);
-            pronounsView.setVisibility(View.GONE);
-            nounsView.setVisibility(View.GONE);
-        }
-
         //Check accents
         setYNSwitch(checkAccentsSwitchView.isChecked(), checkAccentsReactiveTextView);
         checkAccentsSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> setYNSwitch(isChecked, checkAccentsReactiveTextView));
+
+        //Preposition object
+        if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.PREP_OBJECT)) {
+            responseBlankPpView.setOnCheckedChangeListener((buttonView, isChecked) -> hidePrepObjectView(isChecked));
+        } else {
+            hidePrepObjectView(true);
+        }
     }
 
     //User interaction -----------------------------------------------------------------------------
@@ -281,11 +295,27 @@ public class OptionsActivity extends AppCompatActivity {
                 lo.responseType = LessonOptions.ResponseType.FULL_SENTENCE;
             } else if (responseBlankView.isChecked()){
                 lo.responseType = LessonOptions.ResponseType.BLANKS;
+            } else if (responseBlankVerbView.isChecked()){
+                lo.responseType = LessonOptions.ResponseType.BLANKS_VERB;
+            } else if (responseBlankPpView.isChecked()){
+                lo.responseType = LessonOptions.ResponseType.BLANKS_PP;
+                lo.pronouns = true;
+                lo.nouns = false;
             } else if (responseQAView.isChecked()){
                 lo.responseType = LessonOptions.ResponseType.Q_AND_A;
             } else {
                 Toast.makeText(v.getContext(),"Please select the response type", Toast.LENGTH_SHORT).show();
                 return;
+            }
+        }
+
+        if (prepObjDiv.getVisibility() != View.GONE){
+            if (!pronounsView.isChecked() && !nounsView.isChecked()){
+                Toast.makeText(v.getContext(),"Please select at least one of: pronouns or nouns", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                lo.pronouns = pronounsView.isChecked();
+                lo.nouns = nounsView.isChecked();
             }
         }
 
@@ -326,19 +356,9 @@ public class OptionsActivity extends AppCompatActivity {
                 return;
             } else {
                 lo.posStatements = posStatementsView.isChecked();
-                lo.negStatements = posStatementsView.isChecked();
+                lo.negStatements = negStatementsView.isChecked();
                 lo.posQuestions = posQuestionsView.isChecked();
                 lo.negQuestions = negQuestionsView.isChecked();
-            }
-        }
-
-        if (prepObjDiv.getVisibility() != View.GONE){
-            if (!pronounsView.isChecked() && !nounsView.isChecked()){
-                Toast.makeText(v.getContext(),"Please select at least one of: pronouns or nouns", Toast.LENGTH_SHORT).show();
-                return;
-            } else {
-                lo.pronouns = pronounsView.isChecked();
-                lo.nouns = nounsView.isChecked();
             }
         }
 
@@ -354,6 +374,19 @@ public class OptionsActivity extends AppCompatActivity {
             reactiveText.setText(R.string.check_accents_switch_text_yes);
         } else {
             reactiveText.setText(R.string.check_accents_switch_text_no);
+        }
+    }
+    private void hidePrepObjectView(boolean hide){
+        if (hide) {
+            prepObjDiv.setVisibility(View.GONE);
+            prepObjTitle.setVisibility(View.GONE);
+            pronounsView.setVisibility(View.GONE);
+            nounsView.setVisibility(View.GONE);
+        } else {
+            prepObjDiv.setVisibility(View.VISIBLE);
+            prepObjTitle.setVisibility(View.VISIBLE);
+            pronounsView.setVisibility(View.VISIBLE);
+            nounsView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -398,7 +431,9 @@ public class OptionsActivity extends AppCompatActivity {
         fromGaelicButtonView = findViewById(R.id.fromGaelicButton);
         responseTypeOptionsView = findViewById(R.id.response_type_options);
         responseFullView = findViewById(R.id.full_sentence);
-        responseBlankView = findViewById(R.id.fill_in_blanks);
+        responseBlankView = findViewById(R.id.blanks_general);
+        responseBlankVerbView = findViewById(R.id.blanks_verb);
+        responseBlankPpView = findViewById(R.id.blanks_pp);
         responseQAView = findViewById(R.id.q_and_a);
         genderAdjView = findViewById(R.id.gender_adj);
         genderDefArtNomView = findViewById(R.id.gender_def_art_nom);

@@ -23,14 +23,13 @@ public class PossessionAig extends ExerciseGenerator {
         Exercise e = new Exercise();
         int objectNum = new Random().nextInt(lo.sampleVocabList.size());
         GrammaticalPerson person = GrammaticalPerson.random();
-        int persNumEn = ge.en.getRow("en_subj", person.en_subj);
-        int persNumPp = gg.pp.getRow("en_subj", person.en_subj);
+        int persNumEn = ge.en.getRow("en_subj", person.en_subj());
 
         //Construct sentences ----------------------------------------------------------------------
         String objIndef = ge.enIndefArticle(lo.sampleVocabList.get(objectNum, "english"));
 
-        String sentenceEn = capitalise(person.en_subj) + " " + ge.en.get(persNumEn, "have_pres").toLowerCase() + " " + objIndef.toLowerCase();
-        String sentenceGd = "Tha " + lo.sampleVocabList.get(objectNum, "nom_sing").toLowerCase() + " " + gg.pp.get(persNumPp, "aig").toLowerCase();
+        String sentenceEn = capitalise(person.en_subj()) + " " + ge.en.get(persNumEn, "have_pres").toLowerCase() + " " + objIndef.toLowerCase();
+        String sentenceGd = "Tha " + lo.sampleVocabList.get(objectNum, "nom_sing").toLowerCase() + " " + person.gd_aig();
 
         //PrePrompt --------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");

@@ -18,6 +18,8 @@
     <string name="responseTypeTitle">Response type:</string>
     <string name="response_full">Translate full sentence</string>
     <string name="response_blanks">Fill in the blanks</string>
+    <string name="response_blanks_verb">Fill in the verb</string>
+    <string name="response_blanks_pp">Fill in the prepositional pronoun</string>
     <string name="response_qa">Answer questions</string>
     <string name="gender_mode">Gender of nouns using…</string>
     <string name="adj">Adjectives</string>

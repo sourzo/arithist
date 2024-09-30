@@ -105,6 +105,12 @@ public class VocabTable {
         }
         return filterRows(selectedRows);
     }
+    /**Get a random row
+     * @param numberOfRows the number of rows to select at random
+     * @return a new VocabTable with a subset of the original rows*/
+    public HashMap<String, String> getRandomRow() {
+       return getRandomRows(1).data.get(0);
+    }
 
     /**Get a specific column from the vocabList*/
     public VocabTable getColumn(String colName){

@@ -27,13 +27,12 @@ public class PossessionMo extends ExerciseGenerator {
         int whatNum = new Random().nextInt(lo.sampleVocabList.size());
         int whereNum = new Random().nextInt(3);
         GrammaticalPerson person = GrammaticalPerson.random();
-        int persNumPp = gg.pp.getRow("en_subj", person.en_subj);
 
         HashMap<String,String> randomWord = lo.sampleVocabList.data.get(whatNum);
 
         //Parts of sentence: Gaelic ----------------------------------------------------------------
         String gdWhat;
-        if (person.isPlural){
+        if (person.isPlural()){
             gdWhat = randomWord.get("nom_pl");
         } else {
             gdWhat = randomWord.get("nom_sing");
@@ -58,10 +57,10 @@ public class PossessionMo extends ExerciseGenerator {
 
         //Special cases: Daughter and father don't use this form of possession, they use "aig".
         if (randomWord.get("possessive_compatible").equals("no")) {
-            if (person.isPlural) {
-                gdWhoseWhat = "na " + gdWhat + gg.pp.get(persNumPp,"aig");
+            if (person.isPlural()) {
+                gdWhoseWhat = "na " + gdWhat + person.gd_aig();
             } else {
-                gdWhoseWhat = gg.anm(gdWhat) + gg.pp.get(persNumPp,"aig");
+                gdWhoseWhat = gg.anm(gdWhat) + person.gd_aig();
             }
         } else {
             //Not daughter/father
@@ -72,7 +71,7 @@ public class PossessionMo extends ExerciseGenerator {
         String enWhat = randomWord.get("english");
         String enBe;
 
-        if (person.isPlural){
+        if (person.isPlural()){
             enWhat = ge.pluralise(enWhat);
             enBe = "are";
         } else {
@@ -99,7 +98,7 @@ public class PossessionMo extends ExerciseGenerator {
                 enWhereAlt = "errorSwitchFail";
         }
 
-        String enWhose = gg.pp.get(persNumPp, "en_poss");
+        String enWhose = person.en_poss();
 
         //Construct sentences ----------------------------------------------------------------------
         String sentenceEn = capitalise(enWhere) + " " + enBe + " " + enWhose + " " + enWhat;

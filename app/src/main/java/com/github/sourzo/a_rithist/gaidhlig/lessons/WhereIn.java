@@ -3,6 +3,7 @@ package com.github.sourzo.a_rithist.gaidhlig.lessons;
 import com.github.sourzo.a_rithist.english.GrammarEn;
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
 import com.github.sourzo.a_rithist.gaidhlig.GrammaticalPerson;
+import com.github.sourzo.a_rithist.gaidhlig.Tense;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;
@@ -44,10 +45,10 @@ public class WhereIn extends ExerciseGenerator {
         }
 
         //Construct sentence -----------------------------------------------------------------------
-        String sentenceEn = capitalise(person.en_subj) + " " +
-                ge.en.filterMatches("en_subj", person.en_subj).get(0,"be_pres") +
+        String sentenceEn = capitalise(person.en_subj()) + " " +
+                person.en_toBe(Tense.PRESENT_VERBAL_NOUN) +
                 " in " + whereEn;
-        String sentenceGd = "Tha " + person.gd_subj + " " + whereGd;
+        String sentenceGd = "Tha " + person.gd_subj() + " " + whereGd;
 
         //Prompt -----------------------------------------------------------------------------------
         if (lo.responseType == LessonOptions.ResponseType.Q_AND_A){
@@ -57,7 +58,7 @@ public class WhereIn extends ExerciseGenerator {
         }
 
         if (lo.responseType == LessonOptions.ResponseType.BLANKS) {
-            String etp = "Tha " + person.gd_subj + " ";
+            String etp = "Tha " + person.gd_subj() + " ";
             e.setEditTextPrompt(etp);
             e.setEditTextCursorPosition(etp.length());
         }
@@ -69,7 +70,7 @@ public class WhereIn extends ExerciseGenerator {
             e.setQuestion(sentenceEn);
         } else{
             //Answer question
-            e.setQuestion("Càite a bheil " + whoQuestion.gd_subj + "? (" + whereEn + ")");
+            e.setQuestion("Càite a bheil " + whoQuestion.gd_subj() + "? (" + whereEn + ")");
         }
 
         //Solutions --------------------------------------------------------------------------------

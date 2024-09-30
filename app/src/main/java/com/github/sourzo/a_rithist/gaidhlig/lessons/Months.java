@@ -43,9 +43,8 @@ public class Months extends ExerciseGenerator {
             if (holiday.size() == 0) {
                 //No holidays: Use birthday instead
                 GrammaticalPerson person = GrammaticalPerson.random();
-                String whoseEn = capitalise(gg.pp.filterMatches("en_subj", person.en_subj).get(0, "en_poss"));
-                String whoseGd = gg.pp.filterMatches("en_subj", person.en_subj)
-                        .get(0, "aig");
+                String whoseEn = capitalise(person.en_poss());
+                String whoseGd = person.gd_aig();
                 holidayEn = whoseEn +  " birthday";
                 holidayGd = "an co-là breith " + whoseGd;
             } else {

@@ -10,14 +10,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class GrammarGd {
 
     //Setup -------------------------------------------------------------------
     /**Creates a new Gaelic Grammar instance. Requires context to load vocab tables.*/
     public GrammarGd(AndroidAppRes appRes){
-        pp = new VocabTable(appRes,"grammar_prepPronouns.csv");
         names = new VocabTable(appRes,"people_names.csv");
         numbers = new VocabTable(appRes,"grammar_numbers.csv");
         professions = new VocabTable(appRes,"people_professions.csv");
@@ -243,7 +241,7 @@ public class GrammarGd {
 
     /**Lenite words, excluding those which start with the letters which never lenite.
      * @param word The word to be lenited
-     * @param dontLeniteDentals If {@code true} then words starting with the dentals (d, t) will not lenite
+     * @param leniteDentals If {@code true} then words starting with the dentals (d, t) will lenite
      * @return A word which will be lenited or not, depending on what letter(s) it starts with
      * @see #neverLeniteRegex*/
     public static String lenite(String word, boolean leniteDentals) {
@@ -251,6 +249,7 @@ public class GrammarGd {
         String wordLower = word.toLowerCase();
         if (wordLower.matches(neverLeniteRegex) ||
                 wordLower.startsWith("h") ||
+                wordLower.startsWith("t-") ||
                 wordLower.charAt(1) == 'h' ||
                 (!leniteDentals && wordLower.matches(dentalsRegex))) {
             return word;
@@ -313,7 +312,38 @@ public class GrammarGd {
         }
     }
 
-    public static String addDo(String word) {
+    public static String prepBho(String word) {
+        if (startsWithArticle(word)){
+            String[] placeSeparated = extractFirstWord(word);
+            if (placeSeparated[0].equals("na")) {
+                return "bho na " + placeSeparated[2]; //dha doesn't lenite place-name
+            } else if (placeSeparated[2].startsWith("t-")) {
+                return "bhon " + placeSeparated[2];
+            } else {
+                return "bhon " + lenite(placeSeparated[2], false);
+                //note the final n of "bhon" prevents lenition of d,t
+            }
+        } else {
+            word = lenite(word, true);
+            return "bho " + word;
+        }
+
+    }
+
+    /**Adds the preposition "do" to the start of a word.
+     * <P>Notes:
+     * <UL>
+     *      <LI>Do + an = dhan (which lenites things, but not dentals)</LI>
+     *      <LI>Inserts "dh'" (no space) before a vowel or fh+vowel</LI>
+     *      <LI>Returns "a" instead of "do" for places</LI>
+     *      <LI>Lenites the following word (including dentals)</LI>
+     *      <LI>Triggers the prepositional (dative) case</LI>
+     * </UL>
+     *  </P>
+     * @param word The word to follow "do". If it's a word with the common article, then include
+     *             both the word and the common article (e.g. "an rathad")
+     * @param isPlace If the word is a place, this will return "a" rather than "do" if applicable*/
+    public static String prepDo(String word, boolean isPlace) {
         if (startsWithArticle(word)){
             String[] placeSeparated = extractFirstWord(word);
             if (placeSeparated[0].equals("na")) {
@@ -321,13 +351,22 @@ public class GrammarGd {
             } else if (placeSeparated[2].startsWith("t-")) {
                 return "dhan " + placeSeparated[2];
             } else {
-                return "dhan " + lenite(placeSeparated[2], true);
+                return "dhan " + lenite(placeSeparated[2], false);
             }
         } else {
+            word = lenite(word, true);
             if (word.matches(vowelsRegex) || word.startsWith("fh")) {
-                return "a dh'" + word;
+                if (isPlace) {
+                    return "a dh'" + word;
+                } else {
+                    return "do dh'" + word;
+                }
             } else {
-                return "a " + word;
+                if (isPlace) {
+                    return "a " + word;
+                } else {
+                    return "do " + word;
+                }
             }
         }
     }
@@ -463,7 +502,7 @@ public class GrammarGd {
      * @param outputPossession Whether to include the possession in the outputs
      * */
     public String articlePossessive(String possession, GrammaticalPerson person, boolean outputPossession) {
-        int persNumPp = pp.getRow("en_subj", person.en_subj);
+        int persNumPp = pp.getRow("en_subj", person.en_subj());
 
         String output;
 
@@ -526,81 +565,32 @@ public class GrammarGd {
         return output;
     }
 
-    /**Simple past/future tense of a verb*/
-    //TODO Check grammatical accuracy of verb stuff - see IonnsaichSeo for examples
-    public String transformVerb(String root, Tense tense, SentenceType sentenceType) {
-        if (tense.equals(Tense.PAST_VERBAL_NOUN) || tense.equals(Tense.FUTURE_VERBAL_NOUN)){
-            return transformVerb(root, tense, sentenceType);
-        }
+    /**Simple past tense of a verb*/
+    public String verbSimplePast(String root, SentenceType sentenceType) {
         root = root.toLowerCase();
         String verb = "";
-        switch (tense) {
-            case PAST:
-                if (irregularPast.containsKey(root)) {
-                    if (sentenceType.equals(SentenceType.POS_STATEMENT)) {
-                        ////Primary form
-                        verb = irregularPast.get(root).get(0);
-                    } else {
-                        //Secondary form
-                        verb = irregularPast.get(root).get(1);
-                    }
-                } else {
-                    //regular past: Lenite, and add "dh'" if it's a vowel or f+vowel
-                    if (root.matches(vowelsRegex)) {
-                        verb = "dh'" + root;
-                    } else if (root.charAt(0) == 'f' && root.substring(1).matches(vowelsRegex)) {
-                        verb = "dh'fh" + root.substring(1);
-                    } else {
-                        verb = lenite(root, true);
-                    }
-                    //secondary form: add 'do '
-                    if (!sentenceType.equals(SentenceType.POS_STATEMENT))
-                    {
-                        verb = "do " + verb;
-                    }
-                }
-                break;
-            case FUTURE:
-                if (irregularFuture.containsKey(root)) {
-                    if (sentenceType.equals(SentenceType.POS_STATEMENT)){
-                        //Primary form
-                        verb = irregularFuture.get(root).get(0);
-                    } else{
-                        //Secondary form
-                        verb = irregularFuture.get(root).get(1);
-                    }
-                }
-                else {
-                    //regular future
-                    if (sentenceType.equals(SentenceType.POS_STATEMENT)){
-                        //primary form
-                        if (endWidth(root).equals(GrammaticalWidth.BROAD)) {
-                            verb = root + "aidh";
-                        } else {
-                            //some slender-ended verbs need shortening
-                            verb = shorten(root) + "idh";
-                        }
-                    } else {
-                        //secondary form
-                        if (sentenceType.equals(SentenceType.NEG_STATEMENT)) {
-                            verb = lenite(root, true);
-                        } else {
-                            verb = root;
-                        }
-                    }
-                }
-                break;
-            case PRESENT_VERBAL_NOUN:
-                if (root.equals("bi")) {
-                    if (sentenceType.equals(SentenceType.POS_STATEMENT)){
-                        //primary form
-                        verb = "tha";
-                    } else {
-                        //secondary form
-                        verb = "eil";
-                    }
-                }
-                break;
+        if (irregularPast.containsKey(root)) {
+            if (sentenceType.equals(SentenceType.POS_STATEMENT)) {
+                ////Primary form
+                verb = irregularPast.get(root).get(0);
+            } else {
+                //Secondary form
+                verb = irregularPast.get(root).get(1);
+            }
+        } else {
+            //regular past: Lenite, and add "dh'" if it's a vowel or f+vowel
+            if (root.matches(vowelsRegex)) {
+                verb = "dh'" + root;
+            } else if (root.charAt(0) == 'f' && root.substring(1).matches(vowelsRegex)) {
+                verb = "dh'fh" + root.substring(1);
+            } else {
+                verb = lenite(root, true);
+            }
+            //secondary form: add 'do '
+            if (!sentenceType.equals(SentenceType.POS_STATEMENT))
+            {
+                verb = "do " + verb;
+            }
         }
 
         switch (sentenceType) {
@@ -626,22 +616,103 @@ public class GrammarGd {
         }
         return verb;
     }
+    /**Simple past/future tense of a verb*/
+    public String verbSimpleFuture(String root, SentenceType sentenceType) {
+        root = root.toLowerCase();
+        String verb = "";
+        if (irregularFuture.containsKey(root)) {
+            if (sentenceType.equals(SentenceType.POS_STATEMENT)){
+                //Primary form
+                verb = irregularFuture.get(root).get(0);
+            } else {
+                //Secondary form
+                verb = irregularFuture.get(root).get(1);
+            }
+        }
+        else {
+            //regular future
+            if (sentenceType.equals(SentenceType.POS_STATEMENT)){
+                //primary form
+                if (endWidth(root).equals(GrammaticalWidth.BROAD)) {
+                    verb = root + "aidh";
+                } else {
+                    //some slender-ended verbs need shortening
+                    verb = shorten(root) + "idh";
+                }
+            } else {
+                //secondary form
+                if (sentenceType.equals(SentenceType.NEG_STATEMENT)) {
+                    verb = lenite(root, true);
+                } else {
+                    verb = root;
+                }
+            }
+        }
 
-    /**Verbal noun tense of given verb, vn.
-     Input must be the verbal noun form.*/
-    public String verbal_noun(String vn, String person, Tense tense, SentenceType sentenceType) {
-        if (tense.equals(Tense.PAST_VERBAL_NOUN)){
-            tense = Tense.PAST;
-        } else if (tense.equals(Tense.FUTURE_VERBAL_NOUN)) {
-            tense = Tense.FUTURE;
+        switch (sentenceType) {
+            //Negative prefixes
+            case NEG_QUESTION:
+                verb = "nach " + verb;
+                break;
+            case NEG_STATEMENT:
+                verb = cha(verb);
+                break;
+            //Positive prefixes (questions only)
+            case POS_QUESTION:
+                if (!verb.equals("eil")) {
+                    verb = anm(verb);
+                } else {
+                    verb = "a bheil";
+                }
+                break;
         }
-        String bi = transformVerb("bi", tense, sentenceType);
-        if (vn.matches(vowelsRegex))
-        {
-            vn = "ag " + vn;
-        } else {
-            vn = "a' " + vn;
+        return verb;
+    }
+
+    /**Verbal noun tense of given verb, presentTenseVN.
+     @param presentTenseVN The present tense verbal noun form of the verb (e.g. "ag obair", "iarraidh")
+     @param person The pronoun to match the verb (it's sandwiched in the middle of the result)
+     @param tense The verb tense
+     @param sentenceType Positive/negative question/statement
+     @return [bi] + [person] + [verbal noun]*/
+    public String verbalNoun(String presentTenseVN, String person, Tense tense, SentenceType sentenceType) {
+        //Add the prefix to the verb if it's not there already
+        if (!presentTenseVN.startsWith("ag ") && !presentTenseVN.startsWith("a' ")) {
+            if (presentTenseVN.matches(vowelsRegex)) {
+                presentTenseVN = "ag " + presentTenseVN;
+            } else {
+                presentTenseVN = "a' " + presentTenseVN;
+            }
         }
-        return bi + " " + person + " " + vn;
+
+        //Find the correct form of 'bi' and return [bi] + [person] + [verbalNoun]
+        switch (tense) {
+            case PRESENT_VERBAL_NOUN:
+                return biSimplePresent(sentenceType) + " " + person + " " + presentTenseVN;
+            case PAST_VERBAL_NOUN:
+            case PAST:
+                return verbSimplePast("bi", sentenceType) + " " + person + " " + presentTenseVN;
+            case FUTURE:
+            case FUTURE_VERBAL_NOUN:
+                return verbSimpleFuture("bi", sentenceType) + " " + person + " " + presentTenseVN;
+        }
+        throw new RuntimeException("Tense not supported");
+    }
+
+    /**
+     * @param sentenceType Positive/negative question/statement
+     * @return Simple present tense of the verb "bi"*/
+    public String biSimplePresent(SentenceType sentenceType) {
+        switch (sentenceType) {
+            case POS_STATEMENT:
+                return "tha";
+            case NEG_STATEMENT:
+                return "chan eil";
+            case POS_QUESTION:
+                return "a bheil";
+            case NEG_QUESTION:
+                return "nach eil";
+        }
+        throw new RuntimeException("sentenceType not supported");
     }
 }

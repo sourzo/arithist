@@ -46,8 +46,10 @@ public class Lesson {
         TRANSLATE_WORDS,
         TRANSLATE_NUMBERS,
         TRANSLATE_GENERIC,
-        SENTENCE,
-        SENTENCE_QA,
+        RESPONSE_BLANKS,
+        RESPONSE_BLANKS_VERB,
+        RESPONSE_BLANKS_PP,
+        RESPONSE_QA,
         PREP_OBJECT
     }
 }

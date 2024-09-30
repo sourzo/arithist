@@ -30,8 +30,7 @@ public class Preferences extends ExerciseGenerator {
         int object_num = new Random().nextInt(lo.sampleVocabList.size());
         HashMap<String,String> randomWord = lo.sampleVocabList.data.get(object_num);
         GrammaticalPerson person = GrammaticalPerson.random();
-        int persNumEn = ge.en.getRow("en_subj", person.en_subj);
-        int persNumPp = gg.pp.getRow("en_subj", person.en_subj);
+        int persNumEn = ge.en.getRow("en_subj", person.en_subj());
         int tense = new Random().nextInt(2); // 0 = present tense, 1 = future conditional
         boolean positive = new Random().nextBoolean(); // F = positive, T = negative
         int likePref = new Random().nextInt(2); // 0 = like, 1 = prefer
@@ -62,7 +61,7 @@ public class Preferences extends ExerciseGenerator {
         if (tense == 0 && positive)
         {
             HashSet<String> hsn = new HashSet<>(Arrays.asList("he", "she", "name"));
-            if (hsn.contains(person.en_subj.toLowerCase()))
+            if (hsn.contains(person.en_subj()))
             {
                 likePreferEn = likePreferEn + "s";
             }      
@@ -101,8 +100,8 @@ public class Preferences extends ExerciseGenerator {
         }
 
         //Construct sentences ------------------------------------------------------
-        String sentenceEn = capitalise(person.en_subj) + " " + likePreferEn.toLowerCase() + " " + objIndef.toLowerCase();
-        String sentenceGd = capitalise(likePreferGd) + " " + gg.pp.get(persNumPp,"le").toLowerCase() + " " + Objects.requireNonNull(randomWord.get("nom_sing")).toLowerCase();
+        String sentenceEn = capitalise(person.en_subj()) + " " + likePreferEn.toLowerCase() + " " + objIndef.toLowerCase();
+        String sentenceGd = capitalise(likePreferGd) + " " + person.gd_le() + " " + Objects.requireNonNull(randomWord.get("nom_sing")).toLowerCase();
 
         //Prompts ----------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");

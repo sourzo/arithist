@@ -99,14 +99,14 @@ public class GrammarEn {
         if (sentenceType.isQuestion){
             if (tense.equals(Tense.PRESENT_VERBAL_NOUN)){
                 if (person.equals(GrammaticalPerson.FIRST_SINGULAR) && !sentenceType.isPositive){
-                    return "Aren't " + person.en_subj + " " + verb.get("en_vn");
+                    return "Aren't " + person.en_subj() + " " + verb.get("en_vn");
                 } else {
-                    return en.filterMatches("en_subj", person.en_subj).get("be_pres",0) + neg + " " + person.en_subj + " " + verb.get("en_vn");
+                    return person.en_toBe(tense) + neg + " " + person.en_subj() + " " + verb.get("en_vn");
                 }
             } else if (tense.equals(Tense.PAST)){
-                return "Did" + neg + " " + person.en_subj + " " + verb.get("english");
+                return "Did" + neg + " " + person.en_subj() + " " + verb.get("english");
             } else if (tense.equals(Tense.PAST_VERBAL_NOUN)){
-                return en.filterMatches("en_subj", person.en_subj).get("be_past",0) + neg + " " + person.en_subj + " " + verb.get("en_vn");
+                return person.en_toBe(tense) + neg + " " + person.en_subj() + " " + verb.get("en_vn");
             } else {
                 String start;
                 if (sentenceType.isPositive) {
@@ -115,28 +115,28 @@ public class GrammarEn {
                     start = "Won't ";
                 }
                 if (tense.equals(Tense.FUTURE)) {
-                    return start + person.en_subj + " " + verb.get("english");
+                    return start + person.en_subj() + " " + verb.get("english");
                 } else if (tense.equals(Tense.FUTURE_VERBAL_NOUN)){
-                    return start + person.en_subj + " be " + verb.get("en_vn");
+                    return start + person.en_subj() + " be " + verb.get("en_vn");
                 }
             }
         } else {
             if (tense.equals(Tense.PRESENT_VERBAL_NOUN)){
-                return person.en_subj + " " + en.filterMatches("en_subj", person.en_subj).get("be_pres",0) + neg + " " + verb.get("en_vn");
+                return person.en_subj() + " " + person.en_toBe(tense) + neg + " " + verb.get("en_vn");
             } else if (tense.equals(Tense.PAST)){
                 if (sentenceType.isPositive){
-                    return person.en_subj + " " + verb.get("en_past");
+                    return person.en_subj() + " " + verb.get("en_past");
                 } else {
-                    return person.en_subj + " did not " + verb.get("english");
+                    return person.en_subj() + " did not " + verb.get("english");
                 }
             } else if (tense.equals(Tense.PAST_VERBAL_NOUN)){
-                return person.en_subj + " " +
-                        en.filterMatches("en_subj", person.en_subj).get("be_past",0) +
+                return person.en_subj() + " " +
+                        person.en_toBe(tense) +
                         neg + " " + verb.get("en_vn");
             } else if (tense.equals(Tense.FUTURE)){
-                return person.en_subj + " will" + neg + " " + verb.get("english");
+                return person.en_subj() + " will" + neg + " " + verb.get("english");
             } else if (tense.equals(Tense.FUTURE_VERBAL_NOUN)){
-                return person.en_subj + " will" + neg + " be " + verb.get("en_vn");
+                return person.en_subj() + " will" + neg + " be " + verb.get("en_vn");
             }
         }
         return "error in making english form of verb";
@@ -147,15 +147,13 @@ public class GrammarEn {
     public String toGo(GrammaticalPerson person, Tense tense) {
         switch(tense){
             case PAST:
-                return person.en_subj + " went";
+                return person.en_subj() + " went";
             case FUTURE:
-                return person.en_subj + " will go";
+                return person.en_subj() + " will go";
             case FUTURE_VERBAL_NOUN:
-                return person.en_subj + " will be going";
             case PAST_VERBAL_NOUN:
-                return person.en_subj + " " + en.filterMatches("en_subj", person.en_subj).get(0,"be_past") + " going";
             case PRESENT_VERBAL_NOUN:
-                return person.en_subj + " " + en.filterMatches("en_subj", person.en_subj).get(0,"be_pres") + " going";
+                return person.en_subj() + " " + person.en_toBe(tense) + " going";
         }
     return "error - toGo - tense not recognised";
     }

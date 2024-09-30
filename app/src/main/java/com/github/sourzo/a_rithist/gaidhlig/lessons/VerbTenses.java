@@ -36,8 +36,7 @@ public class VerbTenses extends ExerciseGenerator {
 
         //Grammatical Person
         GrammaticalPerson person = GrammaticalPerson.random();
-        String person_gd = person.gd_subj;
-        String person_en = person.en_subj;
+        String person_gd = person.gd_subj();
 
         //Verb forms statement/question, positive/negative
         ArrayList<SentenceType> sentenceTypeOptions = new ArrayList<>();
@@ -47,39 +46,29 @@ public class VerbTenses extends ExerciseGenerator {
         if (lo.negStatements){sentenceTypeOptions.add(SentenceType.NEG_STATEMENT);}
         SentenceType sentenceType = sentenceTypeOptions.get(new Random().nextInt(sentenceTypeOptions.size()));
 
-        //Tense
-        ArrayList<Tense> tenseOptions = new ArrayList<>();
-        if (lo.past){
-            tenseOptions.add(Tense.PAST);
-            tenseOptions.add(Tense.PAST_VERBAL_NOUN);
-        }
-        if (lo.present){
-            tenseOptions.add(Tense.PRESENT_VERBAL_NOUN);
-        }
-        if (lo.future){
-            tenseOptions.add(Tense.FUTURE);
-            tenseOptions.add(Tense.FUTURE_VERBAL_NOUN);
-        }
-        Tense tense = tenseOptions.get(new Random().nextInt(tenseOptions.size()));
+        Tense tense = randomTense();
 
         //Build the sentence -----------------------------------------------------------------------
-        String sentence_gd = "";
-        if (tense.equals(Tense.PAST) || tense.equals(Tense.FUTURE))
-        {
+        String sentence_gd;
+
+        if (tense.equals(Tense.PAST)) {
             String v_root = verb.get("root");
-            String verb_gd = gg.transformVerb(
-                    v_root,
-                    tense,
-                    sentenceType);
-            if (Objects.equals(person_gd, "thu") &&
-                    ((tense.equals(Tense.FUTURE) && verb_gd.endsWith("idh") && !verb_gd.equals("bidh"))
-                    || Arrays.asList("faca", "cuala", "chuala").contains(verb_gd))) {
+            String verb_gd = gg.verbSimplePast(v_root, sentenceType);
+            if (person_gd.equals("thu") &&
+                    Arrays.asList("faca", "cuala", "chuala").contains(verb_gd)) {
+                person_gd = "tu";
+            }
+            sentence_gd = verb_gd + " " + person_gd;
+        } else if (tense.equals(Tense.FUTURE)) {
+            String v_root = verb.get("root");
+            String verb_gd = gg.verbSimpleFuture(v_root, sentenceType);
+            if (person_gd.equals("thu") &&
+                    (verb_gd.endsWith("idh") && !verb_gd.equals("bidh"))) {
                 person_gd = "tu";
             }
             sentence_gd = verb_gd + " " + person_gd;
         } else {
-            String v_noun = verb.get("verbal_noun");
-            sentence_gd = gg.verbal_noun(v_noun,
+            sentence_gd = gg.verbalNoun(Objects.requireNonNull(verb.get("verbal_noun")),
                     person_gd,
                     tense,
                     sentenceType);

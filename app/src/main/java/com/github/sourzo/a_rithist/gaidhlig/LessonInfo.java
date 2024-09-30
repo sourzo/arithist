@@ -1,6 +1,8 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
 import com.github.sourzo.a_rithist.gaidhlig.lessons.BasicVocab;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.GetFrom;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.GiveTo;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.Months;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.SayingsComparisons;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.EmphasisAdjectives;
@@ -30,23 +32,23 @@ public class LessonInfo {
                         new Lesson.topicTags[] {Lesson.topicTags.VOCABULARY},
                         new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY},
                         BasicVocab::new));
-//        lessonSet.put("give_to",
-//                new Lesson("Giving To: the irregular verb 'thig' and the preposition / prepositional pronoun 'do'",
-//                        new String[] {"english", "nom_sing"},
-//                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.VERBS},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.CHOSEN_TENSE, Lesson.lessonOptions.PREP_OBJECT, Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY},
-//                        GiveTo::new));
-//        lessonSet.put("get_from",
-//                new Lesson("Getting From: the irregular verb 'faigh' and the preposition / prepositional pronoun 'bho'",
-//                        new String[] {"english", "nom_sing"},
-//                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.VERBS},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.CHOSEN_TENSE, Lesson.lessonOptions.PREP_OBJECT, Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY},
-//                        GetFrom::new));
+        lessonSet.put("give_to",
+                new Lesson("Giving To: the irregular verb 'thig' and the preposition / prepositional pronoun 'do'",
+                        new String[] {"english", "nom_sing"},
+                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.VERBS},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.CHOSEN_TENSE, Lesson.lessonOptions.PREP_OBJECT, Lesson.lessonOptions.RESPONSE_BLANKS_VERB, Lesson.lessonOptions.RESPONSE_BLANKS_PP, Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY},
+                        GiveTo::new));
+        lessonSet.put("get_from",
+                new Lesson("Getting From: the irregular verb 'faigh' and the preposition / prepositional pronoun 'bho'",
+                        new String[] {"english", "nom_sing"},
+                        new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.VERBS},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.CHOSEN_TENSE, Lesson.lessonOptions.PREP_OBJECT, Lesson.lessonOptions.RESPONSE_BLANKS_VERB, Lesson.lessonOptions.RESPONSE_BLANKS_PP, Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY},
+                        GetFrom::new));
         lessonSet.put("possession_aig",
                 new Lesson("Possession using the prepositional pronoun 'aig'",
                         new String[] {"english", "nom_sing"},
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
-                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.RESPONSE_BLANKS, Lesson.lessonOptions.VOCABULARY},
                         PossessionAig::new));
         lessonSet.put("gender",
                 new Lesson("Gender of nouns (using adjectives/articles)",
@@ -70,7 +72,7 @@ public class LessonInfo {
                 new Lesson("Preferences (I would like/prefer etc) using the prepositional pronoun 'le'",
                         new String[] {"english", "nom_sing"},
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
-                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.RESPONSE_BLANKS, Lesson.lessonOptions.VOCABULARY},
                         Preferences::new));
         lessonSet.put("a3_verb_tenses",
                 new Lesson("Verb tenses",
@@ -82,7 +84,7 @@ public class LessonInfo {
                 new Lesson("Professions: the prepositional pronoun 'ann an'",
                         new String[] {},
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS},
-                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.RESPONSE_BLANKS, Lesson.lessonOptions.VOCABULARY},
                         ProfessionsAnn::new));
         lessonSet.put("a8_emphasis_adjectives",
                 new Lesson("Emphatic pronouns and adjectives",
@@ -94,19 +96,19 @@ public class LessonInfo {
                 new Lesson("Possession using the possessive articles 'mo', 'do', etc",
                         new String[] {"english", "nom_sing", "nom_pl", "possessive_compatible"},
                         new Lesson.topicTags[] {Lesson.topicTags.ARTICLES},
-                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.VOCABULARY},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.RESPONSE_BLANKS, Lesson.lessonOptions.VOCABULARY},
                         PossessionMo::new));
         lessonSet.put("where_from",
-                new Lesson("Where are they from? - using the preposition 'à(s)",
+                new Lesson("Where are they from? - using the preposition 'à(s)'",
                         new String[] {"english", "place_gd", "gender"},
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.PLACE},
-                        new Lesson.lessonOptions[] {Lesson.lessonOptions.SENTENCE_QA, Lesson.lessonOptions.VOCABULARY},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.RESPONSE_QA, Lesson.lessonOptions.VOCABULARY},
                         WhereFrom::new));
         lessonSet.put("where_in",
                 new Lesson("Where are they (in)? - using the preposition 'ann an'",
                         new String[] {"english", "nom_sing", "gender"},
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.PLACE},
-                        new Lesson.lessonOptions[] {Lesson.lessonOptions.SENTENCE_QA, Lesson.lessonOptions.VOCABULARY},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.RESPONSE_QA, Lesson.lessonOptions.VOCABULARY},
                         WhereIn::new));
         lessonSet.put("comparisons",
                 new Lesson("Sayings: Comparisons",
@@ -130,13 +132,13 @@ public class LessonInfo {
                 new Lesson("Which season? [Prepositions]",
                         new String[] {},
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.DATETIME},
-                        new Lesson.lessonOptions[] {Lesson.lessonOptions.SENTENCE},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.RESPONSE_BLANKS},
                         Seasons::new));
         lessonSet.put("a6_which_month",
                 new Lesson("Which month? [Prepositions]",
                         new String[] {},
                         new Lesson.topicTags[] {Lesson.topicTags.PREPOSITIONS, Lesson.topicTags.DATETIME},
-                        new Lesson.lessonOptions[] {Lesson.lessonOptions.SENTENCE},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.RESPONSE_BLANKS},
                         Months::new));
         lessonSet.put("going_to",
                 new Lesson("Going to [place]: the irregular verb 'rach' and the preposition 'do' with place-names",

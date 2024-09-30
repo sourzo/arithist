@@ -142,6 +142,7 @@
                     android:id="@+id/toGaelicButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:checked="true"
                     android:text="@string/en_gd" />
 
@@ -149,6 +150,7 @@
                     android:id="@+id/fromGaelicButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:text="@string/gd_en" />
 
             </RadioGroup>
@@ -179,21 +181,71 @@
                     android:id="@+id/full_sentence"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:checked="true"
                     android:text="@string/response_full" />
 
                 <RadioButton
-                    android:id="@+id/fill_in_blanks"
+                    android:id="@+id/blanks_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:text="@string/response_blanks" />
+
+                <RadioButton
+                    android:id="@+id/blanks_verb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="@string/response_blanks_verb" />
+
+                <RadioButton
+                    android:id="@+id/blanks_pp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="@string/response_blanks_pp" />
 
                 <RadioButton
                     android:id="@+id/q_and_a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:text="@string/response_qa" />
             </RadioGroup>
+
+            <!-- Object of preposition -->
+            <View
+                android:id="@+id/obj_prep_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="16dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/obj_prep_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="@string/obj_prep"
+                android:textAlignment="textStart"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/pronouns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:checked="true"
+                android:text="@string/pronouns" />
+
+            <CheckBox
+                android:id="@+id/nouns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:checked="true"
+                android:text="@string/nouns" />
 
             <!-- gender options -->
             <View
@@ -350,39 +402,6 @@
                 android:layout_marginHorizontal="16dp"
                 android:checked="true"
                 android:text="@string/neg_q" />
-
-            <!-- Object of preposition -->
-            <View
-                android:id="@+id/obj_prep_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="16dp"
-                android:background="@android:color/darker_gray" />
-
-            <TextView
-                android:id="@+id/obj_prep_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:text="@string/obj_prep"
-                android:textAlignment="textStart"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/pronouns"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:checked="true"
-                android:text="@string/pronouns" />
-
-            <CheckBox
-                android:id="@+id/nouns"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:checked="true"
-                android:text="@string/nouns" />
 
             <!-- check accents -->
             <View

@@ -3,6 +3,7 @@ package com.github.sourzo.a_rithist.gaidhlig.lessons;
 import com.github.sourzo.a_rithist.english.GrammarEn;
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
 import com.github.sourzo.a_rithist.gaidhlig.GrammaticalPerson;
+import com.github.sourzo.a_rithist.gaidhlig.Tense;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;
@@ -42,15 +43,13 @@ public class WhereFrom extends ExerciseGenerator {
 
         GrammaticalPerson whoQuestion = person.getOpposite();
 
-        String beEn = ge.en
-                .filterMatches("en_subj",person.en_subj)
-                .get("be_pres",0);
+        String beEn = person.en_toBe(Tense.PRESENT_VERBAL_NOUN);
 
         //Construct sentence -------------------------------------------------------
-        String sentenceEn = capitalise(person.en_subj) + " "
+        String sentenceEn = capitalise(person.en_subj()) + " "
                 + beEn + " from " + place.get("english");
-        String sentenceGd = "Tha " + person.gd_subj + " " + fromGd;
-        String sentenceGdAlt = "'S ann " + fromGd + " a tha " + person.gd_subj;
+        String sentenceGd = "Tha " + person.gd_subj() + " " + fromGd;
+        String sentenceGdAlt = "'S ann " + fromGd + " a tha " + person.gd_subj();
 
         //Prompts ----------------------------------------------------------------------------------
         if (lo.responseType == LessonOptions.ResponseType.Q_AND_A){
@@ -60,7 +59,7 @@ public class WhereFrom extends ExerciseGenerator {
         }
 
         if (lo.responseType == LessonOptions.ResponseType.BLANKS) {
-            String etp = "Tha " + person.gd_subj + " ";
+            String etp = "Tha " + person.gd_subj() + " ";
             e.setEditTextPrompt(etp);
             e.setEditTextCursorPosition(etp.length());
         }
@@ -73,7 +72,7 @@ public class WhereFrom extends ExerciseGenerator {
             e.setQuestion(sentenceEn);
         } else{
             //Answer question
-            e.setQuestion("Cò às a tha " + whoQuestion.gd_subj + "? (" + place.get("english") + ")");
+            e.setQuestion("Cò às a tha " + whoQuestion.gd_subj() + "? (" + place.get("english") + ")");
         }
 
         //Solutions --------------------------------------------------------------------------------

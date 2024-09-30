@@ -9,7 +9,6 @@ import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -32,37 +31,31 @@ public class GoingTo extends ExerciseGenerator {
         HashMap<String,String> place = lo.sampleVocabList.data.get(vocabNum);
         GrammaticalPerson person = GrammaticalPerson.random();
 
-        //Tense
-        ArrayList<Tense> tenseOptions = new ArrayList<>();
-        if (lo.past){
-            tenseOptions.add(Tense.PAST);
-            tenseOptions.add(Tense.PAST_VERBAL_NOUN);
-        }
-        if (lo.present){
-            tenseOptions.add(Tense.PRESENT_VERBAL_NOUN);
-        }
-        if (lo.future){
-            tenseOptions.add(Tense.FUTURE);
-            tenseOptions.add(Tense.FUTURE_VERBAL_NOUN);
-        }
-        Tense tense = tenseOptions.get(new Random().nextInt(tenseOptions.size()));
+        Tense tense = randomTense();
 
         //Parts of sentence ------------------------------------------------------------------------
         String persGoingGd;
-        if (tense == Tense.PAST || tense == Tense.FUTURE) {
-            persGoingGd = gg.transformVerb("rach", tense, SentenceType.POS_STATEMENT) +
-                    " " + person.gd_subj;
+        if (tense == Tense.PAST) {
+            persGoingGd = gg.verbSimplePast("rach", SentenceType.POS_STATEMENT) +
+                    " " + person.gd_subj();
+        } else if (tense == Tense.FUTURE) {
+            persGoingGd = gg.verbSimpleFuture("rach", SentenceType.POS_STATEMENT) +
+                    " " + person.gd_subj();
         } else {
-            persGoingGd = gg.verbal_noun("dol", person.gd_subj, tense, SentenceType.POS_STATEMENT);
+            persGoingGd = gg.verbalNoun("dol", person.gd_subj(), tense, SentenceType.POS_STATEMENT);
         }
 
-        String toPlaceGd = GrammarGd.addDo(place.get("place_gd"));
+        String toPlaceGd = GrammarGd.prepDo(place.get("place_gd"), true);
+        String toPlaceGdAlt = GrammarGd.prepDo(place.get("place_gd"), false);
 
         String persGoingEn = ge.toGo(person, tense);
 
         //Construct sentences ----------------------------------------------------------------------
         String sentenceEn = capitalise(persGoingEn) + " to " + place.get("english");
         String sentenceGd = capitalise(persGoingGd) + " " + toPlaceGd;
+        //Technically correct but not common: preposition is in the form "do" instead of "a":
+        String sentenceGdAlt = capitalise(persGoingGd) + " " + toPlaceGdAlt;
+
 
         //Prompt -----------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");
@@ -79,6 +72,7 @@ public class GoingTo extends ExerciseGenerator {
             e.addSolution(sentenceEn);
         } else {
             e.addSolution(sentenceGd);
+            e.addSolution(sentenceGdAlt);
         }
 
         //Output -----------------------------------------------------------------------------------

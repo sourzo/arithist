@@ -57,8 +57,11 @@ public class LessonOptions implements Serializable {
 
     public enum ResponseType {
         BLANKS,
+        BLANKS_VERB,
+        BLANKS_PP,
         FULL_SENTENCE,
         Q_AND_A
     }
+
 
 }

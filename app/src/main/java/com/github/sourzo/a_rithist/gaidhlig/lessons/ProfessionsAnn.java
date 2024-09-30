@@ -27,27 +27,26 @@ public class ProfessionsAnn extends ExerciseGenerator {
         Exercise e = new Exercise();
         //randomiser
         GrammaticalPerson person = GrammaticalPerson.random();
-        int persNumEn = ge.en.getRow("en_subj", person.en_subj);
-        int persNumPp = gg.pp.getRow("en_subj", person.en_subj);
+        int persNumEn = ge.en.getRow("en_subj", person.en_subj());
         int professionNum = new Random().nextInt(lo.sampleVocabList.size());
         HashMap<String,String> profession = lo.sampleVocabList.data.get(professionNum);
 
         //Gaelic parts of sentence
-        String ppAnn = gg.pp.get(persNumPp,"ann an");
+        String ppAnn = person.gd_ann();
 
         String professionGd;
-        if (person.isPlural){
+        if (person.isPlural()){
             professionGd = profession.get("nom_pl");
         } else {
             professionGd = profession.get("nom_sing");
         }
 
         //English
-        String pronounEn = person.en_subj;
+        String pronounEn = person.en_subj();
         String beEn = ge.en.get(persNumEn,"be_pres");
 
         String professionEn = profession.get("english");
-        if (person.isPlural){
+        if (person.isPlural()){
             professionEn = ge.pluralise(professionEn);
         } else {
             professionEn = ge.enIndefArticle(professionEn);

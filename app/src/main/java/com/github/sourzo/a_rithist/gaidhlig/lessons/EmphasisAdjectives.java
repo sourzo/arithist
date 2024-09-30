@@ -5,6 +5,7 @@ import android.util.Log;
 import com.github.sourzo.a_rithist.english.GrammarEn;
 import com.github.sourzo.a_rithist.gaidhlig.GrammarGd;
 import com.github.sourzo.a_rithist.gaidhlig.GrammaticalPerson;
+import com.github.sourzo.a_rithist.gaidhlig.Tense;
 import com.github.sourzo.a_rithist.general.Exercise;
 import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;
@@ -30,11 +31,9 @@ public class EmphasisAdjectives extends ExerciseGenerator {
         HashMap<String,String> randomAdjective = lo.sampleVocabList.data.get(adjNum);
         int adjModifierNum = new Random().nextInt(GrammarGd.adjModList.size());
         GrammaticalPerson person = GrammaticalPerson.random();
-        int persNumPp = gg.pp.getRow("en_subj", person.en_subj);
 
         //Parts of sentence ------------------------------------------------------------------------
-        String pers_emph = gg.pp.get(persNumPp, "emphatic");
-        String pronoun_en = gg.pp.get(persNumPp, "en_subj");
+        String pronoun_en = person.en_subj();
 
         String adjModEn = GrammarGd.adjModList.get(adjModifierNum);
         Log.i("info","adjModEn = " + adjModEn);
@@ -44,9 +43,7 @@ public class EmphasisAdjectives extends ExerciseGenerator {
         String adjectiveGd = randomAdjective.get("adj_gd");
         String adjective_en = randomAdjective.get("english");
 
-        String beEn = ge.en
-                .filterMatches("en_subj",person.en_subj)
-                .get("be_pres",0);
+        String beEn = person.en_toBe(Tense.PRESENT_VERBAL_NOUN);
 
         //Construct sentence -----------------------------------------------------------------------
         assert adjModGd != null;
@@ -54,7 +51,7 @@ public class EmphasisAdjectives extends ExerciseGenerator {
             assert adjectiveGd != null;
             adjectiveGd = GrammarGd.lenite(adjectiveGd, false);
         }
-        String sentenceGd = "Tha " + pers_emph + " " + adjModGd + adjectiveGd;
+        String sentenceGd = "Tha " + person.gd_emph() + " " + adjModGd + adjectiveGd;
         String sentenceEn = "*" + capitalise(pronoun_en) + "* " +
                 beEn.toLowerCase() + " " + adjModEn + adjective_en;
         String sentenceEnWithoutAsterisks = capitalise(pronoun_en) +
