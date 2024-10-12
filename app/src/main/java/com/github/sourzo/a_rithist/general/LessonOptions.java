@@ -56,10 +56,15 @@ public class LessonOptions implements Serializable {
     public boolean checkAccents;
 
     public enum ResponseType {
+        /**Fill in the blanks*/
         BLANKS,
+        /**Fill in the blanks: verbs*/
         BLANKS_VERB,
+        /**Fill in the blanks: Prepositional pronouns*/
         BLANKS_PP,
+        /**Translate the full sentence*/
         FULL_SENTENCE,
+        /**Answer a question*/
         Q_AND_A
     }
 
