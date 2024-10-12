@@ -1,6 +1,7 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
 import com.github.sourzo.a_rithist.gaidhlig.lessons.BasicVocab;
+import com.github.sourzo.a_rithist.gaidhlig.lessons.CompSup;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.GetFrom;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.GiveTo;
 import com.github.sourzo.a_rithist.gaidhlig.lessons.Months;
@@ -116,12 +117,12 @@ public class LessonInfo {
                         new Lesson.topicTags[] {Lesson.topicTags.ADJECTIVES},
                         new Lesson.lessonOptions[] {Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE, Lesson.lessonOptions.VOCABULARY},
                         SayingsComparisons::new));
-//        lessonSet.put("a9_comparatives_superlatives",
-//                new Lesson("Adjectives: Comparatives and superlatives",
-//                        new String[] {"english", "nom_sing", "gender"},
-//                        new Lesson.topicTags[] {Lesson.topicTags.ADJECTIVES},
-//                        new Lesson.lessonOptions[] {Lesson.lessonOptions.VOCABULARY, Lesson.lessonOptions.COMP_SUP, Lesson.lessonOptions.SENTENCE, Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE},
-//                        CompSup::new));
+        lessonSet.put("a9_comparatives_superlatives",
+                new Lesson("Adjectives: Comparatives and superlatives",
+                        new String[] {"english", "nom_sing", "gender"},
+                        new Lesson.topicTags[] {Lesson.topicTags.ADJECTIVES},
+                        new Lesson.lessonOptions[] {Lesson.lessonOptions.VOCABULARY, Lesson.lessonOptions.COMP_SUP, Lesson.lessonOptions.RESPONSE_BLANKS, Lesson.lessonOptions.TRANSLATE_WORDS, Lesson.lessonOptions.TRANSLATE},
+                        CompSup::new));
         lessonSet.put("a5_time",
                 new Lesson("Time",
                         new String[] {},
