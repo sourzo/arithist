@@ -19,6 +19,7 @@ import com.github.sourzo.a_rithist.general.ExerciseGenerator;
 import com.github.sourzo.a_rithist.general.LessonOptions;
 import com.github.sourzo.a_rithist.general.VocabTable;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class LessonActivity extends AppCompatActivity {
@@ -87,7 +88,7 @@ public class LessonActivity extends AppCompatActivity {
         String userResponse = userResponseView.getText().toString();
 
         if (e.checkAnswer(userResponse, lo.checkAccents)){
-            solutionView.setText("Correct!");
+            solutionView.setText(getPraise());
         } else {
             String solutionMessage = "Incorrect! A correct answer is: " + e.getSolution();
             solutionView.setText(solutionMessage);
@@ -138,5 +139,11 @@ public class LessonActivity extends AppCompatActivity {
         Log.i("Options", "pronouns = " + lo.pronouns);
         Log.i("Options", "nouns = " + lo.nouns);
         Log.i("Options","checkAccents = " + lo.checkAccents);
+    }
+
+    private String getPraise() {
+        VocabTable praiseTable = new VocabTable(lo.appRes, "conversation_encouragement.csv");
+        HashMap<String, String> praise = praiseTable.getRandomRow();
+        return ExerciseGenerator.capitalise(praise.get("gaelic")) + "! " + ExerciseGenerator.capitalise(praise.get("english")) + "!";
     }
 }
