@@ -42,8 +42,8 @@ public class VerbTenses extends ExerciseGenerator {
         ArrayList<SentenceType> sentenceTypeOptions = new ArrayList<>();
         if (lo.posQuestions){sentenceTypeOptions.add(SentenceType.POS_QUESTION);}
         if (lo.negQuestions){sentenceTypeOptions.add(SentenceType.NEG_QUESTION);}
-        if (lo.posStatements){sentenceTypeOptions.add(SentenceType.POS_STATEMENT);}
-        if (lo.negStatements){sentenceTypeOptions.add(SentenceType.NEG_STATEMENT);}
+        if (lo.posStatements){sentenceTypeOptions.add(SentenceType.POS_DECLARATION);}
+        if (lo.negStatements){sentenceTypeOptions.add(SentenceType.NEG_DECLARATION);}
         SentenceType sentenceType = sentenceTypeOptions.get(new Random().nextInt(sentenceTypeOptions.size()));
 
         Tense tense = randomTense();

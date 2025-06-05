@@ -570,7 +570,7 @@ public class GrammarGd {
         root = root.toLowerCase();
         String verb = "";
         if (irregularPast.containsKey(root)) {
-            if (sentenceType.equals(SentenceType.POS_STATEMENT)) {
+            if (sentenceType.equals(SentenceType.POS_DECLARATION)) {
                 ////Primary form
                 verb = irregularPast.get(root).get(0);
             } else {
@@ -587,7 +587,7 @@ public class GrammarGd {
                 verb = lenite(root, true);
             }
             //secondary form: add 'do '
-            if (!sentenceType.equals(SentenceType.POS_STATEMENT))
+            if (!sentenceType.equals(SentenceType.POS_DECLARATION))
             {
                 verb = "do " + verb;
             }
@@ -602,7 +602,7 @@ public class GrammarGd {
                     verb = "nach " + verb;
                 }
                 break;
-            case NEG_STATEMENT:
+            case NEG_DECLARATION:
                 verb = cha(verb);
                 break;
             //Positive prefixes (questions only)
@@ -621,7 +621,7 @@ public class GrammarGd {
         root = root.toLowerCase();
         String verb = "";
         if (irregularFuture.containsKey(root)) {
-            if (sentenceType.equals(SentenceType.POS_STATEMENT)){
+            if (sentenceType.equals(SentenceType.POS_DECLARATION)){
                 //Primary form
                 verb = irregularFuture.get(root).get(0);
             } else {
@@ -631,7 +631,7 @@ public class GrammarGd {
         }
         else {
             //regular future
-            if (sentenceType.equals(SentenceType.POS_STATEMENT)){
+            if (sentenceType.equals(SentenceType.POS_DECLARATION)){
                 //primary form
                 if (endWidth(root).equals(GrammaticalWidth.BROAD)) {
                     verb = root + "aidh";
@@ -641,7 +641,7 @@ public class GrammarGd {
                 }
             } else {
                 //secondary form
-                if (sentenceType.equals(SentenceType.NEG_STATEMENT)) {
+                if (sentenceType.equals(SentenceType.NEG_DECLARATION)) {
                     verb = lenite(root, true);
                 } else {
                     verb = root;
@@ -654,7 +654,7 @@ public class GrammarGd {
             case NEG_QUESTION:
                 verb = "nach " + verb;
                 break;
-            case NEG_STATEMENT:
+            case NEG_DECLARATION:
                 verb = cha(verb);
                 break;
             //Positive prefixes (questions only)
@@ -704,9 +704,9 @@ public class GrammarGd {
      * @return Simple present tense of the verb "bi"*/
     public String biSimplePresent(SentenceType sentenceType) {
         switch (sentenceType) {
-            case POS_STATEMENT:
+            case POS_DECLARATION:
                 return "tha";
-            case NEG_STATEMENT:
+            case NEG_DECLARATION:
                 return "chan eil";
             case POS_QUESTION:
                 return "a bheil";

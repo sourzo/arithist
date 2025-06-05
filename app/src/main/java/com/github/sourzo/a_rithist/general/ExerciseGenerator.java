@@ -3,6 +3,7 @@ package com.github.sourzo.a_rithist.general;
 import com.github.sourzo.a_rithist.gaidhlig.Tense;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public abstract class ExerciseGenerator {
@@ -26,6 +27,26 @@ public abstract class ExerciseGenerator {
     }
 
     public abstract Exercise generate();
+
+    /**Since lessons can be quite short, a "true" random number generator will
+     * produce streaks where the same item shows up loads of times, or an item
+     * never shows up. So this method will choose sort-of randomly, but the
+     * likelihood of a vocabulary item being picked will depend on how many times
+     * it has already appeared.
+     * @return row number for a vocabulary item.*/
+    protected int randomUniformVocabNum() {
+        int totalUses = 0;
+        int maxUses = 0;
+        for (int i = 0; i < lo.sampleVocabList.size(); i++) {
+            totalUses += lo.sampleVocabList.getInt(i, "timesUsed");
+            maxUses = Math.max(maxUses, lo.sampleVocabList.getInt(i, "timesUsed"));
+            if (totalUses == 0) {
+                return new Random().nextInt(lo.sampleVocabList.size());
+            } else {
+
+            }
+        }
+    }
 
     protected Tense randomTense() {
         ArrayList<Tense> tenseOptions = new ArrayList<>();

@@ -106,7 +106,6 @@ public class VocabTable {
         return filterRows(selectedRows);
     }
     /**Get a random row
-     * @param numberOfRows the number of rows to select at random
      * @return a new VocabTable with a subset of the original rows*/
     public HashMap<String, String> getRandomRow() {
        return getRandomRows(1).data.get(0);
@@ -143,16 +142,12 @@ public class VocabTable {
      * @param colname Column name
      * @param rowNum Row number
      * @return VocabTable entry as a string*/
-    public String get(int rowNum, String colname){
-        if (rowNum >= data.size()) {
-            Log.e("Error","rowNum exceeds size of table");
-            throw new RuntimeException(){};
-        } else if (!data.get(rowNum).containsKey(colname)){
-            Log.e("Error","column " + colname + " does not exist in table");
-            throw new RuntimeException(){};
-        } else {
-            return data.get(rowNum).get(colname);
-        }
+    public String get(int rowNum, String colname) {
+        return get(colname, rowNum);
+    }
+
+    public int getInt(int rowNum, String colname) {
+        return Integer.valueOf(get(colname, rowNum));
     }
 
     public int getRow(String colname, String value) {
@@ -164,4 +159,30 @@ public class VocabTable {
         return Integer.MAX_VALUE; //this shouldn't happen
     }
 
+    //Modification methods------------------------------------------------------------
+
+    public void addColumn(String colName, String defaultValue) {
+        for (HashMap<String, String> row : this.data) {
+            row.put(colName, defaultValue);
+        }
+        String[] newColNames = new String[colNames.length + 1];
+        for (int i = 0; i < colNames.length; i++){
+            newColNames[i] = colNames[i];
+        }
+        newColNames[colNames.length] = colName;
+        colNames = newColNames;
+    }
+
+    public void set(String colName, int rowNum, String newValue) {
+        if (rowNum >= data.size()) {
+            Log.e("Error","rowNum exceeds size of table");
+            throw new RuntimeException(){};
+        } else if (!data.get(rowNum).containsKey(colName)){
+            Log.e("Error","column " + colName + " does not exist in table");
+            throw new RuntimeException(){};
+        } else {
+            data.get(rowNum).put(colName, newValue);
+        }
+
+    }
 }

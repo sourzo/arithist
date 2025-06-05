@@ -98,16 +98,16 @@ public class GiveTo extends ExerciseGenerator {
         String giveGd;
         switch (tense) {
             case PAST:
-                giveGd = gg.verbSimplePast("thig", SentenceType.POS_STATEMENT) + " " + subjectGd;
+                giveGd = gg.verbSimplePast("thig", SentenceType.POS_DECLARATION) + " " + subjectGd;
                 break;
             case FUTURE:
-                giveGd = gg.verbSimpleFuture("thig", SentenceType.POS_STATEMENT) + " " + subjectGd;
+                giveGd = gg.verbSimpleFuture("thig", SentenceType.POS_DECLARATION) + " " + subjectGd;
                 break;
             default:
-                giveGd = gg.verbalNoun("toirt", subjectGd, tense, SentenceType.POS_STATEMENT);
+                giveGd = gg.verbalNoun("toirt", subjectGd, tense, SentenceType.POS_DECLARATION);
         }
 
-        String giveEn = ge.transformVerb(giveEnMap, subject, tense, SentenceType.POS_STATEMENT);
+        String giveEn = ge.transformVerb(giveEnMap, subject, tense, SentenceType.POS_DECLARATION);
         if (!usePronouns) {
             giveEn = giveEn.replaceAll("he ", subjectEn + " ");
         }

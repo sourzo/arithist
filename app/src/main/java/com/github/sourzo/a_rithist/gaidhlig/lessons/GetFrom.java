@@ -97,16 +97,16 @@ public class GetFrom extends ExerciseGenerator {
         String getGd;
         switch (tense) {
             case PAST:
-                getGd = gg.verbSimplePast("faigh", SentenceType.POS_STATEMENT) + " " + subjectGd;
+                getGd = gg.verbSimplePast("faigh", SentenceType.POS_DECLARATION) + " " + subjectGd;
                 break;
             case FUTURE:
-                getGd = gg.verbSimpleFuture("faigh", SentenceType.POS_STATEMENT) + " " + subjectGd;
+                getGd = gg.verbSimpleFuture("faigh", SentenceType.POS_DECLARATION) + " " + subjectGd;
                 break;
             default:
-                getGd = gg.verbalNoun("faighinn", subject.gd_subj(), tense, SentenceType.POS_STATEMENT);
+                getGd = gg.verbalNoun("faighinn", subject.gd_subj(), tense, SentenceType.POS_DECLARATION);
         }
 
-        String getEn = ge.transformVerb(getEnMap, subject, tense, SentenceType.POS_STATEMENT);
+        String getEn = ge.transformVerb(getEnMap, subject, tense, SentenceType.POS_DECLARATION);
         if (!usePronouns) {
             getEn = getEn.replaceAll("he ", subjectEn + " ");
         }

@@ -1,8 +1,8 @@
 package com.github.sourzo.a_rithist.gaidhlig;
 
 public enum SentenceType {
-    POS_STATEMENT(false,true),
-    NEG_STATEMENT(false,false),
+    POS_DECLARATION(false,true),
+    NEG_DECLARATION(false,false),
     POS_QUESTION(true,true),
     NEG_QUESTION(true,false);
 

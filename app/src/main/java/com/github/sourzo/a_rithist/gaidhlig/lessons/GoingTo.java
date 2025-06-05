@@ -36,13 +36,13 @@ public class GoingTo extends ExerciseGenerator {
         //Parts of sentence ------------------------------------------------------------------------
         String persGoingGd;
         if (tense == Tense.PAST) {
-            persGoingGd = gg.verbSimplePast("rach", SentenceType.POS_STATEMENT) +
+            persGoingGd = gg.verbSimplePast("rach", SentenceType.POS_DECLARATION) +
                     " " + person.gd_subj();
         } else if (tense == Tense.FUTURE) {
-            persGoingGd = gg.verbSimpleFuture("rach", SentenceType.POS_STATEMENT) +
+            persGoingGd = gg.verbSimpleFuture("rach", SentenceType.POS_DECLARATION) +
                     " " + person.gd_subj();
         } else {
-            persGoingGd = gg.verbalNoun("dol", person.gd_subj(), tense, SentenceType.POS_STATEMENT);
+            persGoingGd = gg.verbalNoun("dol", person.gd_subj(), tense, SentenceType.POS_DECLARATION);
         }
 
         String toPlaceGd = GrammarGd.prepDo(place.get("place_gd"), true);
