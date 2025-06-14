@@ -19,10 +19,13 @@
             android:name=".OptionsActivity"
             android:exported="false" />
         <activity
-            android:name=".LessonOptionsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_lesson_options"
-            android:theme="@style/Theme.Arithist" />
+            android:name=".ListLessonsActivity"
+            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".LessonOptionsActivity"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_lesson_options"-->
+<!--            android:theme="@style/Theme.Arithist" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true">

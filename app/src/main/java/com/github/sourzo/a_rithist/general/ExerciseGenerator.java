@@ -34,19 +34,19 @@ public abstract class ExerciseGenerator {
      * likelihood of a vocabulary item being picked will depend on how many times
      * it has already appeared.
      * @return row number for a vocabulary item.*/
-    protected int randomUniformVocabNum() {
-        int totalUses = 0;
-        int maxUses = 0;
-        for (int i = 0; i < lo.sampleVocabList.size(); i++) {
-            totalUses += lo.sampleVocabList.getInt(i, "timesUsed");
-            maxUses = Math.max(maxUses, lo.sampleVocabList.getInt(i, "timesUsed"));
-            if (totalUses == 0) {
-                return new Random().nextInt(lo.sampleVocabList.size());
-            } else {
-
-            }
-        }
-    }
+//    protected int randomUniformVocabNum() {
+//        int totalUses = 0;
+//        int maxUses = 0;
+//        for (int i = 0; i < lo.sampleVocabList.size(); i++) {
+//            totalUses += lo.sampleVocabList.getInt(i, "timesUsed");
+//            maxUses = Math.max(maxUses, lo.sampleVocabList.getInt(i, "timesUsed"));
+//            if (totalUses == 0) {
+//                return new Random().nextInt(lo.sampleVocabList.size());
+//            } else {
+//
+//            }
+//        }
+//    }
 
     protected Tense randomTense() {
         ArrayList<Tense> tenseOptions = new ArrayList<>();

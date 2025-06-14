@@ -1,22 +1,24 @@
 package com.github.sourzo.a_rithist.general;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 public class Lesson {
     //Fields ---------------------------------------------------------------------------------------
     public String displayName;
     public String[] requiredColumns;
-    public topicTags[] topics;
-    public  lessonOptions[] options;
-    public Function<LessonOptions, ExerciseGenerator> getGenerator;
+    public TopicTag[] topics;
+    public  LessonOptions[] options;
+    public Function<com.github.sourzo.a_rithist.general.LessonOptions, ExerciseGenerator> getGenerator;
 
 
     //constructors----------------------------------------------------------------------------------
     public Lesson(String displayName,
                   String[] requiredColumns,
-                  topicTags[] topics,
-                  lessonOptions[] options,
-                  Function<LessonOptions, ExerciseGenerator> getGenerator){
+                  TopicTag[] topics,
+                  LessonOptions[] options,
+                  Function<com.github.sourzo.a_rithist.general.LessonOptions, ExerciseGenerator> getGenerator){
         this.displayName = displayName;
         this.requiredColumns = requiredColumns;
         this.topics = topics;
@@ -24,18 +26,35 @@ public class Lesson {
         this.getGenerator = getGenerator;
     }
     //nested classes--------------------------------------------------------------------------------
-    public enum topicTags{
-        VOCABULARY,
-        NUMBERS,
-        DATETIME,
-        TIME,
-        PREPOSITIONS,
-        ARTICLES,
-        VERBS,
-        PLACE,
-        ADJECTIVES
+    public enum TopicTag {
+        ALL("All lessons"),
+        VOCABULARY("Vocabulary"),
+        NUMBERS("Numbers"),
+        DATETIME("Date & Time"),
+        PREPOSITIONS("Prepositions"),
+        ARTICLES("Articles"),
+        VERBS("Verbs"),
+        PLACE("Place"),
+        ADJECTIVES("Adjectives");
+
+        public final String label;
+
+        private TopicTag(String label) {
+            this.label = label;
+        }
+
+        private static final Map<String, TopicTag> BY_LABEL = new HashMap<>();
+        static {
+            for (TopicTag t: values()) {
+                BY_LABEL.put(t.label, t);
+            }
+        }
+        public static TopicTag valueOfLabel(String label) {
+            return BY_LABEL.get(label);
+        }
+
     }
-    public enum lessonOptions{
+    public enum LessonOptions {
         VOCABULARY,
         MAX_NUM,
         GENDER_MODE,

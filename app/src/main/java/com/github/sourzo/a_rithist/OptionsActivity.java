@@ -167,7 +167,7 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //translating numbers - max number field
-        if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.MAX_NUM)){
+        if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.MAX_NUM)){
             String prompt = getString(R.string.largest_number_title, GrammarGd.largestTranslatableNumber);
             largestNumberTitle.setText(prompt);
             largestNumberView.setHint(String.valueOf(GrammarGd.largestTranslatableNumber));
@@ -179,44 +179,44 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //translation direction
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.TRANSLATE)){
             translateDiv.setVisibility(View.GONE);
             translationDirectionTitle.setVisibility(View.GONE);
             translationOptionsView.setVisibility(View.GONE);
-        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_NUMBERS)){
+        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.TRANSLATE_NUMBERS)){
             toGaelicButtonView.setText(R.string.dg_gd);
             fromGaelicButtonView.setText(R.string.en_gd);
-        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.TRANSLATE_GENERIC)){
+        } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.TRANSLATE_GENERIC)){
             toGaelicButtonView.setText(R.string.from_en);
             fromGaelicButtonView.setText(R.string.from_gd);
         }
 
         //Sentence type
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_QA)
-                && !Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS)
-                && !Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS_PP)
-                && !Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS_VERB)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.RESPONSE_QA)
+                && !Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.RESPONSE_BLANKS)
+                && !Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.RESPONSE_BLANKS_PP)
+                && !Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.RESPONSE_BLANKS_VERB)){
             responseTypeDiv.setVisibility(View.GONE);
             responseTypeTitle.setVisibility(View.GONE);
             responseTypeOptionsView.setVisibility(View.GONE);
         } else {
-            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_QA)){
+            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.RESPONSE_QA)){
                 responseQAView.setVisibility(View.GONE);
             }
-            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS)){
+            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.RESPONSE_BLANKS)){
                 responseBlankView.setVisibility(View.GONE);
             }
-            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS_PP)){
+            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.RESPONSE_BLANKS_PP)){
                 responseBlankPpView.setVisibility(View.GONE);
             }
-            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.RESPONSE_BLANKS_VERB)){
+            if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.RESPONSE_BLANKS_VERB)){
                 responseBlankVerbView.setVisibility(View.GONE);
             }
         }
 
 
         //Gender options
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.GENDER_MODE)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.GENDER_MODE)){
             genderDiv.setVisibility(View.GONE);
             genderTitle.setVisibility(View.GONE);
             genderAdjView.setVisibility(View.GONE);
@@ -224,7 +224,7 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //comparatives/superlatives
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.COMP_SUP)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.COMP_SUP)){
             compSupDiv.setVisibility(View.GONE);
             compSupTitle.setVisibility(View.GONE);
             comparativesView.setVisibility(View.GONE);
@@ -232,7 +232,7 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //Verb tense
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.CHOSEN_TENSE)) {
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.CHOSEN_TENSE)) {
             verbTenseDiv.setVisibility(View.GONE);
             verbTenseTitle.setVisibility(View.GONE);
             pastView.setVisibility(View.GONE);
@@ -241,7 +241,7 @@ public class OptionsActivity extends AppCompatActivity {
         }
 
         //Sentence type
-        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.SENTENCE_TYPE)){
+        if (!Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.SENTENCE_TYPE)){
             sentenceTypeDiv.setVisibility(View.GONE);
             sentenceTypeTitle.setVisibility(View.GONE);
             posStatementsView.setVisibility(View.GONE);
@@ -255,7 +255,7 @@ public class OptionsActivity extends AppCompatActivity {
         checkAccentsSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> setYNSwitch(isChecked, checkAccentsReactiveTextView));
 
         //Preposition object
-        if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.lessonOptions.PREP_OBJECT)) {
+        if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.PREP_OBJECT)) {
             responseBlankPpView.setOnCheckedChangeListener((buttonView, isChecked) -> hidePrepObjectView(isChecked));
         } else {
             hidePrepObjectView(true);
@@ -292,17 +292,17 @@ public class OptionsActivity extends AppCompatActivity {
 
         if (responseTypeOptionsView.getVisibility() != View.GONE){
             if (responseFullView.isChecked()){
-                lo.responseType = LessonOptions.ResponseType.FULL_SENTENCE;
+                lo.responseType = com.github.sourzo.a_rithist.general.LessonOptions.ResponseType.FULL_SENTENCE;
             } else if (responseBlankView.isChecked()){
-                lo.responseType = LessonOptions.ResponseType.BLANKS;
+                lo.responseType = com.github.sourzo.a_rithist.general.LessonOptions.ResponseType.BLANKS;
             } else if (responseBlankVerbView.isChecked()){
-                lo.responseType = LessonOptions.ResponseType.BLANKS_VERB;
+                lo.responseType = com.github.sourzo.a_rithist.general.LessonOptions.ResponseType.BLANKS_VERB;
             } else if (responseBlankPpView.isChecked()){
-                lo.responseType = LessonOptions.ResponseType.BLANKS_PP;
+                lo.responseType = com.github.sourzo.a_rithist.general.LessonOptions.ResponseType.BLANKS_PP;
                 lo.pronouns = true;
                 lo.nouns = false;
             } else if (responseQAView.isChecked()){
-                lo.responseType = LessonOptions.ResponseType.Q_AND_A;
+                lo.responseType = com.github.sourzo.a_rithist.general.LessonOptions.ResponseType.Q_AND_A;
             } else {
                 Toast.makeText(v.getContext(),"Please select the response type", Toast.LENGTH_SHORT).show();
                 return;

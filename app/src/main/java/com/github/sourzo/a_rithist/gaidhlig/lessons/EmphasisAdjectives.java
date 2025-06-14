@@ -46,6 +46,9 @@ public class EmphasisAdjectives extends ExerciseGenerator {
         String beEn = person.en_toBe(Tense.PRESENT_VERBAL_NOUN);
 
         //Construct sentence -----------------------------------------------------------------------
+        //Note: The adjective is being used predicatively ("the girl is small" rather than
+        // attributively ("the small girl") so it doesn't agree with the (pro)noun. Hence it's not
+        // pluralised and it's not lenited by the (pro)noun. But it is lenited by "ro" and "glè".
         assert adjModGd != null;
         if (adjModGd.equals("ro ") || adjModGd.equals("glè ")){
             assert adjectiveGd != null;
