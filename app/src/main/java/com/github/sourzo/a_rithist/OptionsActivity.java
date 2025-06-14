@@ -94,6 +94,7 @@ public class OptionsActivity extends AppCompatActivity {
     //Options values -------------------------------------------------------------------------------
     LessonOptions lo;
     List<String> validVocabFileNames;
+    List<String> vocabListDisplayNames;
     VocabTable fullVocabList;
     AndroidAppRes androidAppRes;
 
@@ -145,7 +146,7 @@ public class OptionsActivity extends AppCompatActivity {
             vocabListSizeView.setVisibility(View.GONE);
         } else {
             ArrayAdapter<String> vocabSpinnerAdapter =
-                    new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, validVocabFileNames);
+                    new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, vocabListDisplayNames);
             vocabSpinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             vocabSpinnerView.setAdapter(vocabSpinnerAdapter);
 
@@ -394,6 +395,7 @@ public class OptionsActivity extends AppCompatActivity {
      * @param requiredColumns The columns which must all be present in a CSV file for
      *                        it to be included in the returned set */
     public void setValidVocabFiles(Set<String> requiredColumns) {
+        vocabListDisplayNames = new ArrayList<>();
         validVocabFileNames = new ArrayList<>();
         if (lo.lessonID.equals("professions_annan")) {
             validVocabFileNames.add("people_professions.csv");
@@ -417,6 +419,14 @@ public class OptionsActivity extends AppCompatActivity {
                     Log.d("Error","Unable to list assets");
                 }
             }
+        }
+        for (String filename: validVocabFileNames) {
+            vocabListDisplayNames.add(
+                    filename
+                            .replaceAll("_", ": ")
+                            .replaceAll(".csv","")
+                            .replaceAll("-", " ")
+            );
         }
     }
 
