@@ -1,6 +1,6 @@
 name: Android Build
 
-on: [create, workflow_dispatch]
+on: push
 
 jobs:
   build:
@@ -26,8 +26,10 @@ jobs:
         keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
         keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
+    - name: Rename APK
+      run: mv "${{ steps.sign_apk.outputs.signedFile }}" "${{ github.workspace }}/arithist.apk"
+    - name: Create release and upload APK
+      uses: softprops/action-gh-release@v2
+      if: github.ref_type == 'tag'
       with:
-        name: APK
-        path: ${{steps.sign_apk.outputs.signedFile}}
+        files: ${{ github.workspace }}/arithist.apk
