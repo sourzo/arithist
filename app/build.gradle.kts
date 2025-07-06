@@ -11,8 +11,8 @@ android {
         applicationId = "com.github.sourzo.a_rithist"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1 //update this for each release
-        versionName = "1.0.0" //update this for each release
+        versionCode = 2 //update this for each release
+        versionName = "1.0.1" //update this for each release
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
