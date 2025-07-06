@@ -28,7 +28,7 @@ jobs:
         keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
     - name: Rename APK
-      run: mv "${{ steps.sign_apk.outputs.signedFile }}" "${{ github.workspace }}/arithist.apk"
+      run: mv "${{ steps.sign_apk.outputs.signedFile }}" "${{ github.workspace }}/arithist-${{ github.ref_name }}.apk
     - name: Create release and upload APK
       uses: softprops/action-gh-release@v2
       if: github.ref_type == 'tag'
