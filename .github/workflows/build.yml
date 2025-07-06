@@ -18,8 +18,16 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    - uses: ilharp/sign-android-release@v2
+      name: Sign APK
+      id: sign_apk
+      with:
+        signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+        keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
+        keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: APK
-        path: ${{ env.main_project_module }}/build/outputs/apk/release/
+        path: ${{steps.sign_apk.outputs.signedFile}}
