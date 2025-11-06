@@ -186,7 +186,7 @@ public class OptionsActivity extends AppCompatActivity {
             translationOptionsView.setVisibility(View.GONE);
         } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.TRANSLATE_NUMBERS)){
             toGaelicButtonView.setText(R.string.dg_gd);
-            fromGaelicButtonView.setText(R.string.en_gd);
+            fromGaelicButtonView.setText(R.string.gd_dg);
         } else if (Arrays.asList(Objects.requireNonNull(LessonInfo.lessonSet.get(lo.lessonID)).options).contains(Lesson.LessonOptions.TRANSLATE_GENERIC)){
             toGaelicButtonView.setText(R.string.from_en);
             fromGaelicButtonView.setText(R.string.from_gd);
