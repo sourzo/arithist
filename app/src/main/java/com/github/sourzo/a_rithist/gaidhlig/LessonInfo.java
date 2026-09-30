@@ -91,7 +91,7 @@ public class LessonInfo {
                 new Lesson("Emphatic pronouns and adjectives",
                         new String[] {"english", "adj_gd"},
                         new Lesson.TopicTag[] {Lesson.TopicTag.ALL, Lesson.TopicTag.ADJECTIVES},
-                        new Lesson.LessonOptions[] {Lesson.LessonOptions.TRANSLATE_WORDS, Lesson.LessonOptions.TRANSLATE, Lesson.LessonOptions.VOCABULARY},
+                        new Lesson.LessonOptions[] {Lesson.LessonOptions.TRANSLATE_WORDS, Lesson.LessonOptions.TRANSLATE, Lesson.LessonOptions.VOCABULARY, Lesson.LessonOptions.RESPONSE_BLANKS},
                         EmphasisAdjectives::new));
         lessonSet.put("possession_mo",
                 new Lesson("Possession ('mo', 'do', etc)",

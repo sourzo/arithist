@@ -63,6 +63,9 @@ public class Exercise {
         anyString = anyString
                 .replaceAll(" \\(sg\\)","")
                 .replaceAll(" \\(pl\\)","");
+        // remove asterisks (emphasis)
+        anyString = anyString
+                .replaceAll("\\*","");
         return anyString;
     }
 

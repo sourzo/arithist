@@ -63,6 +63,25 @@ public class EmphasisAdjectives extends ExerciseGenerator {
         //Prompt -----------------------------------------------------------------------------------
         e.setPrePrompt("Translate:");
 
+        if (lo.responseType == LessonOptions.ResponseType.BLANKS) {
+            String editTextPrompt;
+            if (lo.translateFromGaelic){
+                editTextPrompt = " " + adjModEn + adjective_en;
+                e.setEditTextPrompt(editTextPrompt);
+                e.setEditTextCursorPosition(0);
+            } else {
+                editTextPrompt = "Tha  " + adjModGd + adjectiveGd;
+                e.setEditTextPrompt(editTextPrompt);
+                e.setEditTextCursorPosition(4);
+            }
+        } else {
+            if (lo.translateFromGaelic) {
+                e.setQuestion(sentenceGd);
+            } else {
+                e.setQuestion(sentenceEn);
+            }
+        }
+
         //Question ---------------------------------------------------------------------------------
         if (lo.translateFromGaelic) {
             e.setQuestion(sentenceGd);
