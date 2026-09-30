@@ -403,11 +403,30 @@ public class OptionsActivity extends AppCompatActivity {
             if (requiredColumns.size()!=0) {
                 try {
                     for (String s : Objects.requireNonNull(getAssets().list(""))) {
-                        if (!lo.lessonID.equals("where_in") || s.startsWith("places_")) { //some lessons need the "places" vocab lists, or the random sentences will make less sense than usual
+                        if (!lo.lessonID.equals("where_in") || s.startsWith("places_")) {
+                            //some lessons need the "places" vocab lists, or the random sentences will make less sense than usual
                             try (BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open(s)))) {
                                 Set<String> fileColumns = new HashSet<>(Arrays.asList(br.readLine().split(",")));
                                 if (fileColumns.containsAll(requiredColumns)) {
-                                    validVocabFileNames.add(s);
+                                    /*
+                                        Vocab files listing proper nouns, which can't take/remove articles
+                                         (e.g. "The Netherlands" doesn't become "Netherlands", and
+                                         "England" doesn't become "The England", similarly in Gaelic)
+                                         ... So if the lesson adds/removes articles, then you can't use these
+                                         vocab lists.
+                                     */
+                                    String[] properNouns = {
+                                            "datetime_seasons.csv",
+                                            "datetime_months.csv",
+                                            "people_names.csv",
+                                            "places_scotland.csv",
+                                            "places_world.csv",
+                                    };
+                                    if (!(Arrays.asList(LessonInfo.lessonSet.get(lo.lessonID).topics).contains(Lesson.TopicTag.ARTICLES) &&
+                                            Arrays.asList(properNouns).contains(s))) {
+                                        validVocabFileNames.add(s);
+                                        //ie only add one of the files in properNouns if the lesson isn't tagged ARTICLES
+                                    } //TODO - something similar with comparatives & superlatives
                                 }
                             } catch (FileNotFoundException e) {
                                 Log.d("Error","Unable to open file " + s);
